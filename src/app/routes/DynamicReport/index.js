@@ -43,19 +43,20 @@ class DynamicReport extends PageBase {
       serviceName: Services.Seed
     });
     this.viewTabList = React.createRef();
-    this.testItemLoading = {
+    this.testItemLoading = {    
       title: "Items",
-      url: `${AppConst.BaseUrl}/seed/Person/GetAllperson`,
-      keyField: "ProductId",
-      skipInitialLoad: true,
+      url: `${AppConst.BaseUrl}/seed/Person/GetAll`,
+      keyField: "Id",
+      skipInitialLoad: false,
       showEdit: true,
+      showAdd:true,
       //enableEdit: true,
       //enableEdit: that.state.Model.DiscountPolicyMasterId && !that.state.Model.AllProducts,
       lazy: false,
       limit: 10,
       height: "360px",
       onEditClick: () => {
-        ShowMessageBox({ text: "Yes clciked worked" });
+        ShowMessageBox({ text: "Clicked worked" });
         // if (that.state.Model.DiscountPolicyMasterId) {
         //   if (that.state.Model.AllProducts) {
         //     ShowMessageBox({
@@ -72,36 +73,30 @@ class DynamicReport extends PageBase {
         //   ShowMessageBox({ text: "Select a Discount Policy first." });
         // }
       },
-      onPrepareParameter: (parameters) => {
-        parameters.push({
-          name: "DiscountPolicyMasterId",
-          operat: "=",
-        //   value: that.state.Model.DiscountPolicyMasterId || -1,
-         value:-1,
-        });
-      },
-      onRender: (item) => {
-        return (
+      
+      onRender: (item) => {        
+        return (      
           <>
             <Row>
-              <Col sm={3} style={{ textAlign: "center" }}>
-                <ListItemAvatar>
-                  {/* <Avatar
-                    alt={item.ProductName}
-                    src={
-                      item.DefaultProductPic
-                        ? item.DefaultProductPic
-                        : require("assets/images/product-logo.png")
-                    }
-                    className="user-avatar"
-                    style={{ maxWidth: "100%", margin: "0 auto" }}
-                  /> */}
-                </ListItemAvatar>
+              <Col md={3} style={{ textAlign: "center" }}>
+              <ListItemText
+                  primary={item.Name}
+                 
+                />
               </Col>
-              <Col sm={9}>
-                <ListItemText
-                  primary={item.ProductName}
-                  secondary={item.ItemTypeName}
+              <Col md={3}>
+                <ListItemText                  
+                  secondary={item.DOB}
+                />
+              </Col>
+              <Col md={3}>
+                <ListItemText                  
+                  secondary={item.FatherName}
+                />
+              </Col>
+              <Col md={3}>
+                <ListItemText                  
+                  secondary={item.MotherName}
                 />
               </Col>
             </Row>
@@ -167,10 +162,7 @@ class DynamicReport extends PageBase {
           <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>Report Parameter</legend>
             {/* <ReportParameter /> */}
-            <CardList
-            ref={this.viewTabList}
-            config={this.testItemLoading}
-          />
+            <CardList ref={this.viewTabList} config={this.testItemLoading}/>
           </fieldset>
           <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>Report View</legend>

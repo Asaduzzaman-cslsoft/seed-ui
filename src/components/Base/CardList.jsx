@@ -100,6 +100,7 @@ export class CardList extends Component {
     }
 
     loadData(pagingConfig, url, currPage) {
+        console.log(url)
         this.setState({ loading: true });
         let that = this;
         let parameters = [];
