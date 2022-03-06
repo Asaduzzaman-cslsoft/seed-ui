@@ -1,0 +1,156 @@
+@apiUrl = http://localhost:1500
+@accessToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxIiwidW5pcXVlX25hbWUiOiIxIiwianRpIjoiNTU2ODRkNjgtNDY3NC00NTk5LWFjZGUtOTI0ZDJkYzUyOGFkIiwiaWF0IjoiMTYwNDUzNzM1NTYwMiIsIkxvZ2VkSWQiOiI1IiwiVXNlcklkIjoiMSIsIlVzZXJOYW1lIjoiQWRtaW4iLCJOYW1lIjoiQ3NsU29mdCIsIkVtcGxveWVlSWQiOiIxIiwiQXBwbGljYXRpb25JZCI6IjEiLCJDb21wYW55SWQiOiIxIiwiQ29tcGFueU5hbWUiOiJDU0wgU29mdHdhcmUgUmVzb3VyY2VzIEx0ZC4iLCJJc0FkbWluIjoiVHJ1ZSIsIklQQWRkcmVzcyI6IjEwLjAuNzUuMSIsIkxvZ0luQXQiOiIxMS81LzIwMjAgMTI6NDk6MTUgQU0iLCJuYmYiOjE2MDQ1MTU3NTUsImV4cCI6MTcyODkzMTc1NSwiaXNzIjoiU0VFRCJ9.VEYG84uxbTWyotcuwCaGCxGroyLdAnscy0M7P2rB2xw
+
+@menuPrivilege = {"MenuId":1,"CanCreate":true,"CanRead":true,"CanUpdate":true,"CanDelete":true}
+
+@menuParameter = {"ShareData":true}
+
+# ================= SECURITY SERVICE ======================= #
+
+### Create admin user
+POST {{apiUrl}}/security/User/Create
+content-type: application/json
+
+{	
+	"UserName": "Admin",	
+	"Password": "Admin@user",
+	"Name": "CslSoft",
+	"DefaultApplicationID": 1,
+	"CompanyID": "1",	
+	"IsAdmin": 1,
+	"IsActive": 1
+}
+
+### Sign in as admin
+POST {{apiUrl}}/security/User/SignIn
+content-type: application/json
+
+{
+	"UserName": "Admin",
+	"Password": "Admin@user"
+}
+
+### Get menu
+GET  {{apiUrl}}/security/User/GetMenus
+authorization: Bearer {{accessToken}}
+
+### Change password
+PUT {{apiUrl}}/security/User/ChangePassword
+authorization: Bearer {{accessToken}}
+content-type: application/json
+
+{
+	"CurrentPassword": "Admin@user",
+	"NewPassword": "Admin@user"
+}
+
+### Sign out
+GET  {{apiUrl}}/security/User/SignOut
+authorization: Bearer {{accessToken}}
+
+# ================= SHOMOSHTEE SERVICE ======================= #
+
+### Create demo
+POST {{apiUrl}}/seed/Demo/Create
+authorization: Bearer {{accessToken}}
+content-type: application/json
+menuprivilege: {{menuPrivilege}}
+menuparameter: {{menuParameter}}
+
+{
+	"MasterModel":	{
+		"TextValue": "Demo",
+		"IntValue": 1234,		
+		"NumericValue": 1234.43,
+		"DateValue": "2020-01-30T04:09:19.570Z",
+		"TimeValue": "2020-01-30T04:09:19.570Z",
+		"ModelState": "Added"
+	},
+	"ChildModels":[{
+		"TextValue": "Demo Child",
+		"IntValue": 110,		
+		"NumericValue": 20.57,
+		"DateValue": "2020-01-30T04:09:19.570Z",
+		"TimeValue": "2020-01-30T04:09:19.570Z",
+		"ModelState": "Added"
+	}]
+}
+
+### Update demo
+PUT {{apiUrl}}/seed/Demo/Update
+authorization: Bearer {{accessToken}}
+content-type: application/json
+menuprivilege: {{menuPrivilege}}
+menuparameter: {{menuParameter}}
+
+{
+	"Master":	{
+		"PrimaryId": 1,
+		"PrimaryCode": "DT-19-00001",
+		"TextValue": "Demo",
+		"IntValue": 1234,		
+		"NumericValue": 1234.43,
+		"DateValue": "2020-01-30T04:09:19.570Z",
+		"TimeValue": "2020-01-30T04:09:19.570Z",
+		"RowVersion": 1,
+		"ModelState": "Modified"
+	},
+	"ChildModels":[{
+		"ChildId": 1,
+		"PrimaryId": 1,
+		"TextValue": "Demo Child",
+		"IntValue": 200,		
+		"NumericValue": 209.57,
+		"DateValue": "2020-01-30T04:09:19.570Z",
+		"TimeValue": "2020-01-30T04:09:19.570Z",
+		"ModelState": "Modified"
+	}]
+}
+
+### Delete demo
+DELETE {{apiUrl}}/seed/Demo/Delete
+authorization: Bearer {{accessToken}}
+content-type: application/json
+menuprivilege: {{menuPrivilege}}
+menuparameter: {{menuParameter}}
+
+{	
+	"PrimaryId": 1,
+	"PrimaryCode": "DT-19-00001",
+	"TextValue": "Demo",
+	"IntValue": 1234,		
+	"NumericValue": 1234.43,
+	"DateValue": "2020-01-30T04:09:19.570Z",
+	"TimeValue": "2020-01-30T04:09:19.570Z",
+	"RowVersion": 3,
+	"ModelState": "Deleted"	
+}
+
+
+### Get all
+GET  {{apiUrl}}/seed/Demo/GetAll
+authorization: Bearer {{accessToken}}
+content-type: application/json
+menuprivilege: {{menuPrivilege}}
+menuparameter: {{menuParameter}}
+
+### Get
+GET  {{apiUrl}}/seed/Demo/Get/1
+authorization: Bearer {{accessToken}}
+content-type: application/json
+menuprivilege: {{menuPrivilege}}
+menuparameter: {{menuParameter}}
+
+### Get
+GET  {{apiUrl}}/seed/Combo/GetDemoStatus
+authorization: Bearer {{accessToken}}
+content-type: application/json
+menuprivilege: {{menuPrivilege}}
+menuparameter: {{menuParameter}}
+
+### Get
+GET  {{apiUrl}}/seed/Combo/GetChildStatus/Active
+authorization: Bearer {{accessToken}}
+content-type: application/json
+menuprivilege: {{menuPrivilege}}
+menuparameter: {{menuParameter}}

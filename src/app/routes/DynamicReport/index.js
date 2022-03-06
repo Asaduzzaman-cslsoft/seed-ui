@@ -1,0 +1,186 @@
+import React from "react";
+import {
+  Col,
+  Row,
+  ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem
+} from "reactstrap";
+import PageBase from "components/Base/PageBase";
+import withPageBase from "components/Base/withPageBase";
+import Grid from "components/Base/Grid";
+import InlineFinder from "components/Base/InlineFinder";
+import TextContainer from "components/FormInputs/TextContainer";
+import CheckboxContainer from "components/FormInputs/CheckboxContainer";
+import ButtonAddonContainer from "components/FormInputs/ButtonAddonContainer";
+import ReportParameter from "components/Report/ReportParameter";
+import { AppConst, Services, ShowMessageBox } from "../../../util/Util"
+import { Avatar, Badge, Card, CardHeader, CardContent, Checkbox, ListItemAvatar, ListItemText } from '@material-ui/core';
+import XlsExport from "../../../util/xls-export";
+import ReportView from "../../../components/Report/ReportView";
+import CardList from "components/Base/CardList"
+
+class DynamicReport extends PageBase {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ...this.state,
+      source: [],
+      QueryName: "",
+      gridConfig: {
+        columns:
+          [
+            { field: 'PrimaryKey', style: { display: 'none' } }
+          ],
+        lazy: false,
+        showRefresh: false,
+        limit: 20
+      }
+    }
+
+    this.childGrid = React.createRef();
+    this.inlineFinder = React.createRef();
+
+    this.setConfig({
+      serviceName: Services.Seed
+    });
+    this.viewTabList = React.createRef();
+    this.testItemLoading = {
+      title: "Items",
+      url: `${AppConst.BaseUrl}/seed/Person/GetAllperson`,
+      keyField: "ProductId",
+      skipInitialLoad: true,
+      showEdit: true,
+      //enableEdit: true,
+      //enableEdit: that.state.Model.DiscountPolicyMasterId && !that.state.Model.AllProducts,
+      lazy: false,
+      limit: 10,
+      height: "360px",
+      onEditClick: () => {
+        ShowMessageBox({ text: "Yes clciked worked" });
+        // if (that.state.Model.DiscountPolicyMasterId) {
+        //   if (that.state.Model.AllProducts) {
+        //     ShowMessageBox({
+        //       text:
+        //         "The applicable item list is not editable for this Discount Policy.",
+        //     });
+        //   } else {
+        //     that.discountPolicyProductForm.current.Edit(
+        //       that.state.Model.DiscountPolicyMasterId,
+        //       "Items"
+        //     );
+        //   }
+        // } else {
+        //   ShowMessageBox({ text: "Select a Discount Policy first." });
+        // }
+      },
+      onPrepareParameter: (parameters) => {
+        parameters.push({
+          name: "DiscountPolicyMasterId",
+          operat: "=",
+        //   value: that.state.Model.DiscountPolicyMasterId || -1,
+         value:-1,
+        });
+      },
+      onRender: (item) => {
+        return (
+          <>
+            <Row>
+              <Col sm={3} style={{ textAlign: "center" }}>
+                <ListItemAvatar>
+                  {/* <Avatar
+                    alt={item.ProductName}
+                    src={
+                      item.DefaultProductPic
+                        ? item.DefaultProductPic
+                        : require("assets/images/product-logo.png")
+                    }
+                    className="user-avatar"
+                    style={{ maxWidth: "100%", margin: "0 auto" }}
+                  /> */}
+                </ListItemAvatar>
+              </Col>
+              <Col sm={9}>
+                <ListItemText
+                  primary={item.ProductName}
+                  secondary={item.ItemTypeName}
+                />
+              </Col>
+            </Row>
+          </>
+        );
+      },
+    };
+  }
+  usersPermissionAddFormClick = event => {
+    alert("add form clicked")
+  };
+
+  render() {
+    let intForm = 1;
+    return (
+      <div className="page-wrapper" style={{ overflow: "auto" }}>
+        <fieldset className="border p-2">
+          <legend className="w-auto" style={{ width: "inherit" }}>Report</legend>
+          <Row>
+            <Col md={6}>
+              <TextContainer
+                label="Report ID"
+                {...this.useInput({ fieldName: "ReportID" })} />
+              <TextContainer
+                label="Report Title"
+                {...this.useInput({ fieldName: "ReportTitle" })} />
+              <TextContainer
+                label="Sequnece No"
+                {...this.useInput({ fieldName: "SeqNo" })} />
+              <CheckboxContainer
+                label="Is Hamburger Menu"
+                {...this.useInput({ fieldName: "IsHamburgerMenu" })} />
+              <CheckboxContainer
+                label="User Parameter"
+                {...this.useInput({ fieldName: "UserParameter" })} />
+            </Col>
+            <Col md={6}>
+              <TextContainer
+                label="Report Name"
+                {...this.useInput({ fieldName: "ReportName" })} />
+              <TextContainer
+                label="Icon Url"
+                {...this.useInput({ fieldName: "IconUrl" })} />
+              <TextContainer
+                label="Number Of Views"
+                {...this.useInput({ fieldName: "NumberOfViews" })} />
+              <CheckboxContainer
+                label="Is Landing Page Menu"
+                {...this.useInput({ fieldName: "IsLandingPageMenu" })} />
+            </Col>
+          </Row>
+          <fieldset className="border p-2">
+            <legend className="w-auto" style={{ width: "inherit" }}>Users Permission</legend>
+            <Row style={{ margin: '0', padding: '0' }}>
+              <TextContainer
+                label="integer"
+                {...this.useInput({ fieldName: "int" + intForm })} />
+                </Row>
+            <button className="btn btn-primary" onClick={this.usersPermissionAddFormClick}>Add integer form</button>
+
+          </fieldset>
+         
+          <fieldset className="border p-2">
+            <legend className="w-auto" style={{ width: "inherit" }}>Report Parameter</legend>
+            {/* <ReportParameter /> */}
+            <CardList
+            ref={this.viewTabList}
+            config={this.testItemLoading}
+          />
+          </fieldset>
+          <fieldset className="border p-2">
+            <legend className="w-auto" style={{ width: "inherit" }}>Report View</legend>
+            <ReportView />
+          </fieldset>
+
+        </fieldset>
+      </div>
+
+    )
+  }
+}
+export default withPageBase(DynamicReport);

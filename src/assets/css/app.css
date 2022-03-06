@@ -1,0 +1,509 @@
+body {
+  margin: 0;
+  font-family: "SF UI Text", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol" !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 500;
+  font-size: 14px !important;
+  color: #425a70 !important;
+}
+
+.app-login-form label+.MuiInput-formControl {
+  margin-top: 20px !important;
+}
+
+.home-container {
+  left: 0;
+  line-height: 200px;
+  margin-top: -100px;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  width: 100%;
+  font-weight: bold;
+}
+
+.page-wrapper {
+    padding-top: 3px;
+    padding-right: 30px;
+    padding-bottom: 50px;
+    padding-left: 30px;
+}
+
+.app-header {
+  min-height: 50px !important;
+}
+
+.app-main-header {
+  height: 50px !important;
+  background-color: #3F51A3 !important;
+}
+
+.MuiToolbar-regular {
+  min-height: 50px !important;
+}
+
+/* - Footer - */
+.app-footer {
+  display: inline-block;
+  text-align: right !important;
+  width: 100%;
+  position: fixed;
+  left: 0px;
+  bottom: 0px;
+  /* border-radius: 4px; */
+  margin-top: 4px;
+  padding: 8px !important;
+  z-index: 2;
+}
+
+.MuiCard-root {
+  margin: 5px !important;
+}
+
+.MuiCardContent-root {
+  padding: 4px !important;
+}
+
+.MuiCardHeader-root {
+  padding: 4px !important;
+  box-shadow: 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+}
+
+.MuiTypography-h5 {
+  font-size: 1.1rem !important;
+  font-weight: bold !important;
+}
+
+.button-base {
+  width: 100px !important;
+}
+
+.form-control.is-invalid,
+.was-validated .form-control:invalid {
+  background-image: none !important;
+}
+
+.invalid-feedback {
+  font-family: "SF UI Text", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol" !important;
+  font-size: 12px !important;
+  font-weight: 400;
+  color: #bf0e08 !important;
+}
+
+.form-control::-webkit-input-placeholder {
+  color: #a6b1bb !important;
+  font-size: 13px !important;
+  font-size: 400 !important;
+}
+
+.form-control {
+  color: #425a70 !important;
+  font-size: 13px !important;
+  font-size: 400 !important;
+  /* height: 32px !important; */
+}
+
+textarea.form-control {
+  height: auto !important;
+}
+
+label {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #425a70 !important;
+  /* margin-bottom: 4px !important; */
+}
+
+.select2-container {
+  margin-top: 2px !important;
+}
+
+.cc-grid .select2-container {
+  margin-top: 0px !important;
+}
+
+.select2-container--default .select2-selection--single {
+  border: 1px solid #ced4da !important;
+  /* height: 32px !important; */
+  color: #425a70 !important;
+  font-size: 13px !important;
+  font-size: 400 !important;
+  border-radius: 0.2rem !important;
+}
+
+/* .select2-container--default .select2-selection--single:focus {
+    border: 1px solid #ced4da !important;
+  } */
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+  padding-left: 7px !important;
+  margin-top: -1px;
+  /* line-height: 32px !important; */
+}
+
+.form-group {
+  margin-bottom: 4px !important;
+}
+
+.Date-Time[readonly] {
+  background-color: #fff !important;
+}
+
+/*legend loader*/
+.was-validated .form-control:invalid,
+.form-control.is-invalid {
+  padding-right: 6px !important;
+}
+
+.invalid-feedback-custom {
+  width: 100%;
+  margin-top: 3px !important;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif !important;
+  font-size: 0.75rem !important;
+  font-weight: 400;
+  color: #f44336 !important;
+}
+
+.select2-invalid {
+  display: none;
+}
+
+.display-none {
+  display: none;
+}
+
+.select2-invalid+span {
+  border: solid 1px #f44336 !important;
+  border-radius: 0.2rem !important;
+}
+
+.react-grid-Cell:focus {
+  outline: none !important;
+}
+
+.react-grid-Row:hover .react-grid-Cell {
+  background-color: #dbecfa !important;
+}
+
+.react-grid-Row.row-selected .react-grid-Cell {
+  background-color: #dbecfa !important;
+}
+
+.rdt-90 {
+  width: 90%;
+}
+
+.right-radius-0 {
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+}
+
+.p-inputtext {
+  width: 100% !important;
+  padding: 0 !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  padding-left: 4px !important;
+}
+
+.p-datatable.p-datatable-sm .p-datatable-thead>tr>th {
+  padding: 4px 4px !important;
+}
+
+.p-paginator {
+  padding: 0 !important;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page {
+  margin: 0 !important;
+}
+
+.p-link {
+  margin: 0 !important;
+}
+
+.p-highlight {
+  margin: 0 !important;
+  height: 22px !important;
+}
+
+.p-paginator .p-paginator-pages .p-paginator-page {
+  height: 22px !important;
+}
+
+.cc-grid.p-inputtext {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.p-datatable.p-datatable-sm .p-datatable-tbody>tr>td {
+  padding: 4px 4px !important;
+  word-break: break-all !important;
+}
+
+.cc-grid.p-datatable.p-datatable-sm .p-datatable-tbody>tr>td {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.cc-grid .form-control {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.cc-grid .form-control-sm {
+  height: 20px !important;
+  padding: 0 !important;
+}
+
+/* .cc-grid .rdtPicker
+  {
+    position: fixed !important;
+  } */
+
+.cc-grid .select2-container--default .select2-selection--single {
+  border-radius: 0 !important;
+  /* border-bottom: 1px solid #E3F2FD !important; */
+  height: 26px !important;
+}
+
+.select2-container *:focus {
+  outline: none;
+}
+
+.select2-container--open .select2-dropdown--above {
+  border-bottom: 1px solid #aaa !important;
+}
+
+.select2-container--open .select2-dropdown--below {
+  border-top: 1px solid #aaa !important;
+}
+
+.p-datepicker table td {
+  padding: 0 !important;
+}
+
+.p-datepicker .p-datepicker-buttonbar {
+  padding: 0 !important;
+}
+
+.p-calendar .p-datepicker {
+  min-width: 340px !important;
+}
+
+.p-datatable .p-datatable-tbody>tr {
+  outline: 0 !important;
+}
+
+.swal-modal {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.swal-icon {
+  margin-top: 8px !important;
+  width: 60px !important;
+  height: 60px !important;
+}
+
+.swal-icon--warning__body {
+  height: 30px !important;
+}
+
+.p-component-overlay {
+  background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.p-component {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+
+/* .p-datatable-scrollable-body
+  {
+    height: 100px !important;
+  } */
+
+.cc-grid .MuiInputBase-root {
+  font-family: "SF UI Text", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol" !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  color: #425a70 !important;
+}
+
+.MuiIconButton-root {
+  padding: 1px !important;
+  /* outline-color: transparent !important; */
+}
+
+.MuiButton-root:focus {
+  outline: 0;
+}
+
+.MuiIconButton-root:focus {
+  outline: 0;
+}
+
+.cc-grid .MuiInputBase-input {
+  font-family: "SF UI Text", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol" !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  color: #425a70 !important;
+  padding-right: 2px !important;
+}
+
+.cc-grid .MuiTextField-root {
+  width: 100%;
+}
+
+.MuiInput-formControl .MuiInputBase-input {
+  font-family: "SF UI Text", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol" !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  color: #425a70 !important;
+  height: 20px !important;
+  padding: 0 !important;
+}
+
+.MuiInput-formControl .MuiInput-inputMultiline {
+  height: auto !important;
+  padding: 0.25rem 0.5rem !important;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  outline-color: goldenrod !important;
+}
+
+.MuiInputBase-root {
+  padding-right: 2px !important;
+}
+
+.form-control.Mui-error {
+  border: solid 1px #f05050;
+}
+
+.MuiFormControlLabel-root {
+  margin-left: -6px !important;
+}
+
+.MuiTypography-body1 {
+  font-family: "SF UI Text", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol" !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  color: #425a70 !important;
+}
+
+.select2-selection--single:after {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  content: "";
+  position: absolute;
+  transform: scaleX(0);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+  border-bottom: 2px solid #3f51b5;
+  pointer-events: none;
+}
+
+.select2-selection--single:focus:after {
+  transform: scaleX(1);
+}
+
+.select2-invalid+span>span>span:after {
+  transform: scaleX(1);
+  border-bottom-color: #f44336;
+}
+
+.select2-selection--single:before {
+  left: 0;
+  right: 0;
+  bottom: 1px;
+  content: "\00a0";
+  position: absolute;
+  transition: border-bottom-color 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  pointer-events: none;
+}
+
+.select2-selection--single:hover:before {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.87);
+}
+
+.cc-grid .select2-selection--single:after {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.87);
+}
+
+.cc-grid .select2-selection--single:before {
+  border-bottom: none;
+}
+
+.cc-grid .select2-selection--single:hover:before {
+  border-bottom: none;
+}
+
+.cc-grid .select2-selection--single:focus:after {
+  transform: scaleX(0);
+}
+
+.cc-grid .p-button.p-button-icon-only {
+  padding: 0 !important;
+}
+
+.state-icon {
+  font-size: 10px !important;
+}
+
+.select2-results__option {
+  padding: 4px !important;
+}
+
+.noselect {
+  cursor: default;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.side-nav,
+.app-logo-content,
+button[class*="MuiButtonBase-root-"] {
+  background-color: #2e4d58 !important;
+}
+
+/* #3f51b5 !important */
+
+/* .col-1, .col-2, .col-3, .col-4, .col-5, .col-6, .col-7, .col-8, .col-9, .col-10, .col-11, .col-12, .col, .col-auto, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm, .col-sm-auto, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-md, .col-md-auto, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg, .col-lg-auto, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12, .col-xl, .col-xl-auto
+{
+  padding-right:5px !important;
+  padding-left:5px !important;
+} */
+
+.side-nav .MuiTypography-body1 {
+  color: wheat !important;
+}
+input.form-control:focus { box-shadow: inset 0 -1px 0 #ddd; }
+
+.p-button-outlined:focus { box-shadow: inset 0 -1px 0 #ddd; }
+
+.MuiInput-underline.Mui-disabled:before {
+  border-bottom-style: inherit !important;
+}
