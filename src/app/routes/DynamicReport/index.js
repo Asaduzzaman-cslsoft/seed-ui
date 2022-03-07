@@ -16,7 +16,10 @@ import { AppConst, Services, ShowMessageBox } from "../../../util/Util"
 import { Avatar, Badge, Card, CardHeader, CardContent, Checkbox, ListItemAvatar, ListItemText } from '@material-ui/core';
 import XlsExport from "../../../util/xls-export";
 import ReportView from "../../../components/Report/ReportView";
-import CardList from "components/Base/CardList"
+import CardList from "components/Base/CardList";
+import SelectContainer from "components/FormInputs/SelectContainer";
+import MultiSelectContainer from "components/FormInputs/MultiSelectContainer";
+
 
 class DynamicReport extends PageBase {
   constructor(props) {
@@ -25,6 +28,7 @@ class DynamicReport extends PageBase {
       ...this.state,
       source: [],
       QueryName: "",
+     // options: [{name: 'Option 1️⃣', id: 1},{name: 'Option 2️⃣', id: 2}],
       gridConfig: {
         columns:
           [
@@ -35,7 +39,7 @@ class DynamicReport extends PageBase {
         limit: 20
       }
     }
-
+    
     this.childGrid = React.createRef();
     this.inlineFinder = React.createRef();
 
@@ -43,13 +47,13 @@ class DynamicReport extends PageBase {
       serviceName: Services.Seed
     });
     this.viewTabList = React.createRef();
-    this.testItemLoading = {    
+    this.testItemLoading = {
       title: "Items",
       url: `${AppConst.BaseUrl}/seed/Person/GetAll`,
       keyField: "Id",
       skipInitialLoad: false,
       showEdit: true,
-      showAdd:true,
+      showAdd: true,
       //enableEdit: true,
       //enableEdit: that.state.Model.DiscountPolicyMasterId && !that.state.Model.AllProducts,
       lazy: false,
@@ -73,29 +77,29 @@ class DynamicReport extends PageBase {
         //   ShowMessageBox({ text: "Select a Discount Policy first." });
         // }
       },
-      
-      onRender: (item) => {        
-        return (      
+
+      onRender: (item) => {
+        return (
           <>
             <Row>
               <Col md={3} style={{ textAlign: "center" }}>
-              <ListItemText
+                <ListItemText
                   primary={item.Name}
-                 
+
                 />
               </Col>
               <Col md={3}>
-                <ListItemText                  
+                <ListItemText
                   secondary={item.DOB}
                 />
               </Col>
               <Col md={3}>
-                <ListItemText                  
+                <ListItemText
                   secondary={item.FatherName}
                 />
               </Col>
               <Col md={3}>
-                <ListItemText                  
+                <ListItemText
                   secondary={item.MotherName}
                 />
               </Col>
@@ -105,10 +109,16 @@ class DynamicReport extends PageBase {
       },
     };
   }
-  usersPermissionAddFormClick = event => {
-    alert("add form clicked")
-  };
-
+  // usersPermissionAddFormClick = event => {
+  //   alert("add form clicked")
+  // };
+  // componentDidMount() {
+  //   $http.get(`${AppConst.BaseUrl}${Services.Security}/User/GetAll`)
+  //     .then(res => this.setState({ menuList: res.Result, loader: false }))
+  //     .catch(() => {
+  //       this.setState({ loader: false })
+  //     });
+  // }
   render() {
     let intForm = 1;
     return (
@@ -151,18 +161,29 @@ class DynamicReport extends PageBase {
           <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>Users Permission</legend>
             <Row style={{ margin: '0', padding: '0' }}>
-              <TextContainer
-                label="integer"
-                {...this.useInput({ fieldName: "int" + intForm })} />
-                </Row>
-            <button className="btn btn-primary" onClick={this.usersPermissionAddFormClick}>Add integer form</button>
+
+              {/* <Multiselect
+                options={this.state.options} // Options to display in the dropdown
+                selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
+                onSelect={this.onSelect} // Function will trigger on select event
+                onRemove={this.onRemove} // Function will trigger on remove event
+                displayValue="name" // Property name to display in the dropdown options
+              /> */}
+              <MultiSelectContainer
+                      label="Select User"
+                      url={`${AppConst.BaseUrl}${Services.Security}/User/GetAll`}
+                      mapper={{ valueMember: 'UserId', textMember: 'Name' }}                     
+                      {...this.useInput({ fieldName: "userId", validate: '["required"]' })}
+                    />
+            </Row>
+            {/* <button className="btn btn-primary" onClick={this.usersPermissionAddFormClick}>Add integer form</button> */}
 
           </fieldset>
-         
+
           <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>Report Parameter</legend>
             {/* <ReportParameter /> */}
-            <CardList ref={this.viewTabList} config={this.testItemLoading}/>
+            <CardList ref={this.viewTabList} config={this.testItemLoading} />
           </fieldset>
           <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>Report View</legend>
