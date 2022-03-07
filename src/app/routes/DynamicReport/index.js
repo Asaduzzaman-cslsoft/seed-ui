@@ -28,7 +28,6 @@ class DynamicReport extends PageBase {
       ...this.state,
       source: [],
       QueryName: "",
-     // options: [{name: 'Option 1️⃣', id: 1},{name: 'Option 2️⃣', id: 2}],
       gridConfig: {
         columns:
           [
@@ -37,9 +36,12 @@ class DynamicReport extends PageBase {
         lazy: false,
         showRefresh: false,
         limit: 20
-      }
+      },
+      //All condition goes here
+      isReportParameterForm:false
+
     }
-    
+
     this.childGrid = React.createRef();
     this.inlineFinder = React.createRef();
 
@@ -47,6 +49,12 @@ class DynamicReport extends PageBase {
       serviceName: Services.Seed
     });
     this.viewTabList = React.createRef();
+    this.reportParameterConfig={
+      showEdit: true,
+      showAdd: true,
+      showDelete:true,
+      showRefresh:true
+    }
     this.testItemLoading = {
       title: "Items",
       url: `${AppConst.BaseUrl}/seed/Person/GetAll`,
@@ -76,6 +84,9 @@ class DynamicReport extends PageBase {
         // } else {
         //   ShowMessageBox({ text: "Select a Discount Policy first." });
         // }
+      },
+      onAddClick: () => {
+        this.setState({ isReportParameterForm: true });
       },
 
       onRender: (item) => {
@@ -121,6 +132,7 @@ class DynamicReport extends PageBase {
   // }
   render() {
     let intForm = 1;
+    let isReportParameterForm = this.state.isReportParameterForm;
     return (
       <div className="page-wrapper" style={{ overflow: "auto" }}>
         <fieldset className="border p-2">
@@ -161,20 +173,12 @@ class DynamicReport extends PageBase {
           <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>Users Permission</legend>
             <Row style={{ margin: '0', padding: '0' }}>
-
-              {/* <Multiselect
-                options={this.state.options} // Options to display in the dropdown
-                selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
-                onSelect={this.onSelect} // Function will trigger on select event
-                onRemove={this.onRemove} // Function will trigger on remove event
-                displayValue="name" // Property name to display in the dropdown options
-              /> */}
               <MultiSelectContainer
-                      label="Select User"
-                      url={`${AppConst.BaseUrl}${Services.Security}/User/GetAll`}
-                      mapper={{ valueMember: 'UserId', textMember: 'Name' }}                     
-                      {...this.useInput({ fieldName: "userId", validate: '["required"]' })}
-                    />
+                label="Select User"
+                url={`${AppConst.BaseUrl}${Services.Security}/User/GetAll`}
+                mapper={{ valueMember: 'UserId', textMember: 'Name' }}
+                {...this.useInput({ fieldName: "userId", validate: '["required"]' })}
+              />
             </Row>
             {/* <button className="btn btn-primary" onClick={this.usersPermissionAddFormClick}>Add integer form</button> */}
 
@@ -182,8 +186,13 @@ class DynamicReport extends PageBase {
 
           <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>Report Parameter</legend>
-            {/* <ReportParameter /> */}
-            <CardList ref={this.viewTabList} config={this.testItemLoading} />
+            <div>
+              {isReportParameterForm ? (
+                <ReportParameter config={this.reportParameterConfig}/>
+              ) : (
+                <CardList ref={this.viewTabList} config={this.testItemLoading} />
+              )}
+            </div>
           </fieldset>
           <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>Report View</legend>
