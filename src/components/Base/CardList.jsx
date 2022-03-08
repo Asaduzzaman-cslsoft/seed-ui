@@ -99,8 +99,7 @@ export class CardList extends Component {
         }
     }
 
-    loadData(pagingConfig, url, currPage) {
-        console.log(url)
+    loadData(pagingConfig, url, currPage) {       
         this.setState({ loading: true });
         let that = this;
         let parameters = [];

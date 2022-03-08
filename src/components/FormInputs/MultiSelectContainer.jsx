@@ -1,10 +1,9 @@
 import React from "react";
 import { FormGroup, Label } from "reactstrap";
 import PropTypes from "prop-types";
-import Select2 from "react-select2-wrapper";
 import "react-select2-wrapper/css/select2.css";
 import { $http } from "../../util/HttpRequest";
-import { GetErrorMessage, IsObject } from "../../util/Util"
+import { GetErrorMessage } from "../../util/Util"
 import Multiselect from 'multiselect-react-dropdown';
 
 class MultiSelectContainer extends React.Component {
@@ -19,8 +18,7 @@ class MultiSelectContainer extends React.Component {
   }
   componentDidMount() {
     if (!this.props.source && this.props.url) {
-      $http.get(this.props.url).then(res => {
-        console.log(res.Result)
+      $http.get(this.props.url).then(res => {       
         this.setState({ source: res.Result || [] });
       });
     }
