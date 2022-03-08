@@ -85,14 +85,16 @@ export class CardList extends Component {
 
     componentDidMount() {
         const { source } = this.props;
-        const { skipInitialLoad, url, lazy, limit } = this.props.config;
-        const { sortField, sortOrder, currPage } = this.state;
+        const { skipInitialLoad, url, lazy, limit } = this.props.config;      
+        const { sortField, sortOrder, currPage } = this.state;     
         if (!skipInitialLoad && !source && url) {
             const pagingConfig = { Offset: 0, Limit: limit || 10, ServerPagination: lazy || false, SortName: sortField, SortOrder: sortOrder };
             this.loadData(pagingConfig, url, currPage);
         }
     }
-
+    setSource = (data) => {       
+        this.setState({ source: data });
+    }
     componentDidUpdate(prevProps) {
         if (this.props.source !== prevProps.source) {
             this.setState({ source: this.props.source });

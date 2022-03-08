@@ -31,9 +31,9 @@ import ReportView from "../../../components/Report/ReportView";
 import CardList from "components/Base/CardList";
 // import SelectContainer from "components/FormInputs/SelectContainer";
 import MultiSelectContainer from "components/FormInputs/MultiSelectContainer";
-import { Button } from 'primereact/button';
+import { Button } from "primereact/button";
 import { $http } from "../../../util/HttpRequest";
-import {  ModelState } from "../../../util/Util";
+import { ModelState } from "../../../util/Util";
 
 class DynamicReport extends PageBase {
   constructor(props) {
@@ -41,6 +41,7 @@ class DynamicReport extends PageBase {
     this.state = {
       ...this.state,
       source: [],
+      parametersArray: ["dd", "ddxd"],
       QueryName: "",
       //Model:{},
       gridConfig: {
@@ -52,24 +53,24 @@ class DynamicReport extends PageBase {
       //All condition goes here
       reportMenuId: 1,
       isReportParameterForm: false,
-      
     };
     //event listner
     this.SaveMasterData = this.SaveMasterData.bind(this);
     // this.UpdateMasterData = this.UpdateMasterData.bind(this);
     this.childGrid = React.createRef();
     this.inlineFinder = React.createRef();
+    this.parametersArray = this.state.parametersArray;
+    this.reportMenuId = this.state.reportMenuId;
 
     this.setConfig({
       serviceName: Services.Seed,
     });
-    this.viewTabList = React.createRef();
-
-    this.testItemLoading = {
-      title: "Items",
-      url: `${AppConst.BaseUrl}/seed/Person/GetAll`,
-      keyField: "Id",
-      skipInitialLoad: false,
+    // this.viewTabList = React.createRef();
+    this.parametersCard = React.createRef();
+    this.parameterLoading = {
+      title: "Parameters",    
+      keyField: "ParameterID",
+      skipInitialLoad: true,
       showEdit: true,
       showAdd: true,
       //enableEdit: true,
@@ -98,57 +99,73 @@ class DynamicReport extends PageBase {
       onAddClick: () => {
         this.setState({ isReportParameterForm: true });
       },
-
-      onRender: (item) => {
+      onRender: (item) => {        
         return (
           <>
             <Row>
-              <Col md={3} style={{ textAlign: "center" }}>
+              <Col md={2} style={{ textAlign: "center" }}>
                 <ListItemText primary={item.Name} />
               </Col>
-              <Col md={3}>
-                <ListItemText secondary={item.DOB} />
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.EntryType} />
               </Col>
-              <Col md={3}>
-                <ListItemText secondary={item.FatherName} />
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.LookupQuery} />
               </Col>
-              <Col md={3}>
-                <ListItemText secondary={item.MotherName} />
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.Mandatory} />
+              </Col>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.ValueType} />
+              </Col>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.MultiSelect} />
               </Col>
             </Row>
           </>
         );
       },
     };
-  }
+    this.parametersAdd={
+      onParameterAddClick:()=>{
+        alert("clicked me please")
+      }
+    }
+  }  
   SaveMasterData() {
     let model = { ...this.state.Model };
-    if(model.ReportID){
-      model.ModelState=ModelState.Modified;
-      const url=`${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Update`
-      $http.put(url,model)    
-    }else{
-      model.ModelState=ModelState.Added;
-      const url=`${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Create`
-      $http.post(url,model)
-    }   
-  };
-  // UpdateMasterData() {
-  //   alert("update clicked")
-  // };
-  componentDidMount() {
+    if (model.ReportID) {
+      model.ModelState = ModelState.Modified;
+      const url = `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Update`;
+      $http.put(url, model);
+    } else {
+      model.ModelState = ModelState.Added;
+      const url = `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Create`;
+      $http.post(url, model);
+    }
+  }
+
+  componentWillMount() {  
     if (this.state.reportMenuId !== "") {
       $http
         .get(
           `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Get/${this.state.reportMenuId}`
         )
-        .then((res) => this.setState({ Model: res.Result, loader: false }))
+        .then((res) => {
+          // console.log(JSON.parse(res.Result.ReportSchema).Parameters)
+          this.setState({ Model: res.Result, loader: false });
+          var pSource = JSON.parse(res.Result.ReportSchema).Parameters;        
+          this.parametersCard.current.setSource(pSource);
+        })
+        .then(() => this.render())
         .catch(() => {
           this.setState({ loader: false });
         });
+    } else {
+      this.setState({ Model: {}, loader: false });
     }
   }
-  render() {    
+  render() {  
     let isReportParameterForm = this.state.isReportParameterForm;
     return (
       <div className="page-wrapper" style={{ overflow: "auto" }}>
@@ -159,7 +176,17 @@ class DynamicReport extends PageBase {
           <Row>
             <Col md={10}></Col>
             <Col md={2}>
-              <Button  onClick={this.SaveMasterData} style={{margin: "0 4px 0 0", paddingLeft: 0, width: "120px", height: "30px"}}>Add or Update</Button>
+              <Button
+                onClick={this.SaveMasterData}
+                style={{
+                  margin: "0 4px 0 0",
+                  paddingLeft: 0,
+                  width: "120px",
+                  height: "30px",
+                }}
+              >
+                Add or Update
+              </Button>
               {/* <Button  onClick={this.UpdateMasterData} style={{ margin: "0 4px 0 0", paddingLeft: 0,width: "65px", height: "30px",}}>Update</Button> */}
             </Col>
           </Row>
@@ -176,7 +203,7 @@ class DynamicReport extends PageBase {
               <TextContainer
                 label="Sequnece No"
                 {...this.useInput({ fieldName: "SeqNo" })}
-              />              
+              />
               <TextContainer
                 label="Number Of Views"
                 {...this.useInput({ fieldName: "NumberOfViews" })}
@@ -189,30 +216,29 @@ class DynamicReport extends PageBase {
                 label="User Parameter"
                 {...this.useInput({ fieldName: "UserParameter" })}
               />
-              
             </Col>
             <Col md={6}>
               <TextContainer
                 label="Report Name"
                 {...this.useInput({ fieldName: "ReportName" })}
               />
-               <TextContainer
+              <TextContainer
                 label="Parent Report ID"
                 {...this.useInput({ fieldName: "ParentReportID" })}
               />
               <TextContainer
                 label="Icon Url"
                 {...this.useInput({ fieldName: "IconUrl" })}
-              />              
+              />
               <CheckboxContainer
                 label="Is Visible"
                 {...this.useInput({ fieldName: "IsVisible" })}
               />
-               <CheckboxContainer
+              <CheckboxContainer
                 label="Is MultiTab"
                 {...this.useInput({ fieldName: "IsMultiTab" })}
               />
-               <CheckboxContainer
+              <CheckboxContainer
                 label="Is Sorting Facility"
                 {...this.useInput({ fieldName: "IsSortingFacility" })}
               />
@@ -242,11 +268,11 @@ class DynamicReport extends PageBase {
             </legend>
             <div>
               {isReportParameterForm ? (
-                <ReportParameter />
+                <ReportParameter config={this.parametersAdd} />
               ) : (
                 <CardList
-                  ref={this.viewTabList}
-                  config={this.testItemLoading}
+                  ref={this.parametersCard}
+                  config={this.parameterLoading}
                 />
               )}
             </div>

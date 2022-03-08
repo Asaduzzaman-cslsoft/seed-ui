@@ -3,37 +3,18 @@ import { Col, Row } from "reactstrap";
 import TextContainer from "../FormInputs/TextContainer";
 import CheckboxContainer from "../FormInputs/CheckboxContainer";
 import FieldFormatting from "./FieldFormatting"
+import PageBase from "../Base/PageBase";
 
-class ReportField extends Component {
+class ReportField extends PageBase {
   constructor(props) {
     super(props);
     this.state = {
       Model: {},
       errors: {},
     };
-    this.useInput = this.useInput.bind(this);
+   
   }
-  useInput = (props) => {    
-    props.modelName = props.modelName || "Model";
-    props.validate = props.validate || "[]";
-    const value = this.state[props.modelName][props.fieldName];
-    return {
-      model: props.fieldName,
-      modelName: props.modelName,
-      value: value,
-      onChange: props.isDateTime
-        ? (e) =>
-            this.handleDateChange(
-              e,
-              props.fieldName,
-              props.modelName,
-              props.onChange
-            )
-        : (e) => this.handleChange(e, props.modelName, props.onChange),
-      hasError: this.hasError,
-      validate: props.validate,
-    };
-  };
+ 
   render() {
     return (
       <div>
