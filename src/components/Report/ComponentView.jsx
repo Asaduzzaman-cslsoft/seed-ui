@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import {
     Col,
     Row
@@ -54,10 +54,10 @@ class ComponentView extends PageBase {
                    
                 </Col>
             </Row >
-            <fieldset className="border p-2">
+            {/* <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>Card Row</legend>
             <CardRow />
-          </fieldset>
+          </fieldset> */}
         </div >
         )
     }

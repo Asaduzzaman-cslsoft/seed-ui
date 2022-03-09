@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import { Col, Row } from "reactstrap";
 import TextContainer from "../FormInputs/TextContainer";
 import CheckboxContainer from "../FormInputs/CheckboxContainer";
@@ -64,10 +64,10 @@ class ReportField extends PageBase {
             />
           </Col>
         </Row>
-        <fieldset className="border p-2">
+        {/* <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>Field Formatting</legend>
             <FieldFormatting />
-          </fieldset>
+          </fieldset> */}
       </div>
     );
   }

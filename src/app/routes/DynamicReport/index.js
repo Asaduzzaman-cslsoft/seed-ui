@@ -9,12 +9,16 @@ import {
 } from "reactstrap";
 import PageBase from "components/Base/PageBase";
 import withPageBase from "components/Base/withPageBase";
-//import Grid from "components/Base/Grid";
-//import InlineFinder from "components/Base/InlineFinder";
 import TextContainer from "components/FormInputs/TextContainer";
 import CheckboxContainer from "components/FormInputs/CheckboxContainer";
-//import ButtonAddonContainer from "components/FormInputs/ButtonAddonContainer";
 import ReportParameter from "components/Report/ReportParameter";
+import ViewTab from "components/Report/ViewTab";
+import SortField from "components/Report/SortField";
+import CardRow from "components/Report/CardRow";
+import ComponentView from "components/Report/ComponentView";
+import FieldFormatting from "components/Report/FieldFormatting";
+import ReportField from "components/Report/ReportField";
+import ReportView from "components/Report/ReportView";
 import { AppConst, Services, ShowMessageBox } from "../../../util/Util";
 import {
   // Avatar,
@@ -27,7 +31,6 @@ import {
   ListItemText,
 } from "@material-ui/core";
 //import XlsExport from "../../../util/xls-export";
-import ReportView from "../../../components/Report/ReportView";
 import CardList from "components/Base/CardList";
 // import SelectContainer from "components/FormInputs/SelectContainer";
 import MultiSelectContainer from "components/FormInputs/MultiSelectContainer";
@@ -53,6 +56,13 @@ class DynamicReport extends PageBase {
       //All condition goes here
       reportMenuId: 1,
       isReportParameterForm: false,
+      isReportViewForm: false,
+
+
+
+      //All array goes here
+      parameterList: [],
+      reportViewList: [],
     };
     //event listner
     this.SaveMasterData = this.SaveMasterData.bind(this);
@@ -65,10 +75,10 @@ class DynamicReport extends PageBase {
     this.setConfig({
       serviceName: Services.Seed,
     });
-    // this.viewTabList = React.createRef();
+    //Paremeters Card List
     this.parametersCard = React.createRef();
     this.parameterLoading = {
-      title: "Parameters",    
+      title: "Parameters",
       keyField: "ParameterID",
       skipInitialLoad: true,
       showEdit: true,
@@ -77,7 +87,7 @@ class DynamicReport extends PageBase {
       //enableEdit: that.state.Model.DiscountPolicyMasterId && !that.state.Model.AllProducts,
       lazy: false,
       limit: 10,
-      height: "360px",
+      height: "200px",
       onEditClick: () => {
         ShowMessageBox({ text: "Clicked worked" });
         // if (that.state.Model.DiscountPolicyMasterId) {
@@ -99,7 +109,7 @@ class DynamicReport extends PageBase {
       onAddClick: () => {
         this.setState({ isReportParameterForm: true });
       },
-      onRender: (item) => {        
+      onRender: (item) => {
         return (
           <>
             <Row>
@@ -126,12 +136,80 @@ class DynamicReport extends PageBase {
         );
       },
     };
-    this.parametersAdd={
-      onParameterAddClick:()=>{
-        alert("clicked me please")
-      }
-    }
-  }  
+    //Paremeters Card List End
+    //Paremeters Card Entry Start
+    this.parametersAddRef = React.createRef();
+    this.parametersAdd = {
+      onAddClick: () => {
+        let model = this.parametersAddRef.current.state.Model;
+        let pmList = this.state.parameterList;
+        pmList.push(model);
+        this.setState({ parameterList: pmList })
+        this.parametersCard.current.setSource(this.state.parameterList);
+        this.setState({ isReportViewForm: false });
+      },
+    };
+    //Paremeters Card Entry End
+    //Report View Card List Start
+    this.reportViewCard = React.createRef();
+    this.reportViewLoading = {
+      title: "Report View",
+      keyField: "ViewID",
+      skipInitialLoad: true,
+      showEdit: true,
+      showAdd: true,
+      lazy: false,
+      limit: 10,
+      height: "200px",
+      onEditClick: () => {
+        ShowMessageBox({ text: "Clicked worked" });
+      },
+      onAddClick: () => {
+        this.setState({ isReportViewForm: true });
+      },
+      onRender: (item) => {
+        return (
+          <>
+            <Row>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.ViewID} />
+              </Col>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.SeqNo} />
+              </Col>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.Type} />
+              </Col>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.Title} />
+              </Col>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.NumberOfTabs} />
+              </Col>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.NumberOfComponents} />
+              </Col>
+            </Row>
+          </>
+        );
+      },
+    };
+    //Report View Card List End
+    //Report View Card Add Start
+    this.reportViewAddRef = React.createRef();
+    this.reportViewAdd = {
+      onAddClick: () => {
+        alert("working working")
+        let model = this.reportViewAddRef.current.state.Model;
+        let rpList = this.state.reportViewList;
+        rpList.push(model);
+        this.setState({ reportViewList: rpList })
+        this.reportViewCard.current.setSource(this.state.reportViewList);
+        this.setState({ isReportViewForm: false });
+      },
+    };
+    //Report View Card Add End
+  }
   SaveMasterData() {
     let model = { ...this.state.Model };
     if (model.ReportID) {
@@ -145,17 +223,23 @@ class DynamicReport extends PageBase {
     }
   }
 
-  componentWillMount() {  
+  componentDidMount() {
     if (this.state.reportMenuId !== "") {
       $http
         .get(
           `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Get/${this.state.reportMenuId}`
         )
         .then((res) => {
-          // console.log(JSON.parse(res.Result.ReportSchema).Parameters)
           this.setState({ Model: res.Result, loader: false });
-          var pSource = JSON.parse(res.Result.ReportSchema).Parameters;        
+          var jData = JSON.parse(res.Result.ReportSchema);
+          var pSource = jData.Parameters;
+          this.setState({ parameterList: pSource })
           this.parametersCard.current.setSource(pSource);
+          var rvSource = jData.Views;
+          this.setState({ reportViewList: rvSource });
+          this.reportViewCard.current.setSource(rvSource);
+
+
         })
         .then(() => this.render())
         .catch(() => {
@@ -165,10 +249,12 @@ class DynamicReport extends PageBase {
       this.setState({ Model: {}, loader: false });
     }
   }
-  render() {  
+  render() {
     let isReportParameterForm = this.state.isReportParameterForm;
+    let isReportViewForm = this.state.isReportViewForm;
     return (
       <div className="page-wrapper" style={{ overflow: "auto" }}>
+        {/* Mian Report */}
         <fieldset className="border p-2">
           <legend className="w-auto" style={{ width: "inherit" }}>
             Report
@@ -244,6 +330,7 @@ class DynamicReport extends PageBase {
               />
             </Col>
           </Row>
+          {/* User Permission */}
           <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>
               Users Permission
@@ -261,27 +348,60 @@ class DynamicReport extends PageBase {
             </Row>
             {/* <button className="btn btn-primary" onClick={this.usersPermissionAddFormClick}>Add integer form</button> */}
           </fieldset>
-
+          {/* Report Parameters */}
           <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>
               Report Parameter
             </legend>
             <div>
-              {isReportParameterForm ? (
-                <ReportParameter config={this.parametersAdd} />
-              ) : (
-                <CardList
-                  ref={this.parametersCard}
-                  config={this.parameterLoading}
-                />
-              )}
+              <ReportParameter ref={this.parametersAddRef} config={this.parametersAdd} show={isReportParameterForm} />
+              <CardList ref={this.parametersCard} config={this.parameterLoading} show={isReportParameterForm} />
             </div>
           </fieldset>
+          {/* Report View */}
           <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>
               Report View
             </legend>
-            <ReportView />
+            <div>
+              <ReportView ref={this.reportViewAddRef} config={this.reportViewAdd} show={isReportViewForm} />
+              <CardList ref={this.reportViewCard} config={this.reportViewLoading} show={isReportViewForm} />
+            </div>
+            {/* View Tab */}
+            <fieldset className="border p-2">
+              <legend className="w-auto" style={{ width: "inherit" }}>
+                View Tab
+              </legend>
+              <ViewTab />
+
+            </fieldset>
+            <fieldset className="border p-2">
+          <legend className="w-auto" style={{ width: "inherit" }}>
+            Sort Feild
+          </legend>
+          <SortField />
+        </fieldset>
+        <fieldset className="border p-2">
+          <legend className="w-auto" style={{ width: "inherit" }}>
+            Component
+          </legend>
+          <ComponentView />
+          {/* Card Row */}
+          <fieldset className="border p-2">
+            <legend className="w-auto" style={{ width: "inherit" }}>Card Row</legend>
+            <CardRow />
+            {/* Report Filed */}
+            <fieldset className="border p-2">
+            <legend className="w-auto" style={{ width: "inherit" }}>Report Field</legend>
+            <ReportField />
+            {/* Filed Formate */}
+            <fieldset className="border p-2">
+            <legend className="w-auto" style={{ width: "inherit" }}>Field Formatting</legend>
+            <FieldFormatting />
+          </fieldset>
+          </fieldset>
+          </fieldset>
+        </fieldset>
           </fieldset>
         </fieldset>
       </div>

@@ -164,6 +164,7 @@ export class CardList extends Component {
         if (showEdit) buttons.push({ onClick: () => onEditClick ? onEditClick(model ? model[keyField] : {}, model) : defaults.onEditClick(), title: "Edit", icon: "pi pi-pencil", class: "p-button-rounded p-button-success", disabled: editDisabled });
         if (showDelete) buttons.push({ onClick: () => onDeleteClick ? onDeleteClick(model ? model[keyField] : {}, model) : defaults.onDeleteClick(), title: "Delete", icon: "pi pi-trash", class: "p-button-rounded p-button-danger", disabled: !model });
         if (showRefresh) buttons.push({ onClick: this.refresh, title: "Refresh", icon: "pi pi-refresh", class: "p-button-rounded p-button-help" });
+       if(!this.props.show){ 
         return (
             <LoadingOverlay
                 active={loading}
@@ -231,7 +232,10 @@ export class CardList extends Component {
                     </CardActions>
                 </Card>
             </LoadingOverlay>
-        );
+        );}
+        else{
+            return null;
+        }
     }
 }
 
