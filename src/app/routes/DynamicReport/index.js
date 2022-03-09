@@ -12,12 +12,12 @@ import withPageBase from "components/Base/withPageBase";
 import TextContainer from "components/FormInputs/TextContainer";
 import CheckboxContainer from "components/FormInputs/CheckboxContainer";
 import ReportParameter from "components/Report/ReportParameter";
-import ViewTab from "components/Report/ViewTab";
-import SortField from "components/Report/SortField";
-import CardRow from "components/Report/CardRow";
-import ComponentView from "components/Report/ComponentView";
-import FieldFormatting from "components/Report/FieldFormatting";
-import ReportField from "components/Report/ReportField";
+// import ViewTab from "components/Report/ViewTab";
+// import SortField from "components/Report/SortField";
+// import CardRow from "components/Report/CardRow";
+// import ComponentView from "components/Report/ComponentView";
+// import FieldFormatting from "components/Report/FieldFormatting";
+// import ReportField from "components/Report/ReportField";
 import ReportView from "components/Report/ReportView";
 import { AppConst, Services, ShowMessageBox } from "../../../util/Util";
 import {
@@ -57,12 +57,14 @@ class DynamicReport extends PageBase {
       reportMenuId: 1,
       isReportParameterForm: false,
       isReportViewForm: false,
+     // isViewTabForm:false,
 
 
 
       //All array goes here
       parameterList: [],
       reportViewList: [],
+      //viewTabList: [],
     };
     //event listner
     this.SaveMasterData = this.SaveMasterData.bind(this);
@@ -209,6 +211,63 @@ class DynamicReport extends PageBase {
       },
     };
     //Report View Card Add End
+    // //View Tab List Start
+    // this.viewTabList=React.createRef()
+    // this.viewTabListLoading = {
+    //   title: "View Tab",
+    //   keyField: "ViewID",
+    //   skipInitialLoad: true,
+    //   showEdit: true,
+    //   showAdd: true,
+    //   lazy: false,
+    //   limit: 10,
+    //   height: "200px",
+    //   onEditClick: () => {
+    //     ShowMessageBox({ text: "Clicked worked" });
+    //   },
+    //   onAddClick: () => {
+    //     this.setState({ isViewTabForm: true });
+    //   },
+    //   onRender: (item) => {
+    //     return (
+    //       <>
+    //         <Row>
+    //           <Col md={2} style={{ textAlign: "center" }}>
+    //             <ListItemText primary={item.ViewID} />
+    //           </Col>
+    //           <Col md={2} style={{ textAlign: "center" }}>
+    //             <ListItemText primary={item.TabID} />
+    //           </Col>
+    //           <Col md={2} style={{ textAlign: "center" }}>
+    //             <ListItemText primary={item.TabCaption} />
+    //           </Col>
+    //           <Col md={2} style={{ textAlign: "center" }}>
+    //             <ListItemText primary={item.SeqNo} />
+    //           </Col>              
+    //           <Col md={2} style={{ textAlign: "center" }}>
+    //             <ListItemText primary={item.Visible} />
+    //           </Col>
+    //         </Row>
+    //       </>
+    //     );
+    //   },
+    // };
+    // //View Tab List End
+    // // View Tab Add Start
+    // this.viewTabAddRef = React.createRef();
+    // this.viewTabAddLoading = {
+    //   onAddClick: () => {
+    //     alert("view tab working")
+    //     let model = this.viewTabAddRef.current.state.Model;
+    //     let vtList = this.state.viewTabList;
+    //     vtList.push(model);
+    //     this.setState({ viewTabList: vtList })
+    //     this.reportViewCard.current.setSource(this.state.viewTabList);
+    //     this.setState({ isViewTabForm: false });
+    //   },
+    // };
+    // View Tab Add End
+
   }
   SaveMasterData() {
     let model = { ...this.state.Model };
@@ -368,40 +427,7 @@ class DynamicReport extends PageBase {
               <CardList ref={this.reportViewCard} config={this.reportViewLoading} show={isReportViewForm} />
             </div>
             {/* View Tab */}
-            <fieldset className="border p-2">
-              <legend className="w-auto" style={{ width: "inherit" }}>
-                View Tab
-              </legend>
-              <ViewTab />
-
-            </fieldset>
-            <fieldset className="border p-2">
-          <legend className="w-auto" style={{ width: "inherit" }}>
-            Sort Feild
-          </legend>
-          <SortField />
-        </fieldset>
-        <fieldset className="border p-2">
-          <legend className="w-auto" style={{ width: "inherit" }}>
-            Component
-          </legend>
-          <ComponentView />
-          {/* Card Row */}
-          <fieldset className="border p-2">
-            <legend className="w-auto" style={{ width: "inherit" }}>Card Row</legend>
-            <CardRow />
-            {/* Report Filed */}
-            <fieldset className="border p-2">
-            <legend className="w-auto" style={{ width: "inherit" }}>Report Field</legend>
-            <ReportField />
-            {/* Filed Formate */}
-            <fieldset className="border p-2">
-            <legend className="w-auto" style={{ width: "inherit" }}>Field Formatting</legend>
-            <FieldFormatting />
-          </fieldset>
-          </fieldset>
-          </fieldset>
-        </fieldset>
+            
           </fieldset>
         </fieldset>
       </div>

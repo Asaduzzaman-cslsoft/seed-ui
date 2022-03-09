@@ -6,6 +6,7 @@ import {
 } from "reactstrap";
 import TextContainer from "../FormInputs/TextContainer";
 import CheckboxContainer from "../FormInputs/CheckboxContainer";
+import ReportField from './ReportField';
 import PageBase from "../Base/PageBase";
 
 class CardRow extends PageBase {
@@ -39,10 +40,10 @@ class CardRow extends PageBase {
                    
                 </Col>
             </Row >
-            {/* <fieldset className="border p-2">
+            <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>Report Field</legend>
             <ReportField />
-          </fieldset> */}
+          </fieldset>
         </div >
         )
     }

@@ -64,7 +64,7 @@ class ReportView extends PageBase {
             />
           </Col>
         </Row>
-        {/* <fieldset className="border p-2">
+        <fieldset className="border p-2">
           <legend className="w-auto" style={{ width: "inherit" }}>
             View Tab
           </legend>
@@ -82,7 +82,7 @@ class ReportView extends PageBase {
             Component
           </legend>
           <ComponentView />
-        </fieldset> */}
+        </fieldset>
       </div>
     );
   }else{
