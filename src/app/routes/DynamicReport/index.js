@@ -44,7 +44,7 @@ class DynamicReport extends PageBase {
     this.state = {
       ...this.state,
       source: [],
-      parametersArray: ["dd", "ddxd"],
+     // parametersArray: [],
       QueryName: "",
       //Model:{},
       gridConfig: {
@@ -53,6 +53,7 @@ class DynamicReport extends PageBase {
         showRefresh: false,
         limit: 20,
       },
+      //jsonModel:{},
       //All condition goes here
       reportMenuId: 1,
       isReportParameterForm: false,
@@ -71,7 +72,7 @@ class DynamicReport extends PageBase {
     // this.UpdateMasterData = this.UpdateMasterData.bind(this);
     this.childGrid = React.createRef();
     this.inlineFinder = React.createRef();
-    this.parametersArray = this.state.parametersArray;
+    //this.parametersArray = this.state.parametersArray;
     this.reportMenuId = this.state.reportMenuId;
 
     this.setConfig({
@@ -91,8 +92,13 @@ class DynamicReport extends PageBase {
       limit: 10,
       height: "200px",
       onEditClick: () => {
-        ShowMessageBox({ text: "Clicked worked" });
-        // if (that.state.Model.DiscountPolicyMasterId) {
+        let that=this;
+        let allItems = this.parametersCard.current.state.source;
+        let selectedId = this.parametersCard.current.state.selectedId;
+        console.log(allItems)
+        console.log(selectedId)
+        ShowMessageBox({ text: that.state.parameterList.ParameterID });
+        // if (that.state.Model.ParameterID) {
         //   if (that.state.Model.AllProducts) {
         //     ShowMessageBox({
         //       text:
@@ -148,7 +154,7 @@ class DynamicReport extends PageBase {
         pmList.push(model);
         this.setState({ parameterList: pmList })
         this.parametersCard.current.setSource(this.state.parameterList);
-        this.setState({ isReportViewForm: false });
+        this.setState({ isReportParameterForm: false });
       },
     };
     //Paremeters Card Entry End
@@ -164,7 +170,7 @@ class DynamicReport extends PageBase {
       limit: 10,
       height: "200px",
       onEditClick: () => {
-        ShowMessageBox({ text: "Clicked worked" });
+        ShowMessageBox({ text: "Report view list edit clcik" });
       },
       onAddClick: () => {
         this.setState({ isReportViewForm: true });
@@ -209,65 +215,7 @@ class DynamicReport extends PageBase {
         this.reportViewCard.current.setSource(this.state.reportViewList);
         this.setState({ isReportViewForm: false });
       },
-    };
-    //Report View Card Add End
-    // //View Tab List Start
-    // this.viewTabList=React.createRef()
-    // this.viewTabListLoading = {
-    //   title: "View Tab",
-    //   keyField: "ViewID",
-    //   skipInitialLoad: true,
-    //   showEdit: true,
-    //   showAdd: true,
-    //   lazy: false,
-    //   limit: 10,
-    //   height: "200px",
-    //   onEditClick: () => {
-    //     ShowMessageBox({ text: "Clicked worked" });
-    //   },
-    //   onAddClick: () => {
-    //     this.setState({ isViewTabForm: true });
-    //   },
-    //   onRender: (item) => {
-    //     return (
-    //       <>
-    //         <Row>
-    //           <Col md={2} style={{ textAlign: "center" }}>
-    //             <ListItemText primary={item.ViewID} />
-    //           </Col>
-    //           <Col md={2} style={{ textAlign: "center" }}>
-    //             <ListItemText primary={item.TabID} />
-    //           </Col>
-    //           <Col md={2} style={{ textAlign: "center" }}>
-    //             <ListItemText primary={item.TabCaption} />
-    //           </Col>
-    //           <Col md={2} style={{ textAlign: "center" }}>
-    //             <ListItemText primary={item.SeqNo} />
-    //           </Col>              
-    //           <Col md={2} style={{ textAlign: "center" }}>
-    //             <ListItemText primary={item.Visible} />
-    //           </Col>
-    //         </Row>
-    //       </>
-    //     );
-    //   },
-    // };
-    // //View Tab List End
-    // // View Tab Add Start
-    // this.viewTabAddRef = React.createRef();
-    // this.viewTabAddLoading = {
-    //   onAddClick: () => {
-    //     alert("view tab working")
-    //     let model = this.viewTabAddRef.current.state.Model;
-    //     let vtList = this.state.viewTabList;
-    //     vtList.push(model);
-    //     this.setState({ viewTabList: vtList })
-    //     this.reportViewCard.current.setSource(this.state.viewTabList);
-    //     this.setState({ isViewTabForm: false });
-    //   },
-    // };
-    // View Tab Add End
-
+    };    
   }
   SaveMasterData() {
     let model = { ...this.state.Model };
@@ -291,6 +239,7 @@ class DynamicReport extends PageBase {
         .then((res) => {
           this.setState({ Model: res.Result, loader: false });
           var jData = JSON.parse(res.Result.ReportSchema);
+          //this.setState({jsonModel:jData});
           var pSource = jData.Parameters;
           this.setState({ parameterList: pSource })
           this.parametersCard.current.setSource(pSource);

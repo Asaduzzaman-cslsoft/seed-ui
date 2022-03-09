@@ -80,8 +80,7 @@ class ReportView extends PageBase {
 
   render() {
     const onAddClick = this.props.config.onAddClick;
-    let isviewTabForm = this.state.isviewTabForm;
-    console.log(isviewTabForm)
+    let isviewTabForm = this.state.isviewTabForm;    
     if (this.props.show) {
       return (
         <div>

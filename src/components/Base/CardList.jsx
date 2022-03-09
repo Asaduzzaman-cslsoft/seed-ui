@@ -64,7 +64,7 @@ export class CardList extends Component {
         this.setState({ selectedId: null });
     }
 
-    getSelection = () => {
+    getSelection = () => {        
         return this.state.source.find(m => m[this.props.config.keyField] === this.state.selectedId);
     }
 
@@ -144,7 +144,7 @@ export class CardList extends Component {
 
     onSelect = (data, selectedId) => {
         let onSelect = this.props.config.onSelect;
-        if (onSelect && data) onSelect(data);
+        if (onSelect && data) onSelect(data);        
         this.setState({ selectedId: selectedId });
     }
 
@@ -156,7 +156,7 @@ export class CardList extends Component {
         const noOfPages = Math.ceil(totalRecords / limit);
         let renderSource = source;
         if (!lazy) renderSource = renderSource.slice((currPage - 1) * limit, currPage * limit);
-        const model = this.getSelection();
+        const model = this.getSelection();       
         let editDisabled = !model;
         if (enableEdit === true) editDisabled = false;
         let buttons = [];
