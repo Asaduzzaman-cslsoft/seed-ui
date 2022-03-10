@@ -177,8 +177,21 @@ class DynamicReport extends PageBase {
       lazy: false,
       limit: 10,
       height: "200px",
-      onEditClick: () => {
-        ShowMessageBox({ text: "Report view list edit clcik" });
+      onEditClick: () => {        
+        let that = this;
+        let allItems = this.reportViewCard.current.state.source;
+        let selectedId = this.reportViewCard.current.state.selectedId;
+        var result = allItems.filter(obj => {
+          return obj.ViewID === selectedId;
+        })       
+        if (result[0]) {
+          this.setState({ isReportViewForm: true });
+          that.reportViewAddRef.current.props.config.editDisabled=false;
+          that.reportViewAddRef.current.props.config.addDisabled=true;                 
+          that.reportViewAddRef.current.Edit(result[0])
+        } else {
+          ShowMessageBox({ text: "Select a View first." });
+        }
       },
       onAddClick: () => {
         this.setState({ isReportViewForm: true });
@@ -214,13 +227,26 @@ class DynamicReport extends PageBase {
     //Report View Card Add Start
     this.reportViewAddRef = React.createRef();
     this.reportViewAdd = {
-      onAddClick: () => {
-        alert("working working")
+      editDisabled:true,
+      addDisabled:false,  
+      onAddClick: () => {        
         let model = this.reportViewAddRef.current.state.Model;
         let rpList = this.state.reportViewList;
         rpList.push(model);
         this.setState({ reportViewList: rpList })
         this.reportViewCard.current.setSource(this.state.reportViewList);
+        this.setState({ isReportViewForm: false });
+      },
+      onUpdateClick:()=>{
+        let model = this.reportViewAddRef.current.state.Model;
+        let rpList = this.state.reportViewList;       
+        var foundIndex = rpList.findIndex(x => x.ViewID === model.ViewID);
+        rpList[foundIndex] = model;       
+        this.setState({ reportViewList: rpList })
+        this.reportViewCard.current.setSource(this.state.reportViewList);
+        this.setState({ isReportViewForm: false });
+      },
+      onCancelClick:()=>{       
         this.setState({ isReportViewForm: false });
       },
     };
