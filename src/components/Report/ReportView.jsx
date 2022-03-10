@@ -22,7 +22,7 @@ class ReportView extends PageBase {
       //Reserve data
       viewTabList: [],
       sortFieldList: [],
-      componentList: [],
+      componentViewList: [],
 
     };
     //View Tab Add
@@ -191,16 +191,110 @@ class ReportView extends PageBase {
       },
     };
     //Sort Filed List End
+    //Component View Add
+    this.componentViewAdd = React.createRef();
+    this.componentViewAddLoading = {
+      editDisabled: true,
+      addDisabled: false,
+      onAddClick: () => {
+        let model = this.componentViewAdd.current.state.Model;
+        let vtList = this.state.componentViewList;
+        vtList.push(model);
+        this.setState({ componentViewList: vtList })
+        this.componentViewListRef.current.setSource(vtList);
+        this.setState({ isComponentForm: false });
+      },
+
+
+      onUpdateClick: () => {
+        let model = this.componentViewAdd.current.state.Model;
+        let pmList = this.state.componentViewList;
+        var foundIndex = pmList.findIndex(x => x.ComponentID === model.ComponentID);
+        pmList[foundIndex] = model;
+        this.setState({ componentViewList: pmList })
+        this.componentViewListRef.current.setSource(this.state.componentViewList);
+        this.setState({ isComponentForm: false });
+      },
+      onCancelClick: () => {
+        this.setState({ isComponentForm: false });
+      },
+    }
+    //Component View Add End
+    //Component View List
+    this.componentViewListRef = React.createRef();
+    this.componentViewListLoading = {
+      title: "Components",
+      keyField: "ComponentID",
+      skipInitialLoad: true,
+      showEdit: true,
+      showAdd: true,
+      lazy: false,
+      limit: 10,
+      height: "200px",
+      onEditClick: () => {
+        //ShowMessageBox({ text: "Clicked worked" });
+        let that = this;
+        let allItems = this.componentViewListRef.current.state.source;
+        let selectedId = this.componentViewListRef.current.state.selectedId;
+        var result = allItems.filter(obj => {
+          return obj.ComponentID === selectedId;
+        })
+        if (result[0]) {
+          this.setState({ isComponentForm: true });
+          setTimeout(() => {
+            that.componentViewAdd.current.props.config.editDisabled = false;
+            that.componentViewAdd.current.props.config.addDisabled = true;
+            that.componentViewAdd.current.Edit(result[0])
+          }, 100);
+      
+
+
+        } else {
+          ShowMessageBox({ text: "Select a Sort Filed first." });
+        }
+      },
+      onAddClick: () => {
+        this.setState({ isComponentForm: true });
+      },
+      onRender: (item) => {
+        return (
+          <>
+            <Row>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.ComponentID} />
+              </Col>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.ParentTabID} />
+              </Col>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.SeqNo} />
+              </Col> 
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.Query} />
+              </Col> 
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.CardAction} />
+              </Col> 
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.CardActionReportID} />
+              </Col>              
+            </Row>
+          </>
+        );
+      },
+    };
+    //Component View List End
   }
   Edit(model) {
     this.setState({
       Model: model,
       viewTabList: model.Tabs,
       sortFieldList: model.SortFields,
-      componentList: model.Components
+      componentViewList: model.Components
     });
     this.viewTabListRef.current.setSource(model.Tabs)
     this.sortFiledListRef.current.setSource(model.SortFields)
+    this.componentViewListRef.current.setSource(model.Components)
   }
 
   render() {
@@ -211,6 +305,7 @@ class ReportView extends PageBase {
     const editDisabled = this.props.config.editDisabled;
     let isviewTabForm = this.state.isviewTabForm;
     let isSortFieldForm = this.state.isSortFieldForm;
+    let isComponentForm = this.state.isComponentForm;
     if (this.props.show) {
       return (
         <div>
@@ -274,14 +369,18 @@ class ReportView extends PageBase {
             <div>
             <CardList ref={this.sortFiledListRef} config={this.sortFieldListLoading} show={isSortFieldForm} />
             <SortField ref={this.sortFieldAdd} config={this.sortFiledAddLoading} show={isSortFieldForm} />
-
             </div>            
           </fieldset>
           <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>
               Component
             </legend>
-            <ComponentView />
+            <div>
+            <CardList ref={this.componentViewListRef} config={this.componentViewListLoading} show={isComponentForm} />
+            <ComponentView  ref={this.componentViewAdd} config={this.componentViewAddLoading} show={isComponentForm} />
+
+            </div> 
+            
           </fieldset>
         </div>
       );
