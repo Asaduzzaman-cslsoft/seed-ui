@@ -186,9 +186,12 @@ class DynamicReport extends PageBase {
         })       
         if (result[0]) {
           this.setState({ isReportViewForm: true });
-          that.reportViewAddRef.current.props.config.editDisabled=false;
+          setTimeout(() => {
+            that.reportViewAddRef.current.props.config.editDisabled=false;
           that.reportViewAddRef.current.props.config.addDisabled=true;                 
           that.reportViewAddRef.current.Edit(result[0])
+          }, 100);
+          
         } else {
           ShowMessageBox({ text: "Select a View first." });
         }
@@ -279,9 +282,7 @@ class DynamicReport extends PageBase {
           this.parametersCard.current.setSource(pSource);
           var rvSource = jData.Views;
           this.setState({ reportViewList: rvSource });
-          this.reportViewCard.current.setSource(rvSource);
-
-
+          this.reportViewCard.current.setSource(rvSource);         
         })
         .then(() => this.render())
         .catch(() => {

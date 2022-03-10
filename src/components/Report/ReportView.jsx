@@ -17,29 +17,45 @@ class ReportView extends PageBase {
       Model: {},
       errors: {},
       isviewTabForm: false,
+      isSortFieldForm: false,
+      isComponentForm: false,
+      //Reserve data
       viewTabList: [],
+      sortFieldList: [],
+      componentList: [],
+
     };
-
-
-
-
-
     //View Tab Add
     this.viewTabAdd = React.createRef();
     this.viewTabAddLoading = {
+      editDisabled: true,
+      addDisabled: false,
       onAddClick: () => {
-        alert("view tab add working")
         let model = this.viewTabAdd.current.state.Model;
         let vtList = this.state.viewTabList;
         vtList.push(model);
         this.setState({ viewTabList: vtList })
-        this.reportViewCard.current.setSource(vtList);
+        this.viewTabListRef.current.setSource(vtList);
+        this.setState({ isviewTabForm: false });
+      },
+
+
+      onUpdateClick: () => {
+        let model = this.viewTabAdd.current.state.Model;
+        let pmList = this.state.viewTabList;
+        var foundIndex = pmList.findIndex(x => x.ViewID === model.ViewID);
+        pmList[foundIndex] = model;
+        this.setState({ viewTabList: pmList })
+        this.viewTabListRef.current.setSource(this.state.viewTabList);
+        this.setState({ isviewTabForm: false });
+      },
+      onCancelClick: () => {
         this.setState({ isviewTabForm: false });
       },
     }
     //View Tab Add End
     //View Tab List
-    this.viewTabList = React.createRef();
+    this.viewTabListRef = React.createRef();
     this.viewTabListLoading = {
       title: "View Tab",
       keyField: "ViewID",
@@ -50,7 +66,21 @@ class ReportView extends PageBase {
       limit: 10,
       height: "200px",
       onEditClick: () => {
-        ShowMessageBox({ text: "Clicked worked" });
+        //ShowMessageBox({ text: "Clicked worked" });
+        let that = this;
+        let allItems = this.viewTabListRef.current.state.source;
+        let selectedId = this.viewTabListRef.current.state.selectedId;
+        var result = allItems.filter(obj => {
+          return obj.ViewID === selectedId;
+        })
+        if (result[0]) {
+          this.setState({ isviewTabForm: true });
+          that.viewTabAdd.current.props.config.editDisabled = false;
+          that.viewTabAdd.current.props.config.addDisabled = true;
+          that.viewTabAdd.current.Edit(result[0])
+        } else {
+          ShowMessageBox({ text: "Select a View Tab first." });
+        }
       },
       onAddClick: () => {
         this.setState({ isviewTabForm: true });
@@ -80,13 +110,99 @@ class ReportView extends PageBase {
       },
     };
     //View Tab List End
+    //Sort Field Add
+    this.sortFieldAdd = React.createRef();
+    this.sortFiledAddLoading = {
+      editDisabled: true,
+      addDisabled: false,
+      onAddClick: () => {
+        let model = this.sortFieldAdd.current.state.Model;
+        let vtList = this.state.sortFieldList;
+        vtList.push(model);
+        this.setState({ sortFieldList: vtList })
+        this.sortFiledListRef.current.setSource(vtList);
+        this.setState({ isSortFieldForm: false });
+      },
 
+
+      onUpdateClick: () => {
+        let model = this.sortFieldAdd.current.state.Model;
+        let pmList = this.state.sortFieldList;
+        var foundIndex = pmList.findIndex(x => x.FieldID === model.FieldID);
+        pmList[foundIndex] = model;
+        this.setState({ sortFieldList: pmList })
+        this.sortFiledListRef.current.setSource(this.state.sortFieldList);
+        this.setState({ isSortFieldForm: false });
+      },
+      onCancelClick: () => {
+        this.setState({ isSortFieldForm: false });
+      },
+    }
+    //Sort Field Add End
+    //Sort Field List
+    this.sortFiledListRef = React.createRef();
+    this.sortFieldListLoading = {
+      title: "Sort Field",
+      keyField: "FieldID",
+      skipInitialLoad: true,
+      showEdit: true,
+      showAdd: true,
+      lazy: false,
+      limit: 10,
+      height: "200px",
+      onEditClick: () => {
+        //ShowMessageBox({ text: "Clicked worked" });
+        let that = this;
+        let allItems = this.sortFiledListRef.current.state.source;
+        let selectedId = this.sortFiledListRef.current.state.selectedId;
+        var result = allItems.filter(obj => {
+          return obj.FieldID === selectedId;
+        })
+        if (result[0]) {
+          this.setState({ isSortFieldForm: true });
+          that.sortFieldAdd.current.props.config.editDisabled = false;
+          that.sortFieldAdd.current.props.config.addDisabled = true;
+          that.sortFieldAdd.current.Edit(result[0])
+
+
+        } else {
+          ShowMessageBox({ text: "Select a Sort Filed first." });
+        }
+      },
+      onAddClick: () => {
+        this.setState({ isSortFieldForm: true });
+      },
+      onRender: (item) => {
+        return (
+          <>
+            <Row>
+              <Col md={4} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.FieldID} />
+              </Col>
+              <Col md={4} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.ComponentID} />
+              </Col>
+              <Col md={4} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.DefaultSorting} />
+              </Col>              
+            </Row>
+          </>
+        );
+      },
+    };
+    //Sort Filed List End
   }
   Edit(model) {
     this.setState({
-      Model: model
+      Model: model,
+      viewTabList: model.Tabs,
+      sortFieldList: model.SortFields,
+      componentList: model.Components
     });
+    this.viewTabListRef.current.setSource(model.Tabs)
+    this.sortFiledListRef.current.setSource(model.SortFields)
   }
+
   render() {
     const onAddClick = this.props.config.onAddClick;
     const onUpdateClick = this.props.config.onUpdateClick;
@@ -94,6 +210,7 @@ class ReportView extends PageBase {
     const addDisabled = this.props.config.addDisabled;
     const editDisabled = this.props.config.editDisabled;
     let isviewTabForm = this.state.isviewTabForm;
+    let isSortFieldForm = this.state.isSortFieldForm;
     if (this.props.show) {
       return (
         <div>
@@ -145,15 +262,20 @@ class ReportView extends PageBase {
               View Tab
             </legend>
             <div>
+              <CardList ref={this.viewTabListRef} config={this.viewTabListLoading} show={isviewTabForm} />
               <ViewTab ref={this.viewTabAdd} config={this.viewTabAddLoading} show={isviewTabForm} />
-              <CardList ref={this.viewTabList} config={this.viewTabListLoading} show={isviewTabForm} />
+
             </div>
           </fieldset>
           <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>
               Sort Feild
             </legend>
-            <SortField />
+            <div>
+            <CardList ref={this.sortFiledListRef} config={this.sortFieldListLoading} show={isSortFieldForm} />
+            <SortField ref={this.sortFieldAdd} config={this.sortFiledAddLoading} show={isSortFieldForm} />
+
+            </div>            
           </fieldset>
           <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>
