@@ -17,17 +17,26 @@ class ReportParameter extends PageBase {
             errors: {}
         };    
     } 
-    
+    Edit(model) { 
+        this.setState({
+            Model: model
+          });          
+      }
     render() {
       const  onAddClick = this.props.config.onAddClick;
+      const  onUpdateClick = this.props.config.onUpdateClick;
+      const  onCancelClick = this.props.config.onCancelClick;
+      const  addDisabled = this.props.config.addDisabled;
+      const  editDisabled = this.props.config.editDisabled;
         if(this.props.show){         
         return (
             <div>
                 <Row>
-                    <Col md={10}></Col>
-                    <Col md={2}>
-                    <Button  onClick={onAddClick} style={{ margin: '0 4px 0 0', paddingLeft:0, width: '60px', height: "30px" }}>Add</Button>
-                    <Button  style={{ margin: '0 4px 0 0', paddingLeft:0, width: '65px', height: "30px" }}>Update</Button>
+                    <Col md={9}></Col>
+                    <Col md={3}>
+                    <Button disabled={addDisabled}  onClick={onAddClick}  style={{ margin: '0 4px 0 0', paddingLeft:0, width: '60px', height: "30px" }}>Add</Button>
+                    <Button disabled={editDisabled} onClick={onUpdateClick}  style={{ margin: '0 4px 0 0', paddingLeft:0, width: '65px', height: "30px" }}>Update</Button>
+                    <Button  onClick={onCancelClick}  style={{ margin: '0 4px 0 0', paddingLeft:0, width: '65px', height: "30px" }}>Cancel</Button>
                     </Col>
                     
                 </Row>

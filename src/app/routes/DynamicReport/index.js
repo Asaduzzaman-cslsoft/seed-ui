@@ -44,7 +44,7 @@ class DynamicReport extends PageBase {
     this.state = {
       ...this.state,
       source: [],
-     // parametersArray: [],
+      // parametersArray: [],
       QueryName: "",
       //Model:{},
       gridConfig: {
@@ -58,7 +58,7 @@ class DynamicReport extends PageBase {
       reportMenuId: 1,
       isReportParameterForm: false,
       isReportViewForm: false,
-     // isViewTabForm:false,
+      // isViewTabForm:false,
 
 
 
@@ -92,31 +92,25 @@ class DynamicReport extends PageBase {
       limit: 10,
       height: "200px",
       onEditClick: () => {
-        let that=this;
+        let that = this;
         let allItems = this.parametersCard.current.state.source;
         let selectedId = this.parametersCard.current.state.selectedId;
-        console.log(allItems)
-        console.log(selectedId)
-        ShowMessageBox({ text: that.state.parameterList.ParameterID });
-        // if (that.state.Model.ParameterID) {
-        //   if (that.state.Model.AllProducts) {
-        //     ShowMessageBox({
-        //       text:
-        //         "The applicable item list is not editable for this Discount Policy.",
-        //     });
-        //   } else {
-        //     that.discountPolicyProductForm.current.Edit(
-        //       that.state.Model.DiscountPolicyMasterId,
-        //       "Items"
-        //     );
-        //   }
-        // } else {
-        //   ShowMessageBox({ text: "Select a Discount Policy first." });
-        // }
+        var result = allItems.filter(obj => {
+          return obj.ParameterID === selectedId;
+        })       
+        if (result[0]) {
+          this.setState({ isReportParameterForm: true });
+          that.parametersAddRef.current.props.config.editDisabled=false;
+          that.parametersAddRef.current.props.config.addDisabled=true;                 
+          that.parametersAddRef.current.Edit(result[0])
+        } else {
+          ShowMessageBox({ text: "Select a Parameter first." });
+        }
       },
       onAddClick: () => {
         this.setState({ isReportParameterForm: true });
       },
+     
       onRender: (item) => {
         return (
           <>
@@ -148,12 +142,26 @@ class DynamicReport extends PageBase {
     //Paremeters Card Entry Start
     this.parametersAddRef = React.createRef();
     this.parametersAdd = {
+      editDisabled:true,
+      addDisabled:false,      
       onAddClick: () => {
         let model = this.parametersAddRef.current.state.Model;
         let pmList = this.state.parameterList;
         pmList.push(model);
         this.setState({ parameterList: pmList })
         this.parametersCard.current.setSource(this.state.parameterList);
+        this.setState({ isReportParameterForm: false });
+      },
+      onUpdateClick:()=>{
+        let model = this.parametersAddRef.current.state.Model;
+        let pmList = this.state.parameterList;        
+        var foundIndex = pmList.findIndex(x => x.ParameterID === model.ParameterID);
+        pmList[foundIndex] = model;       
+        this.setState({ parameterList: pmList })
+        this.parametersCard.current.setSource(this.state.parameterList);
+        this.setState({ isReportParameterForm: false });
+      },
+      onCancelClick:()=>{       
         this.setState({ isReportParameterForm: false });
       },
     };
@@ -215,7 +223,7 @@ class DynamicReport extends PageBase {
         this.reportViewCard.current.setSource(this.state.reportViewList);
         this.setState({ isReportViewForm: false });
       },
-    };    
+    };
   }
   SaveMasterData() {
     let model = { ...this.state.Model };
@@ -376,7 +384,7 @@ class DynamicReport extends PageBase {
               <CardList ref={this.reportViewCard} config={this.reportViewLoading} show={isReportViewForm} />
             </div>
             {/* View Tab */}
-            
+
           </fieldset>
         </fieldset>
       </div>
