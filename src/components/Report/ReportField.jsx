@@ -12,12 +12,19 @@ class ReportField extends PageBase {
       Model: {},
       errors: {},
     };
+    this.fieldFormatingRef=React.createRef();
    
   }
   Edit(model) {
     this.setState({
         Model: model
     });
+    this.fieldFormatingRef.current.LoadData(model.Formatting)
+    // setTimeout(() => {
+      
+    
+    // }, 100);
+   
 }
   render() {
     const onAddClick = this.props.config.onAddClick;
@@ -87,7 +94,7 @@ class ReportField extends PageBase {
         </Row>
         <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>Field Formatting</legend>
-            <FieldFormatting />
+            <FieldFormatting ref={this.fieldFormatingRef} />
           </fieldset>
       </div>
     );

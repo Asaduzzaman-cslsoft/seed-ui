@@ -18,7 +18,11 @@ class FieldFormatting extends PageBase {
           };
       
       }
-     
+     LoadData(model){
+        this.setState({
+            Model: model
+          });  
+     }
     render() {
         return(
         <div>
