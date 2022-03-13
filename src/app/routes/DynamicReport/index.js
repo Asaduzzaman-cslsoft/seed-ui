@@ -38,7 +38,7 @@ class DynamicReport extends PageBase {
       parameterList: [],
       reportViewList: [],
       //For save purpose
-      selectedUserForPermission:[1,2],
+      selectedUserForPermission: [],
       //viewTabList: [],
     };
     //event listner
@@ -102,7 +102,7 @@ class DynamicReport extends PageBase {
       onRender: (item) => {
         return (
           <>
-            <Row style={{width:"100%"}}>
+            <Row style={{ width: "100%" }}>
               <Col md={2} style={{ textAlign: "center" }}>
                 <ListItemText primary={item.ReportID} />
               </Col>
@@ -164,7 +164,7 @@ class DynamicReport extends PageBase {
       onRender: (item) => {
         return (
           <>
-               <Row style={{width:"100%"}}>
+            <Row style={{ width: "100%" }}>
               <Col md={2} style={{ textAlign: "center" }}>
                 <ListItemText primary={item.Name} />
               </Col>
@@ -256,7 +256,7 @@ class DynamicReport extends PageBase {
       onRender: (item) => {
         return (
           <>
-              <Row style={{width:"100%"}}>
+            <Row style={{ width: "100%" }}>
               <Col md={2} style={{ textAlign: "center" }}>
                 <ListItemText primary={item.ViewID} />
               </Col>
@@ -318,19 +318,38 @@ class DynamicReport extends PageBase {
   }
   SaveMasterData() {
     let model = { ...this.state.Model };
-    //console.log(model)
+    //View is all about hierarchy
+    let Views = this.reportViewCard.current.state.source;
     if (model.ReportID) {
-      model.ModelState = ModelState.Modified;
-      const url = `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Update`;
-      $http.put(url, model);
-    } else {
-      model.ModelState = ModelState.Added;
-      const url = `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Create`;
-      $http.post(url, model);
+      model.Report = Views;
+      console.log(Views)
     }
-    setTimeout(() => {
-      this.CancelMasterClick();
-    }, 50);
+    let UsersPermission = this.state.selectedUserForPermission;    
+    let Parameters = this.parametersCard.current.state.source;
+    //Parameters is ok
+
+    let Tabs = this.reportViewAddRef.current.state.viewTabList;
+    //Tabs ok
+    let SortFields = this.reportViewAddRef.current.state.sortFieldList;
+    //Sortfield ok
+    let Components = this.reportViewAddRef.current.state.componentViewList;
+    //Component ok
+  console.log(this.reportViewAddRef.current.componentViewAdd)
+  console.log(this.reportViewAddRef.current.componentViewListRef)
+   
+   
+    // if (model.ReportID) {
+    //   model.ModelState = ModelState.Modified;
+    //   const url = `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Update`;
+    //   $http.put(url, model);
+    // } else {
+    //   model.ModelState = ModelState.Added;
+    //   const url = `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Create`;
+    //   $http.post(url, model);
+    // }
+    // setTimeout(() => {
+    //   this.CancelMasterClick();
+    // }, 50);
   }
   LaodIninialData() {
     $http
@@ -345,18 +364,20 @@ class DynamicReport extends PageBase {
   ClearModel() {
     this.setState({ Model: {} });
   }
-  OnUserSelect(selectedList, selectedItem) {    
+  OnUserSelect(selectedList, selectedItem) {
     setTimeout(() => {
-    var result = selectedList.map(function(a) {return a.UserId;});
-    this.setState({selectedUserForPermission:result})    
+      var result = selectedList.map(function(a) {
+        return a.UserId;
+      });
+      this.setState({ selectedUserForPermission: result });
     }, 50);
-    
   }
-  OnUserRemove(selectedList, selectedItem){
+  OnUserRemove(selectedList, selectedItem) {
     setTimeout(() => {
-    var result = selectedList.map(function(a) {return a.UserId;});
-    this.setState({selectedUserForPermission:result})
-   
+      var result = selectedList.map(function(a) {
+        return a.UserId;
+      });
+      this.setState({ selectedUserForPermission: result });
     }, 50);
   }
   render() {

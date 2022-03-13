@@ -14,15 +14,16 @@ class ReportView extends PageBase {
   constructor(props) {
     super(props);
     this.state = {
+      viewTabList: [],
+      sortFieldList: [],
+      componentViewList: [],
       Model: {},
       errors: {},
       isviewTabForm: false,
       isSortFieldForm: false,
       isComponentForm: false,
       //Reserve data
-      viewTabList: [],
-      sortFieldList: [],
-      componentViewList: [],
+     
 
     };
     //View Tab Add
@@ -34,7 +35,7 @@ class ReportView extends PageBase {
         let model = this.viewTabAdd.current.state.Model;
         let vtList = this.state.viewTabList;
         vtList.push(model);
-        this.setState({ viewTabList: vtList })
+        this.setState({ viewTabList: vtList })        
         this.viewTabListRef.current.setSource(vtList);
         this.setState({ isviewTabForm: false });
         this.viewTabAdd.current.ClearModel();

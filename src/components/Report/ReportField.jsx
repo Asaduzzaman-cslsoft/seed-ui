@@ -19,7 +19,10 @@ class ReportField extends PageBase {
     this.setState({
         Model: model
     });
-    this.fieldFormatingRef.current.LoadData(model.Formatting)
+    if(model.Formatting){
+      this.fieldFormatingRef.current.LoadData(model.Formatting)
+    }
+    
 }
 ClearModel() {
   this.setState({ Model: {} });
