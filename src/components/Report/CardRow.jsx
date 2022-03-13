@@ -29,6 +29,7 @@ class CardRow extends PageBase {
              this.setState({ reportFieldList: vtList })
              this.reportFieldListRef.current.setSource(vtList);
              this.setState({ isreportFieldsForm: false });
+             this.reportFieldAdd.current.ClearModel();
          },
 
 
@@ -40,9 +41,11 @@ class CardRow extends PageBase {
              this.setState({ reportFieldList: pmList })
              this.reportFieldListRef.current.setSource(this.state.reportFieldList);
              this.setState({ isreportFieldsForm: false });
+             this.reportFieldAdd.current.ClearModel();
          },
          onCancelClick: () => {
              this.setState({ isreportFieldsForm: false });
+             this.reportFieldAdd.current.ClearModel();
          },
      }
      //Report Field Add End
@@ -77,14 +80,13 @@ class CardRow extends PageBase {
                  ShowMessageBox({ text: "Select a View Tab first." });
              }
          },
-         onAddClick: () => {   
-             alert("here")             
+         onAddClick: () => {
              this.setState({ isreportFieldsForm: true });               
          },
          onRender: (item) => {
              return (
                  <>
-                     <Row>
+                        <Row style={{width:"100%"}}>
                          <Col md={2} style={{ textAlign: "center" }}>
                              <ListItemText primary={item.FieldID} />
                          </Col>
@@ -117,6 +119,9 @@ class CardRow extends PageBase {
       reportFieldList:model.Fields
     });  
     this.reportFieldListRef.current.setSource(model.Fields)
+  }
+  ClearModel() {
+    this.setState({ Model: {} });
   }
   render() {
     const onAddClick = this.props.config.onAddClick;

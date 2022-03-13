@@ -9,7 +9,7 @@ import Multiselect from 'multiselect-react-dropdown';
 class MultiSelectContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state = {      
       // options: [{name: 'Option 1️⃣', id: 1},{name: 'Option 2️⃣', id: 2}],
     };
     this.islocal = false;
@@ -22,7 +22,7 @@ class MultiSelectContainer extends React.Component {
         this.setState({ source: res.Result || [] });
       });
     }
-  }
+  } 
   componentDidUpdate(prevProps) {
     if (prevProps.url
       && prevProps.url !== this.props.url
@@ -65,31 +65,12 @@ class MultiSelectContainer extends React.Component {
         <Multiselect
           options={this.state.source} // Options to display in the dropdown
           selectedValues={this.state.selectedValue} // Preselected value to persist in dropdown
-          onSelect={this.onSelect} // Function will trigger on select event
-          onRemove={this.onRemove} // Function will trigger on remove event
+          onSelect={this.props.onSelect} // Function will trigger on select event
+          onRemove={this.props.onRemove} // Function will trigger on remove event
           displayValue={displayMember}// Property name to display in the dropdown options
           style={{ width: "100%" }}
          
         />
-
-
-        {/* <Select2
-          className={error ? "select2-invalid" : "display-none"}
-          style={{ width: "100%" }}
-          name={props.model}
-          data={data}
-          value={value}
-          onOpen={() => this.setState({ isSelectOpen: true })}
-          onClose={() => this.setState({ isSelectOpen: false })}
-          onChange={e => {
-            if (this.state.isSelectOpen) {
-              props.onChange(e);
-              this.setState({ isSelectOpen: false })
-            }
-          }}
-          disabled={props.disabled}
-          data-validate={props.validate}
-        /> */}
         {error !== "" ? <span className="invalid-feedback-custom">{error}</span> : ""}
       </FormGroup>
     );

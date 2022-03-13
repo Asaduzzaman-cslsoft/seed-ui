@@ -22,6 +22,9 @@ class ReportParameter extends PageBase {
             Model: model
           });          
       }
+      ClearModel() {
+        this.setState({ Model: {} });
+      }
     render() {
       const  onAddClick = this.props.config.onAddClick;
       const  onUpdateClick = this.props.config.onUpdateClick;

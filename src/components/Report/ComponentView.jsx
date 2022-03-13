@@ -35,6 +35,7 @@ class ComponentView extends PageBase {
                 this.setState({ cardRowList: vtList })
                 this.cardRowListRef.current.setSource(vtList);
                 this.setState({ isCardRowsForm: false });
+                this.cardRowAdd.current.ClearModel();
             },
 
 
@@ -46,9 +47,11 @@ class ComponentView extends PageBase {
                 this.setState({ cardRowList: pmList })
                 this.cardRowListRef.current.setSource(this.state.cardRowList);
                 this.setState({ isCardRowsForm: false });
+                this.cardRowAdd.current.ClearModel();
             },
             onCancelClick: () => {
                 this.setState({ isCardRowsForm: false });
+                this.cardRowAdd.current.ClearModel();
             },
         }
         //Card Row Add End
@@ -89,7 +92,7 @@ class ComponentView extends PageBase {
             onRender: (item) => {
                 return (
                     <>
-                        <Row>
+                           <Row style={{width:"100%"}}>
                             <Col md={4} style={{ textAlign: "center" }}>
                                 <ListItemText primary={item.RowNumber} />
                             </Col>
@@ -114,7 +117,9 @@ class ComponentView extends PageBase {
         });
         this.cardRowListRef.current.setSource(model.CardRows)
     }
-
+    ClearModel() {
+        this.setState({ Model: {} });
+      }
     render() {
         const onAddClick = this.props.config.onAddClick;
         const onUpdateClick = this.props.config.onUpdateClick;

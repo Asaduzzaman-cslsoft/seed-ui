@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  Col,
-  Row,  
-} from "reactstrap";
+import { Col, Row } from "reactstrap";
 import PageBase from "components/Base/PageBase";
 import withPageBase from "components/Base/withPageBase";
 import TextContainer from "components/FormInputs/TextContainer";
@@ -10,7 +7,7 @@ import CheckboxContainer from "components/FormInputs/CheckboxContainer";
 import ReportParameter from "components/Report/ReportParameter";
 import ReportView from "components/Report/ReportView";
 import { AppConst, Services, ShowMessageBox } from "../../../util/Util";
-import {  ListItemText} from "@material-ui/core";
+import { ListItemText } from "@material-ui/core";
 import CardList from "components/Base/CardList";
 import MultiSelectContainer from "components/FormInputs/MultiSelectContainer";
 import { Button } from "primereact/button";
@@ -22,14 +19,14 @@ class DynamicReport extends PageBase {
     super(props);
     this.state = {
       ...this.state,
-      source: [],    
-      QueryName: "", 
+      source: [],
+      QueryName: "",
       gridConfig: {
         columns: [{ field: "PrimaryKey", style: { display: "none" } }],
         lazy: false,
         showRefresh: false,
         limit: 20,
-      },     
+      },
       //All condition goes here
       reportMenuId: "",
       isReportParameterForm: false,
@@ -40,11 +37,15 @@ class DynamicReport extends PageBase {
       //All array goes here
       parameterList: [],
       reportViewList: [],
+      //For save purpose
+      selectedUserForPermission:[1,2],
       //viewTabList: [],
     };
     //event listner
     this.SaveMasterData = this.SaveMasterData.bind(this);
     this.CancelMasterClick = this.CancelMasterClick.bind(this);
+    this.OnUserSelect = this.OnUserSelect.bind(this);
+    this.OnUserRemove = this.OnUserRemove.bind(this);
     // this.UpdateMasterData = this.UpdateMasterData.bind(this);
     this.childGrid = React.createRef();
     this.inlineFinder = React.createRef();
@@ -72,37 +73,36 @@ class DynamicReport extends PageBase {
         //let that = this;
         //let allItems = this.menuListCard.current.state.source;
         let selectedId = this.menuListCard.current.state.selectedId;
-     
+
         //this.reportMenuId=selectedId;
         this.setState({ isDisplayAddMenuForm: true });
         $http
-        .get(
-          `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Get/${selectedId}`
-        )
-        .then((res) => {
-          this.setState({ Model: res.Result, loader: false });
-          var jData = JSON.parse(res.Result.ReportSchema);
-          var pSource = jData.Parameters;
-          this.setState({ parameterList: pSource });
-          this.parametersCard.current.setSource(pSource);
-          var rvSource = jData.Views;
-          this.setState({ reportViewList: rvSource });
-          this.reportViewCard.current.setSource(rvSource);
-        })
-        .then(() => this.render())
-        .catch(() => {
-          this.setState({ loader: false });
-        });
+          .get(
+            `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Get/${selectedId}`
+          )
+          .then((res) => {
+            this.setState({ Model: res.Result, loader: false });
+            var jData = JSON.parse(res.Result.ReportSchema);
+            var pSource = jData.Parameters;
+            this.setState({ parameterList: pSource });
+            this.parametersCard.current.setSource(pSource);
+            var rvSource = jData.Views;
+            this.setState({ reportViewList: rvSource });
+            this.reportViewCard.current.setSource(rvSource);
+          })
+          .then(() => this.render())
+          .catch(() => {
+            this.setState({ loader: false });
+          });
       },
       onAddClick: () => {
         this.setState({ isDisplayAddMenuForm: true, reportMenuId: "" });
       },
-     
-      
+
       onRender: (item) => {
         return (
           <>
-            <Row>
+            <Row style={{width:"100%"}}>
               <Col md={2} style={{ textAlign: "center" }}>
                 <ListItemText primary={item.ReportID} />
               </Col>
@@ -164,7 +164,7 @@ class DynamicReport extends PageBase {
       onRender: (item) => {
         return (
           <>
-            <Row>
+               <Row style={{width:"100%"}}>
               <Col md={2} style={{ textAlign: "center" }}>
                 <ListItemText primary={item.Name} />
               </Col>
@@ -201,6 +201,7 @@ class DynamicReport extends PageBase {
         this.setState({ parameterList: pmList });
         this.parametersCard.current.setSource(this.state.parameterList);
         this.setState({ isReportParameterForm: false });
+        this.parametersAddRef.current.ClearModel();
       },
       onUpdateClick: () => {
         let model = this.parametersAddRef.current.state.Model;
@@ -212,9 +213,11 @@ class DynamicReport extends PageBase {
         this.setState({ parameterList: pmList });
         this.parametersCard.current.setSource(this.state.parameterList);
         this.setState({ isReportParameterForm: false });
+        this.parametersAddRef.current.ClearModel();
       },
       onCancelClick: () => {
         this.setState({ isReportParameterForm: false });
+        this.parametersAddRef.current.ClearModel();
       },
     };
     //Paremeters Card Entry End
@@ -253,7 +256,7 @@ class DynamicReport extends PageBase {
       onRender: (item) => {
         return (
           <>
-            <Row>
+              <Row style={{width:"100%"}}>
               <Col md={2} style={{ textAlign: "center" }}>
                 <ListItemText primary={item.ViewID} />
               </Col>
@@ -290,6 +293,7 @@ class DynamicReport extends PageBase {
         this.setState({ reportViewList: rpList });
         this.reportViewCard.current.setSource(this.state.reportViewList);
         this.setState({ isReportViewForm: false });
+        this.reportViewAddRef.current.ClearModel();
       },
       onUpdateClick: () => {
         let model = this.reportViewAddRef.current.state.Model;
@@ -299,18 +303,18 @@ class DynamicReport extends PageBase {
         this.setState({ reportViewList: rpList });
         this.reportViewCard.current.setSource(this.state.reportViewList);
         this.setState({ isReportViewForm: false });
+        this.reportViewAddRef.current.ClearModel();
       },
       onCancelClick: () => {
         this.setState({ isReportViewForm: false });
+        this.reportViewAddRef.current.ClearModel();
       },
     };
   }
-  CancelMasterClick(){
-    // let model = { ...this.state.Model };
-    // console.log(model)
-    // //this.isDisplayAddMenuForm=false;
-   this.setState({ isDisplayAddMenuForm: false});
-   this.LaodIninialData();
+  CancelMasterClick() {
+    this.ClearModel();
+    this.setState({ isDisplayAddMenuForm: false });
+    this.LaodIninialData();
   }
   SaveMasterData() {
     let model = { ...this.state.Model };
@@ -324,26 +328,41 @@ class DynamicReport extends PageBase {
       const url = `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Create`;
       $http.post(url, model);
     }
-  } 
-  LaodIninialData(){
-    $http
-    .post(`${AppConst.BaseUrl}${Services.Seed}/DynamicReport/GetAll`)
-    .then((res) => {
-      this.menuListCard.current.setSource(res.Result);
-    });
+    setTimeout(() => {
+      this.CancelMasterClick();
+    }, 50);
   }
-  componentDidMount() {   
+  LaodIninialData() {
+    $http
+      .post(`${AppConst.BaseUrl}${Services.Seed}/DynamicReport/GetAll`)
+      .then((res) => {
+        this.menuListCard.current.setSource(res.Result);
+      });
+  }
+  componentDidMount() {
     this.LaodIninialData();
-      // $http
-      //   .post(`${AppConst.BaseUrl}${Services.Seed}/DynamicReport/GetAll`)
-      //   .then((res) => {
-      //     this.menuListCard.current.setSource(res.Result);
-      //   });    
+  }
+  ClearModel() {
+    this.setState({ Model: {} });
+  }
+  OnUserSelect(selectedList, selectedItem) {    
+    setTimeout(() => {
+    var result = selectedList.map(function(a) {return a.UserId;});
+    this.setState({selectedUserForPermission:result})    
+    }, 50);
+    
+  }
+  OnUserRemove(selectedList, selectedItem){
+    setTimeout(() => {
+    var result = selectedList.map(function(a) {return a.UserId;});
+    this.setState({selectedUserForPermission:result})
+   
+    }, 50);
   }
   render() {
     let isReportParameterForm = this.state.isReportParameterForm;
     let isReportViewForm = this.state.isReportViewForm;
-    let isDisplayAddMenuForm= this.state.isDisplayAddMenuForm;
+    let isDisplayAddMenuForm = this.state.isDisplayAddMenuForm;
     if (isDisplayAddMenuForm) {
       return (
         <div className="page-wrapper" style={{ overflow: "auto" }}>
@@ -353,8 +372,8 @@ class DynamicReport extends PageBase {
               Report
             </legend>
             <Row>
-              <Col md={8}></Col>
-              <Col md={4}>
+              <Col md={10}></Col>
+              <Col md={2}>
                 <Button
                   onClick={this.SaveMasterData}
                   style={{
@@ -442,6 +461,9 @@ class DynamicReport extends PageBase {
               <Row style={{ margin: "0", padding: "0" }}>
                 <MultiSelectContainer
                   label="Select User"
+                  onSelect={this.OnUserSelect}
+                  onRemove={this.OnUserRemove}
+                  //selectedValues={this.state.selectedUserForPermission}
                   url={`${AppConst.BaseUrl}${Services.Security}/User/GetAll`}
                   mapper={{ valueMember: "UserId", textMember: "Name" }}
                   {...this.useInput({
@@ -493,15 +515,15 @@ class DynamicReport extends PageBase {
         </div>
       );
     } else {
-      return(
-      <div className="page-wrapper" style={{ overflow: "auto" }}>
-        <CardList
-          ref={this.menuListCard}
-          config={this.menuListCardLoading}
-          show={false}
-        />
-      </div>
-      )
+      return (
+        <div className="page-wrapper" style={{ overflow: "auto" }}>
+          <CardList
+            ref={this.menuListCard}
+            config={this.menuListCardLoading}
+            show={false}
+          />
+        </div>
+      );
     }
   }
 }

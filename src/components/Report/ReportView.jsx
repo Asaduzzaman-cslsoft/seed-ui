@@ -37,6 +37,7 @@ class ReportView extends PageBase {
         this.setState({ viewTabList: vtList })
         this.viewTabListRef.current.setSource(vtList);
         this.setState({ isviewTabForm: false });
+        this.viewTabAdd.current.ClearModel();
       },
 
 
@@ -48,9 +49,11 @@ class ReportView extends PageBase {
         this.setState({ viewTabList: pmList })
         this.viewTabListRef.current.setSource(this.state.viewTabList);
         this.setState({ isviewTabForm: false });
+        this.viewTabAdd.current.ClearModel();
       },
       onCancelClick: () => {
         this.setState({ isviewTabForm: false });
+        this.viewTabAdd.current.ClearModel();
       },
     }
     //View Tab Add End
@@ -88,7 +91,7 @@ class ReportView extends PageBase {
       onRender: (item) => {
         return (
           <>
-            <Row>
+              <Row style={{width:"100%"}}>
               <Col md={2} style={{ textAlign: "center" }}>
                 <ListItemText primary={item.ViewID} />
               </Col>
@@ -122,6 +125,7 @@ class ReportView extends PageBase {
         this.setState({ sortFieldList: vtList })
         this.sortFiledListRef.current.setSource(vtList);
         this.setState({ isSortFieldForm: false });
+        this.sortFieldAdd.current.ClearModel();
       },
 
 
@@ -133,9 +137,11 @@ class ReportView extends PageBase {
         this.setState({ sortFieldList: pmList })
         this.sortFiledListRef.current.setSource(this.state.sortFieldList);
         this.setState({ isSortFieldForm: false });
+        this.sortFieldAdd.current.ClearModel();
       },
       onCancelClick: () => {
         this.setState({ isSortFieldForm: false });
+        this.sortFieldAdd.current.ClearModel();
       },
     }
     //Sort Field Add End
@@ -175,7 +181,7 @@ class ReportView extends PageBase {
       onRender: (item) => {
         return (
           <>
-            <Row>
+               <Row style={{width:"100%"}}>
               <Col md={4} style={{ textAlign: "center" }}>
                 <ListItemText primary={item.FieldID} />
               </Col>
@@ -203,6 +209,7 @@ class ReportView extends PageBase {
         this.setState({ componentViewList: vtList })
         this.componentViewListRef.current.setSource(vtList);
         this.setState({ isComponentForm: false });
+        this.componentViewAdd.current.ClearModel();
       },
 
 
@@ -214,9 +221,11 @@ class ReportView extends PageBase {
         this.setState({ componentViewList: pmList })
         this.componentViewListRef.current.setSource(this.state.componentViewList);
         this.setState({ isComponentForm: false });
+        this.componentViewAdd.current.ClearModel();
       },
       onCancelClick: () => {
         this.setState({ isComponentForm: false });
+        this.componentViewAdd.current.ClearModel();
       },
     }
     //Component View Add End
@@ -259,7 +268,7 @@ class ReportView extends PageBase {
       onRender: (item) => {
         return (
           <>
-            <Row>
+               <Row style={{width:"100%"}}>
               <Col md={2} style={{ textAlign: "center" }}>
                 <ListItemText primary={item.ComponentID} />
               </Col>
@@ -295,6 +304,9 @@ class ReportView extends PageBase {
     this.viewTabListRef.current.setSource(model.Tabs)
     this.sortFiledListRef.current.setSource(model.SortFields)
     this.componentViewListRef.current.setSource(model.Components)
+  }
+  ClearModel() {
+    this.setState({ Model: {} });
   }
 
   render() {

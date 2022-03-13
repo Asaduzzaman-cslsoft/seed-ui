@@ -20,11 +20,9 @@ class ReportField extends PageBase {
         Model: model
     });
     this.fieldFormatingRef.current.LoadData(model.Formatting)
-    // setTimeout(() => {
-      
-    
-    // }, 100);
-   
+}
+ClearModel() {
+  this.setState({ Model: {} });
 }
   render() {
     const onAddClick = this.props.config.onAddClick;
