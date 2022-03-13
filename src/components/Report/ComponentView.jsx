@@ -73,9 +73,12 @@ class ComponentView extends PageBase {
                 })
                 if (result[0]) {
                     this.setState({ isCardRowsForm: true });
-                    that.cardRowAdd.current.props.config.editDisabled = false;
-                    that.cardRowAdd.current.props.config.addDisabled = true;
-                    that.cardRowAdd.current.Edit(result[0])
+                    setTimeout(() => {
+                        that.cardRowAdd.current.props.config.editDisabled = false;
+                        that.cardRowAdd.current.props.config.addDisabled = true;
+                        that.cardRowAdd.current.Edit(result[0])
+                    }, 100);
+                   
                 } else {
                     ShowMessageBox({ text: "Select a View Tab first." });
                 }
@@ -102,7 +105,7 @@ class ComponentView extends PageBase {
                 );
             },
         };
-        //View Tab List End
+        //Card Rows List End
     }
     Edit(model) {
         this.setState({

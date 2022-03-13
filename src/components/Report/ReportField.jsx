@@ -1,5 +1,5 @@
 import React from "react";
-import { Col, Row } from "reactstrap";
+import { Button, Col, Row } from "reactstrap";
 import TextContainer from "../FormInputs/TextContainer";
 import CheckboxContainer from "../FormInputs/CheckboxContainer";
 import FieldFormatting from "./FieldFormatting"
@@ -14,10 +14,28 @@ class ReportField extends PageBase {
     };
    
   }
- 
+  Edit(model) {
+    this.setState({
+        Model: model
+    });
+}
   render() {
+    const onAddClick = this.props.config.onAddClick;
+        const onUpdateClick = this.props.config.onUpdateClick;
+        const onCancelClick = this.props.config.onCancelClick;
+        const addDisabled = this.props.config.addDisabled;
+        const editDisabled = this.props.config.editDisabled;
+        if (this.props.show) {
     return (
       <div>
+        <Row>
+          <Col md={9}></Col>
+          <Col md={3}>
+           <Button disabled={addDisabled} onClick={onAddClick} style={{ margin: '0 4px 0 0', paddingLeft: 0, width: '60px', height: "30px" }}>Add</Button>
+           <Button disabled={editDisabled} onClick={onUpdateClick} style={{ margin: '0 4px 0 0', paddingLeft: 0, width: '65px', height: "30px" }}>Update</Button>
+           <Button onClick={onCancelClick} style={{ margin: '0 4px 0 0', paddingLeft: 0, width: '65px', height: "30px" }}>Cancel</Button>
+          </Col>
+        </Row>
         <Row>
           <Col md={6}>
             <TextContainer
@@ -28,36 +46,39 @@ class ReportField extends PageBase {
               label="Column Name"
               {...this.useInput({ fieldName: "ColumnName" })}
             />
-             <TextContainer
-              label="Value Type"
-              {...this.useInput({ fieldName: "ValueType" })}
+              <TextContainer
+              label="Max Number Of Lines"
+              {...this.useInput({ fieldName: "MaxNumberOfLines" })}
+            />
+             <CheckboxContainer
+              label="Show Label"
+              {...this.useInput({ fieldName: "ShowLabel" })}
             />
             <CheckboxContainer
               label="Send As Parameter For Card Action"
               {...this.useInput({ fieldName: "SendAsParameterForCardAction" })}
             />
-             <TextContainer
-              label="Position"
-              {...this.useInput({ fieldName: "Position" })}
-            />
+            
           </Col>
           <Col md={6}>
             <TextContainer
               label="Label Name"
               {...this.useInput({ fieldName: "LabelName" })}
             />
-            <CheckboxContainer
-              label="Show Label"
-              {...this.useInput({ fieldName: "ShowLabel" })}
+            <TextContainer
+              label="Value Type"
+              {...this.useInput({ fieldName: "ValueType" })}
             />
+             <TextContainer
+              label="Position"
+              {...this.useInput({ fieldName: "Position" })}
+            />
+           
             <CheckboxContainer
               label="Show Value"
               {...this.useInput({ fieldName: "ShowValue" })}
             />
-             <TextContainer
-              label="Max Number Of Lines"
-              {...this.useInput({ fieldName: "MaxNumberOfLines" })}
-            />
+            
             <CheckboxContainer
               label="Special Formatting"
               {...this.useInput({ fieldName: "SpecialFormatting" })}
@@ -70,6 +91,9 @@ class ReportField extends PageBase {
           </fieldset>
       </div>
     );
+  }else{
+      return null;
+    }
   }
 }
 export default ReportField;
