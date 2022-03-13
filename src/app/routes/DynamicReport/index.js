@@ -334,8 +334,8 @@ class DynamicReport extends PageBase {
     //Sortfield ok
     let Components = this.reportViewAddRef.current.state.componentViewList;
     //Component ok
-  console.log(this.reportViewAddRef.current.componentViewAdd)
-  console.log(this.reportViewAddRef.current.componentViewListRef)
+  console.log(Components)
+ // console.log(this.reportViewAddRef.current.componentViewListRef)
    
    
     // if (model.ReportID) {

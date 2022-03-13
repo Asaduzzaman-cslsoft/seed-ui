@@ -17,6 +17,7 @@ class ReportView extends PageBase {
       viewTabList: [],
       sortFieldList: [],
       componentViewList: [],
+      cardRowList:[],
       Model: {},
       errors: {},
       isviewTabForm: false,
@@ -205,6 +206,9 @@ class ReportView extends PageBase {
       addDisabled: false,
       onAddClick: () => {
         let model = this.componentViewAdd.current.state.Model;
+        let cardList = this.componentViewAdd.current.state.cardRowList;
+        model.CardRows=cardList;
+        console.log(model)
         let vtList = this.state.componentViewList;
         vtList.push(model);
         this.setState({ componentViewList: vtList })
