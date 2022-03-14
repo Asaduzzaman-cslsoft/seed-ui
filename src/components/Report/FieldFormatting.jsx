@@ -6,6 +6,7 @@ import {
     
 } from "reactstrap";
 import TextContainer from "../FormInputs/TextContainer";
+import NumericContainer from "../FormInputs/NumericContainer";
 import CheckboxContainer from "../FormInputs/CheckboxContainer";
 import PageBase from "../Base/PageBase";
 
@@ -55,7 +56,7 @@ class FieldFormatting extends PageBase {
                         {...this.useInput({ fieldName: "Prefix" })} />
                 </Col>
                 <Col md={6}>
-                    <TextContainer
+                    <NumericContainer
                         label="Size"
                         {...this.useInput({ fieldName: "Size" })} />
                       <CheckboxContainer

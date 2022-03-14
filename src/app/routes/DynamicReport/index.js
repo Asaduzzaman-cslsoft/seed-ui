@@ -3,6 +3,7 @@ import { Col, Row } from "reactstrap";
 import PageBase from "components/Base/PageBase";
 import withPageBase from "components/Base/withPageBase";
 import TextContainer from "components/FormInputs/TextContainer";
+import NumericContainer from "components/FormInputs/NumericContainer";
 import CheckboxContainer from "components/FormInputs/CheckboxContainer";
 import ReportParameter from "components/Report/ReportParameter";
 import ReportView from "components/Report/ReportView";
@@ -326,7 +327,7 @@ class DynamicReport extends PageBase {
   SaveMasterData() {
     let model = { ...this.state.Model };
     let report = {};
-    let reportView = {};
+    //let reportView = {};
     //View is all about hierarchy
     let Views = this.reportViewCard.current.state.source;
 
@@ -438,7 +439,7 @@ class DynamicReport extends PageBase {
             </Row>
             <Row>
               <Col md={6}>
-                <TextContainer
+                <NumericContainer
                   label="CategoryID"
                   {...this.useInput({ fieldName: "CategoryID" })}
                 />
@@ -446,11 +447,11 @@ class DynamicReport extends PageBase {
                   label="Report Title"
                   {...this.useInput({ fieldName: "ReportTitle" })}
                 />
-                <TextContainer
+                <NumericContainer
                   label="Sequnece No"
                   {...this.useInput({ fieldName: "SeqNo" })}
                 />
-                <TextContainer
+                <NumericContainer
                   label="Number Of Views"
                   {...this.useInput({ fieldName: "NumberOfViews" })}
                 />
@@ -468,7 +469,7 @@ class DynamicReport extends PageBase {
                   label="Report Name"
                   {...this.useInput({ fieldName: "ReportName" })}
                 />
-                <TextContainer
+                <NumericContainer
                   label="Parent Report ID"
                   {...this.useInput({ fieldName: "ParentReportID" })}
                 />

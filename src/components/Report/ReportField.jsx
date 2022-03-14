@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Col, Row } from "reactstrap";
 import TextContainer from "../FormInputs/TextContainer";
+import NumericContainer from "../FormInputs/NumericContainer";
 import CheckboxContainer from "../FormInputs/CheckboxContainer";
 import FieldFormatting from "./FieldFormatting"
 import PageBase from "../Base/PageBase";
@@ -67,7 +68,7 @@ ClearFieldFormatting() {
               label="Column Name"
               {...this.useInput({ fieldName: "ColumnName" })}
             />
-              <TextContainer
+              <NumericContainer
               label="Max Number Of Lines"
               {...this.useInput({ fieldName: "MaxNumberOfLines" })}
             />

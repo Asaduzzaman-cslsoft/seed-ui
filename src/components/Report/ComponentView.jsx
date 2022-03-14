@@ -6,6 +6,7 @@ import {
 
 } from "reactstrap";
 import TextContainer from "../FormInputs/TextContainer";
+import NumericContainer from "../FormInputs/NumericContainer";
 import CheckboxContainer from "../FormInputs/CheckboxContainer";
 import CardRow from "./CardRow";
 import PageBase from "../Base/PageBase";
@@ -149,7 +150,7 @@ class ComponentView extends PageBase {
                             <TextContainer
                                 label="component ID"
                                 {...this.useInput({ fieldName: "ComponentID" })} />
-                            <TextContainer
+                            <NumericContainer
                                 label="Seq No"
                                 {...this.useInput({ fieldName: "SeqNo" })} />
                             <TextContainer
@@ -166,7 +167,7 @@ class ComponentView extends PageBase {
                             <TextContainer
                                 label="Type"
                                 {...this.useInput({ fieldName: "Type" })} />
-                            <TextContainer
+                            <NumericContainer
                                 label="Card Action Report ID"
                                 {...this.useInput({ fieldName: "CardActionReportID" })} />
 

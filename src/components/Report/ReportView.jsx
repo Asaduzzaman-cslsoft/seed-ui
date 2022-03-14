@@ -1,6 +1,7 @@
 import React from "react";
 import { Col, Row } from "reactstrap";
 import TextContainer from "../FormInputs/TextContainer";
+import NumericContainer from "../FormInputs/NumericContainer";
 import CheckboxContainer from "../FormInputs/CheckboxContainer";
 import ViewTab from "./ViewTab";
 import SortField from "./SortField";
@@ -348,7 +349,7 @@ class ReportView extends PageBase {
                 label="Type"
                 {...this.useInput({ fieldName: "Type" })}
               />
-              <TextContainer
+              <NumericContainer
                 label="Number Of Tabs"
                 {...this.useInput({ fieldName: "NumberOfTabs" })}
               />
@@ -358,7 +359,7 @@ class ReportView extends PageBase {
               />
             </Col>
             <Col md={6}>
-              <TextContainer
+              <NumericContainer
                 label="Seq No"
                 {...this.useInput({ fieldName: "SeqNo" })}
               />
@@ -366,7 +367,7 @@ class ReportView extends PageBase {
                 label="Title"
                 {...this.useInput({ fieldName: "Title" })}
               />
-              <TextContainer
+              <NumericContainer
                 label="Number Of Components"
                 {...this.useInput({ fieldName: "NumberOfComponents" })}
               />

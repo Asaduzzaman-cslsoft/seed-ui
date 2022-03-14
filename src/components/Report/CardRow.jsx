@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, Col, Row } from "reactstrap";
-import TextContainer from "../FormInputs/TextContainer";
+import NumericContainer from "../FormInputs/NumericContainer";
 import CheckboxContainer from "../FormInputs/CheckboxContainer";
 import ReportField from "./ReportField";
 import PageBase from "../Base/PageBase";
@@ -181,7 +181,7 @@ class CardRow extends PageBase {
           </Row>
           <Row>
             <Col md={6}>
-              <TextContainer
+              <NumericContainer
                 label="Row Number"
                 {...this.useInput({ fieldName: "RowNumber" })}
               />

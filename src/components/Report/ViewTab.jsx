@@ -6,6 +6,7 @@ import {
     
 } from "reactstrap";
 import TextContainer from "../FormInputs/TextContainer";
+import NumericContainer from "../FormInputs/NumericContainer";
 import CheckboxContainer from "../FormInputs/CheckboxContainer";
 import PageBase from "../Base/PageBase";
 
@@ -61,7 +62,7 @@ class ViewTab extends PageBase {
                     <TextContainer
                         label="Tab ID"
                         {...this.useInput({ fieldName: "TabID" })} />
-                    <TextContainer
+                    <NumericContainer
                         label="Seq No"
                         {...this.useInput({ fieldName: "SeqNo" })} />
                    
