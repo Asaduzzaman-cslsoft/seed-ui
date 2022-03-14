@@ -65,6 +65,7 @@ class DynamicReport extends PageBase {
       skipInitialLoad: false,
       showEdit: true,
       showAdd: true,
+      showDelete: true,
       //enableEdit: true,
       //enableEdit: that.state.Model.DiscountPolicyMasterId && !that.state.Model.AllProducts,
       lazy: false,
@@ -100,7 +101,24 @@ class DynamicReport extends PageBase {
       onAddClick: () => {
         this.setState({ isDisplayAddMenuForm: true, reportMenuId: "" });
       },
-
+      onDeleteClick: () => {
+        let selectedId = this.menuListCard.current.state.selectedId;       
+        if (selectedId) {
+          alert(selectedId)
+          //ShowMessageBox({ text: selectedId });
+          $http
+          .get(
+            `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Get/${selectedId}`
+          ).then((res) => {
+            console.log(res.Result)
+            $http.delete(
+              `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Delete`,res.Result
+            ).then(()=>{
+              ShowMessageBox({text:"Deleted"})
+            })
+          })
+        }
+      },
       onRender: (item) => {
         return (
           <>
@@ -138,6 +156,7 @@ class DynamicReport extends PageBase {
       skipInitialLoad: true,
       showEdit: true,
       showAdd: true,
+      showDelete: true,
       //enableEdit: true,
       //enableEdit: that.state.Model.DiscountPolicyMasterId && !that.state.Model.AllProducts,
       lazy: false,
@@ -162,7 +181,18 @@ class DynamicReport extends PageBase {
       onAddClick: () => {
         this.setState({ isReportParameterForm: true });
       },
-
+      onDeleteClick: () => {
+        let selectedId = this.parametersCard.current.state.selectedId;       
+        if (selectedId) {
+          let allItems = this.parametersCard.current.state.source;
+          var result = allItems.filter(obj => {
+            return obj.ParameterID !== selectedId;
+          })
+          this.setState({ parameterList: result })
+          this.parametersCard.current.setSource(result)
+         
+        }
+      },
       onRender: (item) => {
         return (
           <>
@@ -231,6 +261,7 @@ class DynamicReport extends PageBase {
       skipInitialLoad: true,
       showEdit: true,
       showAdd: true,
+      showDelete: true,
       lazy: false,
       limit: 10,
       height: "200px",
@@ -254,6 +285,18 @@ class DynamicReport extends PageBase {
       },
       onAddClick: () => {
         this.setState({ isReportViewForm: true });
+      },
+      onDeleteClick: () => {
+        let selectedId = this.reportViewCard.current.state.selectedId;       
+        if (selectedId) {
+          let allItems = this.reportViewCard.current.state.source;
+          var result = allItems.filter(obj => {
+            return obj.ViewID !== selectedId;
+          })
+          this.setState({ reportViewList: result })
+          this.reportViewCard.current.setSource(result)
+         
+        }
       },
       onRender: (item) => {
         return (
@@ -307,8 +350,14 @@ class DynamicReport extends PageBase {
       onUpdateClick: () => {
         let model = this.reportViewAddRef.current.state.Model;
         let rpList = this.state.reportViewList;
+        let viewTab = this.reportViewAddRef.current.state.viewTabList;
+        let sortField = this.reportViewAddRef.current.state.sortFieldList;
+        let components = this.reportViewAddRef.current.state.componentViewList;       
         var foundIndex = rpList.findIndex((x) => x.ViewID === model.ViewID);
         rpList[foundIndex] = model;
+        model.Tabs = viewTab;
+        model.SortFields = sortField;
+        model.Components = components;
         this.setState({ reportViewList: rpList });
         this.reportViewCard.current.setSource(this.state.reportViewList);
         this.setState({ isReportViewForm: false });
@@ -367,7 +416,7 @@ class DynamicReport extends PageBase {
     }
     setTimeout(() => {
       this.CancelMasterClick();
-    }, 50);
+    }, 100);
   }
   LaodIninialData() {
     $http

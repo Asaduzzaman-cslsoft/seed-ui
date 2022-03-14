@@ -68,6 +68,7 @@ class ReportView extends PageBase {
       skipInitialLoad: true,
       showEdit: true,
       showAdd: true,
+      showDelete:true,
       lazy: false,
       limit: 10,
       height: "200px",
@@ -90,6 +91,18 @@ class ReportView extends PageBase {
       },
       onAddClick: () => {
         this.setState({ isviewTabForm: true });
+      },
+      onDeleteClick: () => {
+        let selectedId = this.viewTabListRef.current.state.selectedId;       
+        if (selectedId) {
+          let allItems = this.viewTabListRef.current.state.source;
+          var result = allItems.filter(obj => {
+            return obj.ViewID !== selectedId;
+          })
+          this.setState({ viewTabList: result })
+          this.viewTabListRef.current.setSource(result)
+         
+        }
       },
       onRender: (item) => {
         return (
@@ -156,6 +169,7 @@ class ReportView extends PageBase {
       skipInitialLoad: true,
       showEdit: true,
       showAdd: true,
+      showDelete:true,
       lazy: false,
       limit: 10,
       height: "200px",
@@ -180,6 +194,18 @@ class ReportView extends PageBase {
       },
       onAddClick: () => {
         this.setState({ isSortFieldForm: true });
+      },
+      onDeleteClick: () => {
+        let selectedId = this.sortFiledListRef.current.state.selectedId;       
+        if (selectedId) {
+          let allItems = this.sortFiledListRef.current.state.source;
+          var result = allItems.filter(obj => {
+            return obj.FieldID !== selectedId;
+          })
+          this.setState({ sortFieldList: result })
+          this.sortFiledListRef.current.setSource(result)
+         
+        }
       },
       onRender: (item) => {
         return (
@@ -222,8 +248,10 @@ class ReportView extends PageBase {
       onUpdateClick: () => {
         let model = this.componentViewAdd.current.state.Model;
         let pmList = this.state.componentViewList;
+        let cardList = this.componentViewAdd.current.state.cardRowList;            
         var foundIndex = pmList.findIndex(x => x.ComponentID === model.ComponentID);
         pmList[foundIndex] = model;
+        model.CardRows=cardList;  
         this.setState({ componentViewList: pmList })
         this.componentViewListRef.current.setSource(this.state.componentViewList);
         this.setState({ isComponentForm: false });
@@ -243,6 +271,7 @@ class ReportView extends PageBase {
       skipInitialLoad: true,
       showEdit: true,
       showAdd: true,
+      showDelete:true,
       lazy: false,
       limit: 10,
       height: "200px",
@@ -270,6 +299,18 @@ class ReportView extends PageBase {
       },
       onAddClick: () => {
         this.setState({ isComponentForm: true });
+      },
+      onDeleteClick: () => {
+        let selectedId = this.componentViewListRef.current.state.selectedId;       
+        if (selectedId) {
+          let allItems = this.componentViewListRef.current.state.source;
+          var result = allItems.filter(obj => {
+            return obj.ComponentID !== selectedId;
+          })
+          this.setState({ componentViewList: result })
+          this.componentViewListRef.current.setSource(result)
+         
+        }
       },
       onRender: (item) => {
         return (

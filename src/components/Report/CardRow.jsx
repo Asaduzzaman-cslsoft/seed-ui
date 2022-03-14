@@ -14,113 +14,125 @@ class CardRow extends PageBase {
     this.state = {
       Model: {},
       errors: {},
-      isreportFieldsForm:false,
+      isreportFieldsForm: false,
       reportFieldList: [],
     };
-     //Report Field Add
-     this.reportFieldAdd = React.createRef();
-     this.reportFieldAddLoading = {
-         editDisabled: true,
-         addDisabled: false,
-         onAddClick: () => {        
-             let model = this.reportFieldAdd.current.state.Model;
-             let fieldFomating = this.reportFieldAdd.current.state.FieldFormatting;
-             model.Formatting=fieldFomating;
-             console.log(model)
-             let vtList = this.state.reportFieldList;
-             vtList.push(model);
-             this.setState({ reportFieldList: vtList })
-             this.reportFieldListRef.current.setSource(vtList);
-             this.setState({ isreportFieldsForm: false });
-             this.reportFieldAdd.current.ClearModel();
-         },
+    //Report Field Add
+    this.reportFieldAdd = React.createRef();
+    this.reportFieldAddLoading = {
+      editDisabled: true,
+      addDisabled: false,
+      onAddClick: () => {
+        let model = this.reportFieldAdd.current.state.Model;
+        let fieldFomating = this.reportFieldAdd.current.state.FieldFormatting;
+        model.Formatting = fieldFomating;        
+        let vtList = this.state.reportFieldList;
+        vtList.push(model);
+        this.setState({ reportFieldList: vtList })
+        this.reportFieldListRef.current.setSource(vtList);
+        this.setState({ isreportFieldsForm: false });
+        this.reportFieldAdd.current.ClearModel();
+      },
 
 
-         onUpdateClick: () => {
-             let model = this.reportFieldAdd.current.state.Model;
-             let pmList = this.state.reportFieldList;
-             var foundIndex = pmList.findIndex(x => x.ViewID === model.ViewID);
-             pmList[foundIndex] = model;
-             this.setState({ reportFieldList: pmList })
-             this.reportFieldListRef.current.setSource(this.state.reportFieldList);
-             this.setState({ isreportFieldsForm: false });
-             this.reportFieldAdd.current.ClearModel();
-         },
-         onCancelClick: () => {
-             this.setState({ isreportFieldsForm: false });
-             this.reportFieldAdd.current.ClearModel();
-         },
-     }
-     //Report Field Add End
-     //Report Field List
-     this.reportFieldListRef = React.createRef();
-     this.reportFieldListLoading = {
-         title: "Report Field",
-         keyField: "FieldID",
-         skipInitialLoad: true,
-         showEdit: true,
-         showAdd: true,
-         lazy: false,
-         limit: 10,
-         height: "200px",
-         onEditClick: () => {
-             //ShowMessageBox({ text: "Clicked worked" });
-             let that = this;
-             let allItems = this.reportFieldListRef.current.state.source;
-             let selectedId = this.reportFieldListRef.current.state.selectedId;
-             var result = allItems.filter(obj => {
-                 return obj.FieldID === selectedId;
-             })
-             if (result[0]) {
-                 this.setState({ isreportFieldsForm: true });
-                 setTimeout(() => {
-                    that.reportFieldAdd.current.props.config.editDisabled = false;
-                    that.reportFieldAdd.current.props.config.addDisabled = true;
-                    that.reportFieldAdd.current.Edit(result[0])
-                 }, 100);
-               
-             } else {
-                 ShowMessageBox({ text: "Select a View Tab first." });
-             }
-         },
-         onAddClick: () => {
-             this.setState({ isreportFieldsForm: true });               
-         },
-         onRender: (item) => {
-             return (
-                 <>
-                        <Row style={{width:"100%"}}>
-                         <Col md={2} style={{ textAlign: "center" }}>
-                             <ListItemText primary={item.FieldID} />
-                         </Col>
-                         <Col md={2} style={{ textAlign: "center" }}>
-                             <ListItemText primary={item.LabelName} />
-                         </Col>
-                         <Col md={2} style={{ textAlign: "center" }}>
-                             <ListItemText primary={item.ColumnName} />
-                         </Col>
-                         <Col md={2} style={{ textAlign: "center" }}>
-                             <ListItemText primary={item.ValueType} />
-                         </Col>
-                         <Col md={2} style={{ textAlign: "center" }}>
-                             <ListItemText primary={item.MaxNumberOfLines} />
-                         </Col>
-                         <Col md={2} style={{ textAlign: "center" }}>
-                             <ListItemText primary={item.Position} />
-                         </Col>
-                         
-                     </Row>
-                 </>
-             );
-         },
-     };
-     //Report Field List End
+      onUpdateClick: () => {
+        let model = this.reportFieldAdd.current.state.Model;
+        let pmList = this.state.reportFieldList;
+        var foundIndex = pmList.findIndex(x => x.ViewID === model.ViewID);
+        pmList[foundIndex] = model;
+        this.setState({ reportFieldList: pmList })
+        this.reportFieldListRef.current.setSource(this.state.reportFieldList);
+        this.setState({ isreportFieldsForm: false });
+        this.reportFieldAdd.current.ClearModel();
+      },
+      onCancelClick: () => {
+        this.setState({ isreportFieldsForm: false });
+        this.reportFieldAdd.current.ClearModel();
+      },
+    }
+    //Report Field Add End
+    //Report Field List
+    this.reportFieldListRef = React.createRef();
+    this.reportFieldListLoading = {
+      title: "Report Field",
+      keyField: "FieldID",
+      skipInitialLoad: true,
+      showEdit: true,
+      showAdd: true,
+      showDelete: true,
+      lazy: false,
+      limit: 10,
+      height: "200px",
+      onEditClick: () => {
+        //ShowMessageBox({ text: "Clicked worked" });
+        let that = this;
+        let allItems = this.reportFieldListRef.current.state.source;
+        let selectedId = this.reportFieldListRef.current.state.selectedId;
+        var result = allItems.filter(obj => {
+          return obj.FieldID === selectedId;
+        })
+        if (result[0]) {
+          this.setState({ isreportFieldsForm: true });
+          setTimeout(() => {
+            that.reportFieldAdd.current.props.config.editDisabled = false;
+            that.reportFieldAdd.current.props.config.addDisabled = true;
+            that.reportFieldAdd.current.Edit(result[0])
+          }, 100);
+
+        } else {
+          ShowMessageBox({ text: "Select a Report Field first." });
+        }
+      },
+      onAddClick: () => {
+        this.setState({ isreportFieldsForm: true });
+      },
+      onDeleteClick: () => {
+        let selectedId = this.reportFieldListRef.current.state.selectedId;       
+        if (selectedId) {
+          let allItems = this.reportFieldListRef.current.state.source;
+          var result = allItems.filter(obj => {
+            return obj.FieldID !== selectedId;
+          })
+          this.setState({ reportFieldList: result })
+          this.reportFieldListRef.current.setSource(result)
+         
+        }
+      },
+      onRender: (item) => {
+        return (
+          <>
+            <Row style={{ width: "100%" }}>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.FieldID} />
+              </Col>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.LabelName} />
+              </Col>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.ColumnName} />
+              </Col>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.ValueType} />
+              </Col>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.MaxNumberOfLines} />
+              </Col>
+              <Col md={2} style={{ textAlign: "center" }}>
+                <ListItemText primary={item.Position} />
+              </Col>
+
+            </Row>
+          </>
+        );
+      },
+    };
+    //Report Field List End
   }
   Edit(model) {
     this.setState({
       Model: model,
-      reportFieldList:model.Fields
-    });  
+      reportFieldList: model.Fields
+    });
     this.reportFieldListRef.current.setSource(model.Fields)
   }
   ClearModel() {
@@ -135,7 +147,7 @@ class CardRow extends PageBase {
     const onCancelClick = this.props.config.onCancelClick;
     const addDisabled = this.props.config.addDisabled;
     const editDisabled = this.props.config.editDisabled;
-    let isreportFieldsForm=this.state.isreportFieldsForm;
+    let isreportFieldsForm = this.state.isreportFieldsForm;
     if (this.props.show) {
       return (
         <div>
