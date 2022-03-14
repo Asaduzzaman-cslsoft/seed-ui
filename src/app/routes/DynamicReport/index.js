@@ -288,12 +288,19 @@ class DynamicReport extends PageBase {
       addDisabled: false,
       onAddClick: () => {
         let model = this.reportViewAddRef.current.state.Model;
+        let viewTab = this.reportViewAddRef.current.state.viewTabList;
+        let sortField = this.reportViewAddRef.current.state.sortFieldList;
+        let components = this.reportViewAddRef.current.state.componentViewList;
+        model.Tabs = viewTab;
+        model.SortFields = sortField;
+        model.Components = components;
         let rpList = this.state.reportViewList;
         rpList.push(model);
         this.setState({ reportViewList: rpList });
         this.reportViewCard.current.setSource(this.state.reportViewList);
         this.setState({ isReportViewForm: false });
         this.reportViewAddRef.current.ClearModel();
+        this.reportViewAddRef.current.ClearAllList();
       },
       onUpdateClick: () => {
         let model = this.reportViewAddRef.current.state.Model;
@@ -318,38 +325,47 @@ class DynamicReport extends PageBase {
   }
   SaveMasterData() {
     let model = { ...this.state.Model };
+    let report = {};
+    let reportView = {};
     //View is all about hierarchy
     let Views = this.reportViewCard.current.state.source;
-    if (model.ReportID) {
-      model.Report = Views;
-      console.log(Views)
-    }
-    let UsersPermission = this.state.selectedUserForPermission;    
+
+    let UsersPermission = this.state.selectedUserForPermission;
     let Parameters = this.parametersCard.current.state.source;
     //Parameters is ok
 
-    let Tabs = this.reportViewAddRef.current.state.viewTabList;
+
+    // let Tabs = this.reportViewAddRef.current.state.viewTabList;
     //Tabs ok
-    let SortFields = this.reportViewAddRef.current.state.sortFieldList;
+    //let SortFields = this.reportViewAddRef.current.state.sortFieldList;
     //Sortfield ok
-    let Components = this.reportViewAddRef.current.state.componentViewList;
+    //let Components = this.reportViewAddRef.current.state.componentViewList;
     //Component ok
-  console.log(Components)
- // console.log(this.reportViewAddRef.current.componentViewListRef)
-   
-   
-    // if (model.ReportID) {
-    //   model.ModelState = ModelState.Modified;
-    //   const url = `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Update`;
-    //   $http.put(url, model);
-    // } else {
-    //   model.ModelState = ModelState.Added;
-    //   const url = `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Create`;
-    //   $http.post(url, model);
-    // }
-    // setTimeout(() => {
-    //   this.CancelMasterClick();
-    // }, 50);
+    //reportView.Tabs=Tabs;
+    //reportView.SortFields=SortFields;
+    //reportView.Components=Components;
+
+    report.UsersPermission = UsersPermission;
+    report.Parameters = Parameters;
+    report.Views = Views;
+    model.Report = report;
+
+    console.log(model)
+    // console.log(this.reportViewAddRef.current.componentViewListRef)
+
+
+    if (model.ReportID) {
+      model.ModelState = ModelState.Modified;
+      const url = `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Update`;
+      $http.put(url, model);
+    } else {
+      model.ModelState = ModelState.Added;
+      const url = `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Create`;
+      $http.post(url, model);
+    }
+    setTimeout(() => {
+      this.CancelMasterClick();
+    }, 50);
   }
   LaodIninialData() {
     $http
@@ -366,7 +382,7 @@ class DynamicReport extends PageBase {
   }
   OnUserSelect(selectedList, selectedItem) {
     setTimeout(() => {
-      var result = selectedList.map(function(a) {
+      var result = selectedList.map(function (a) {
         return a.UserId;
       });
       this.setState({ selectedUserForPermission: result });
@@ -374,7 +390,7 @@ class DynamicReport extends PageBase {
   }
   OnUserRemove(selectedList, selectedItem) {
     setTimeout(() => {
-      var result = selectedList.map(function(a) {
+      var result = selectedList.map(function (a) {
         return a.UserId;
       });
       this.setState({ selectedUserForPermission: result });

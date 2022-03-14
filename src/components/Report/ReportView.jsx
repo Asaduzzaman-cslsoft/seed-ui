@@ -17,7 +17,7 @@ class ReportView extends PageBase {
       viewTabList: [],
       sortFieldList: [],
       componentViewList: [],
-      cardRowList:[],
+      //cardRowList:[],
       Model: {},
       errors: {},
       isviewTabForm: false,
@@ -204,17 +204,17 @@ class ReportView extends PageBase {
     this.componentViewAddLoading = {
       editDisabled: true,
       addDisabled: false,
-      onAddClick: () => {
+      onAddClick: () => {       
         let model = this.componentViewAdd.current.state.Model;
         let cardList = this.componentViewAdd.current.state.cardRowList;
-        model.CardRows=cardList;
-        console.log(model)
+        model.CardRows=cardList;       
         let vtList = this.state.componentViewList;
         vtList.push(model);
         this.setState({ componentViewList: vtList })
         this.componentViewListRef.current.setSource(vtList);
         this.setState({ isComponentForm: false });
         this.componentViewAdd.current.ClearModel();
+        this.componentViewAdd.current.ClearCardRows();
       },
 
 
@@ -312,6 +312,9 @@ class ReportView extends PageBase {
   }
   ClearModel() {
     this.setState({ Model: {} });
+  }
+  ClearAllList(){
+    this.setState({viewTabList: [],sortFieldList: [],componentViewList: [] });    
   }
 
   render() {

@@ -28,14 +28,17 @@ class ComponentView extends PageBase {
         this.cardRowAddLoading = {
             editDisabled: true,
             addDisabled: false,
-            onAddClick: () => {
+            onAddClick: () => {               
                 let model = this.cardRowAdd.current.state.Model;
+                let reportFileds = this.cardRowAdd.current.state.reportFieldList;
+                model.Fields=reportFileds;               
                 let vtList = this.state.cardRowList;
                 vtList.push(model);
                 this.setState({ cardRowList: vtList })
                 this.cardRowListRef.current.setSource(vtList);
                 this.setState({ isCardRowsForm: false });
                 this.cardRowAdd.current.ClearModel();
+                this.cardRowAdd.current.ClearReportFields();
             },
 
 
@@ -119,6 +122,9 @@ class ComponentView extends PageBase {
     }
     ClearModel() {
         this.setState({ Model: {} });
+      }
+      ClearCardRows(){
+          this.setState({cardRowList:[]})
       }
     render() {
         const onAddClick = this.props.config.onAddClick;

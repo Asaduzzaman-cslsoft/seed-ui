@@ -22,8 +22,11 @@ class CardRow extends PageBase {
      this.reportFieldAddLoading = {
          editDisabled: true,
          addDisabled: false,
-         onAddClick: () => {
+         onAddClick: () => {        
              let model = this.reportFieldAdd.current.state.Model;
+             let fieldFomating = this.reportFieldAdd.current.state.FieldFormatting;
+             model.Formatting=fieldFomating;
+             console.log(model)
              let vtList = this.state.reportFieldList;
              vtList.push(model);
              this.setState({ reportFieldList: vtList })
@@ -122,6 +125,9 @@ class CardRow extends PageBase {
   }
   ClearModel() {
     this.setState({ Model: {} });
+  }
+  ClearReportFields() {
+    this.setState({ reportFieldList: [] });
   }
   render() {
     const onAddClick = this.props.config.onAddClick;

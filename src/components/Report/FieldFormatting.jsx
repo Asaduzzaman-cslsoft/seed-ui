@@ -1,5 +1,6 @@
 import React from "react";
 import {
+    Button,
     Col,
     Row
     
@@ -18,14 +19,26 @@ class FieldFormatting extends PageBase {
           };
       
       }
+      ClearModel(){
+        this.setState({
+            Model: {}
+          });  
+      }
      LoadData(model){
         this.setState({
             Model: model
           });  
      }
     render() {
+        const onAddClick = this.props.config.onAddClick;
         return(
         <div>
+            <Row>
+          <Col md={10}></Col>
+          <Col md={2}>
+           <Button onClick={onAddClick} style={{ margin: '0 4px 0 0', paddingLeft: 0, width: '60px', height: "30px" }}>Add</Button>
+          </Col>
+        </Row>
             <Row>
                 <Col md={6}>
                     <TextContainer

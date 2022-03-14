@@ -4,6 +4,7 @@ import TextContainer from "../FormInputs/TextContainer";
 import CheckboxContainer from "../FormInputs/CheckboxContainer";
 import FieldFormatting from "./FieldFormatting"
 import PageBase from "../Base/PageBase";
+import { ShowMessageBox } from "../../util/Util";
 
 class ReportField extends PageBase {
   constructor(props) {
@@ -11,8 +12,17 @@ class ReportField extends PageBase {
     this.state = {
       Model: {},
       errors: {},
+      FieldFormatting:{}
     };
     this.fieldFormatingRef=React.createRef();
+    this.fieldFormatingLoading={
+      onAddClick: () => {  
+        let model = this.fieldFormatingRef.current.state.Model;
+        this.setState({ FieldFormatting: model })       
+        //this.fieldFormatingRef.current.ClearModel();
+        ShowMessageBox({ text: "Formating Added" });  
+      },
+    }
    
   }
   Edit(model) {
@@ -26,6 +36,9 @@ class ReportField extends PageBase {
 }
 ClearModel() {
   this.setState({ Model: {} });
+}
+ClearFieldFormatting() {
+  this.setState({  FieldFormatting:{} });
 }
   render() {
     const onAddClick = this.props.config.onAddClick;
@@ -95,7 +108,7 @@ ClearModel() {
         </Row>
         <fieldset className="border p-2">
             <legend className="w-auto" style={{ width: "inherit" }}>Field Formatting</legend>
-            <FieldFormatting ref={this.fieldFormatingRef} />
+            <FieldFormatting ref={this.fieldFormatingRef} config={this.fieldFormatingLoading} />
           </fieldset>
       </div>
     );
