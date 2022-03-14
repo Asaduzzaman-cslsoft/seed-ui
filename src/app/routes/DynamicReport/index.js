@@ -89,7 +89,8 @@ class DynamicReport extends PageBase {
             this.parametersCard.current.setSource(pSource);
             var rvSource = jData.Views;
             this.setState({ reportViewList: rvSource });
-            this.reportViewCard.current.setSource(rvSource);
+            this.reportViewCard.current.setSource(rvSource);           
+            this.setState({selectedUserForPermission:jData.UsersPermission})
           })
           .then(() => this.render())
           .catch(() => {
@@ -501,7 +502,7 @@ class DynamicReport extends PageBase {
                   label="Select User"
                   onSelect={this.OnUserSelect}
                   onRemove={this.OnUserRemove}
-                  //selectedValues={this.state.selectedUserForPermission}
+                  selectedValues={this.state.selectedUserForPermission}
                   url={`${AppConst.BaseUrl}${Services.Security}/User/GetAll`}
                   mapper={{ valueMember: "UserId", textMember: "Name" }}
                   {...this.useInput({

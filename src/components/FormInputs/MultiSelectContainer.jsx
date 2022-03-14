@@ -19,9 +19,25 @@ class MultiSelectContainer extends React.Component {
   componentDidMount() {
     if (!this.props.source && this.props.url) {
       $http.get(this.props.url).then(res => {       
-        this.setState({ source: res.Result || [] });
-      });
+        this.setState({ source: res.Result || [] });    
+        if(this.props.selectedValues){
+          var selectedUsers=[];
+         //let valueMember= this.props.mapper.valueMember;
+          var selectedIds=this.props.selectedValues;          
+          for (var i = 0; i < selectedIds.length; i++) {                      
+           const getUser = res.Result.find((element) => {
+            return element.UserId === selectedIds[i];
+          });        
+           if(getUser){
+             selectedUsers.push(getUser)
+           }
+        }         
+          this.setState({selectedValue:selectedUsers})     
+        }
+        
+      })
     }
+    
   } 
   componentDidUpdate(prevProps) {
     if (prevProps.url
@@ -56,8 +72,7 @@ class MultiSelectContainer extends React.Component {
       if (value !== "" && value !== undefined && value !== null)
         value = value.toString();
       else value = "false";
-    }
-    //console.log(data)
+    }     
     return (
       <FormGroup style={{ display: props.visible === false ? "none" : "" }}>
         <Label>{props.label}</Label>
