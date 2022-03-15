@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Col, Row } from "reactstrap";
 import TextContainer from "../FormInputs/TextContainer";
 import NumericContainer from "../FormInputs/NumericContainer";
+import SelectContainer from "../FormInputs/SelectContainer";
 import CheckboxContainer from "../FormInputs/CheckboxContainer";
 import FieldFormatting from "./FieldFormatting"
 import PageBase from "../Base/PageBase";
@@ -91,11 +92,19 @@ ClearFieldFormatting() {
               label="Value Type"
               {...this.useInput({ fieldName: "ValueType" })}
             />
-             <TextContainer
-              label="Position"
-              {...this.useInput({ fieldName: "Position" })}
-            />
-           
+             <SelectContainer
+                      label="Position"
+                      // url={`${AppConst.BaseUrl}/seed/Combo/GetDemoStatus`}
+                      source={ [
+                          { id: "", text: "" },
+                          { id: "Left", text: "Left" },
+                          { id: "Right", text: "Right" },
+                          { id: "Top", text: "Top" },
+                          { id: "Bottom", text: "Bottom" }
+                      ]}
+                      mapper={{ valueMember: 'id', textMember: 'text' }}
+                      {...this.useInput({ fieldName: "Position", validate: '["required"]' })}
+                    />
             <CheckboxContainer
               label="Show Value"
               {...this.useInput({ fieldName: "ShowValue" })}

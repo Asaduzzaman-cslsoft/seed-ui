@@ -1,207 +1,246 @@
 import React from "react";
-import {
-    Button,
-    Col,
-    Row
-
-} from "reactstrap";
+import { Button, Col, Row } from "reactstrap";
 import TextContainer from "../FormInputs/TextContainer";
 import NumericContainer from "../FormInputs/NumericContainer";
 import CheckboxContainer from "../FormInputs/CheckboxContainer";
 import CardRow from "./CardRow";
 import PageBase from "../Base/PageBase";
-import { ListItemText } from "@material-ui/core";
+//import { ListItemText } from "@material-ui/core";
 import { ShowMessageBox } from "../../util/Util";
 import CardList from "../Base/CardList";
 
-
 class ComponentView extends PageBase {
-    constructor(props) {
-        super(props);
-        this.state = {
-            Model: {},
-            errors: {},
-            isCardRowsForm: false,
-            cardRowList: [],
-        };
-        //Card Row Add
-        this.cardRowAdd = React.createRef();
-        this.cardRowAddLoading = {
-            editDisabled: true,
-            addDisabled: false,
-            onAddClick: () => {               
-                let model = this.cardRowAdd.current.state.Model;
-                let reportFileds = this.cardRowAdd.current.state.reportFieldList;
-                model.Fields=reportFileds;               
-                let vtList = this.state.cardRowList;
-                vtList.push(model);
-                this.setState({ cardRowList: vtList })
-                this.cardRowListRef.current.setSource(vtList);
-                this.setState({ isCardRowsForm: false });
-                this.cardRowAdd.current.ClearModel();
-                this.cardRowAdd.current.ClearReportFields();
-            },
+  constructor(props) {
+    super(props);
+    this.state = {
+      Model: {},
+      errors: {},
+      isCardRowsForm: false,
+      cardRowList: [],
+    };
+    //Card Row Add
+    this.cardRowAdd = React.createRef();
+    this.cardRowAddLoading = {
+      editDisabled: true,
+      addDisabled: false,
+      onAddClick: () => {
+        let model = this.cardRowAdd.current.state.Model;
+        let reportFileds = this.cardRowAdd.current.state.reportFieldList;
+        model.Fields = reportFileds;
+        let vtList = this.state.cardRowList;
+        vtList.push(model);
+        this.setState({ cardRowList: vtList });
+        this.cardRowListRef.current.setSource(vtList);
+        this.setState({ isCardRowsForm: false });
+        this.cardRowAdd.current.ClearModel();
+        this.cardRowAdd.current.ClearReportFields();
+      },
 
-
-            onUpdateClick: () => {
-                let model = this.cardRowAdd.current.state.Model;
-                let reportFileds = this.cardRowAdd.current.state.reportFieldList;                            
-                let pmList = this.state.cardRowList;
-                var foundIndex = pmList.findIndex(x => x.ViewID === model.ViewID);
-                pmList[foundIndex] = model;
-                model.Fields=reportFileds;                
-                this.setState({ cardRowList: pmList })
-                this.cardRowListRef.current.setSource(this.state.cardRowList);
-                this.setState({ isCardRowsForm: false });
-                this.cardRowAdd.current.ClearModel();
-            },
-            onCancelClick: () => {
-                this.setState({ isCardRowsForm: false });
-                this.cardRowAdd.current.ClearModel();
-            },
-        }
-        //Card Row Add End
-        //Card Row List
-        this.cardRowListRef = React.createRef();
-        this.cardRowListLoading = {
-            title: "Card Row",
-            keyField: "RowNumber",
-            skipInitialLoad: true,
-            showEdit: true,
-            showAdd: true,
-            showDelete:true,
-            lazy: false,
-            limit: 10,
-            height: "200px",
-            onEditClick: () => {
-                //ShowMessageBox({ text: "Clicked worked" });
-                let that = this;
-                let allItems = this.cardRowListRef.current.state.source;
-                let selectedId = this.cardRowListRef.current.state.selectedId;
-                var result = allItems.filter(obj => {
-                    return obj.RowNumber === selectedId;
-                })
-                if (result[0]) {
-                    this.setState({ isCardRowsForm: true });
-                    setTimeout(() => {
-                        that.cardRowAdd.current.props.config.editDisabled = false;
-                        that.cardRowAdd.current.props.config.addDisabled = true;
-                        that.cardRowAdd.current.Edit(result[0])
-                    }, 100);
-                   
-                } else {
-                    ShowMessageBox({ text: "Select a View Tab first." });
-                }
-            },
-            onAddClick: () => {                
-                this.setState({ isCardRowsForm: true });               
-            },
-            onDeleteClick: () => {
-                let selectedId = this.cardRowListRef.current.state.selectedId;       
-                if (selectedId) {
-                  let allItems = this.cardRowListRef.current.state.source;
-                  var result = allItems.filter(obj => {
-                    return obj.RowNumber !== selectedId;
-                  })
-                  this.setState({ cardRowList: result })
-                  this.cardRowListRef.current.setSource(result)
-                 
-                }
-              },
-            onRender: (item) => {
-                return (
-                    <>
-                           <Row style={{width:"100%"}}>
-                            <Col md={4} style={{ textAlign: "center" }}>
-                                <ListItemText primary={item.RowNumber} />
-                            </Col>
-                            <Col md={4} style={{ textAlign: "center" }}>
-                                <ListItemText primary={item.DivideAfter} />
-                            </Col>
-                            <Col md={4} style={{ textAlign: "center" }}>
-                                <ListItemText primary={item.DividerEndToEnd} />
-                            </Col>
-                            
-                        </Row>
-                    </>
-                );
-            },
-        };
-        //Card Rows List End
-    }
-    Edit(model) {
-        this.setState({
-            Model: model,
-            cardRowList:model.CardRows
+      onUpdateClick: () => {
+        let model = this.cardRowAdd.current.state.Model;
+        let reportFileds = this.cardRowAdd.current.state.reportFieldList;
+        let pmList = this.state.cardRowList;
+        var foundIndex = pmList.findIndex((x) => x.ViewID === model.ViewID);
+        pmList[foundIndex] = model;
+        model.Fields = reportFileds;
+        this.setState({ cardRowList: pmList });
+        this.cardRowListRef.current.setSource(this.state.cardRowList);
+        this.setState({ isCardRowsForm: false });
+        this.cardRowAdd.current.ClearModel();
+      },
+      onCancelClick: () => {
+        this.setState({ isCardRowsForm: false });
+        this.cardRowAdd.current.ClearModel();
+      },
+    };
+    //Card Row Add End
+    //Card Row List
+    this.cardRowListRef = React.createRef();
+    this.cardRowListLoading = {
+      title: "Card Row",
+      keyField: "RowNumber",
+      skipInitialLoad: true,
+      showEdit: true,
+      showAdd: true,
+      showDelete: true,
+      lazy: false,
+      limit: 10,
+      height: "200px",
+      onEditClick: () => {
+        //ShowMessageBox({ text: "Clicked worked" });
+        let that = this;
+        let allItems = this.cardRowListRef.current.state.source;
+        let selectedId = this.cardRowListRef.current.state.selectedId;
+        var result = allItems.filter((obj) => {
+          return obj.RowNumber === selectedId;
         });
-        this.cardRowListRef.current.setSource(model.CardRows)
-    }
-    ClearModel() {
-        this.setState({ Model: {} });
-      }
-      ClearCardRows(){
-          this.setState({cardRowList:[]})
-      }
-    render() {
-        const onAddClick = this.props.config.onAddClick;
-        const onUpdateClick = this.props.config.onUpdateClick;
-        const onCancelClick = this.props.config.onCancelClick;
-        const addDisabled = this.props.config.addDisabled;
-        const editDisabled = this.props.config.editDisabled;
-        let isCardRowsForm = this.state.isCardRowsForm;       
-        if (this.props.show) {
-            return (
-                <div>
-                    <Row>
-                        <Col md={9}></Col>
-                        <Col md={3}>
-                            <Button disabled={addDisabled} onClick={onAddClick} style={{ margin: '0 4px 0 0', paddingLeft: 0, width: '60px', height: "30px" }}>Add</Button>
-                            <Button disabled={editDisabled} onClick={onUpdateClick} style={{ margin: '0 4px 0 0', paddingLeft: 0, width: '65px', height: "30px" }}>Update</Button>
-                            <Button onClick={onCancelClick} style={{ margin: '0 4px 0 0', paddingLeft: 0, width: '65px', height: "30px" }}>Cancel</Button>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md={6}>
-                            <TextContainer
-                                label="component ID"
-                                {...this.useInput({ fieldName: "ComponentID" })} />
-                            <NumericContainer
-                                label="Seq No"
-                                {...this.useInput({ fieldName: "SeqNo" })} />
-                            <TextContainer
-                                label="Query"
-                                {...this.useInput({ fieldName: "Query" })} />
-                            <CheckboxContainer
-                                label="Card Action"
-                                {...this.useInput({ fieldName: "CardAction" })} />
-                        </Col>
-                        <Col md={6}>
-                            <TextContainer
-                                label="Parent Tab ID"
-                                {...this.useInput({ fieldName: "ParentTabID" })} />
-                            <TextContainer
-                                label="Type"
-                                {...this.useInput({ fieldName: "Type" })} />
-                            <NumericContainer
-                                label="Card Action Report ID"
-                                {...this.useInput({ fieldName: "CardActionReportID" })} />
-
-                        </Col>
-                    </Row >
-                    <fieldset className="border p-2">
-                        <legend className="w-auto" style={{ width: "inherit" }}>Card Row</legend>
-                        <div>
-                            <CardList ref={this.cardRowListRef} config={this.cardRowListLoading} show={isCardRowsForm} />
-                            <CardRow ref={this.cardRowAdd} config={this.cardRowAddLoading} show={isCardRowsForm} />
-
-                        </div>
-                      
-                    </fieldset>
-                </div >
-            )
+        if (result[0]) {
+          this.setState({ isCardRowsForm: true });
+          setTimeout(() => {
+            that.cardRowAdd.current.props.config.editDisabled = false;
+            that.cardRowAdd.current.props.config.addDisabled = true;
+            that.cardRowAdd.current.Edit(result[0]);
+          }, 100);
         } else {
-            return null;
+          ShowMessageBox({ text: "Select a View Tab first." });
         }
+      },
+      onAddClick: () => {
+        this.setState({ isCardRowsForm: true });
+      },
+      onDeleteClick: () => {
+        let selectedId = this.cardRowListRef.current.state.selectedId;
+        if (selectedId) {
+          let allItems = this.cardRowListRef.current.state.source;
+          var result = allItems.filter((obj) => {
+            return obj.RowNumber !== selectedId;
+          });
+          this.setState({ cardRowList: result });
+          this.cardRowListRef.current.setSource(result);
+        }
+      },
+      onRender: (item) => {
+        return (
+          <>
+            <Row style={{ width: "100%" }}>
+              <Col md={4} style={{ textAlign: "center" }}>
+              {item.RowNumber}
+                {/* <ListItemText primary={item.RowNumber} /> */}
+              </Col>
+              <Col md={4} style={{ textAlign: "center" }}>
+              {item.DivideAfter}
+                {/* <ListItemText primary={item.DivideAfter} /> */}
+              </Col>
+              <Col md={4} style={{ textAlign: "center" }}>
+              {item.DividerEndToEnd}
+                {/* <ListItemText primary={item.DividerEndToEnd} /> */}
+              </Col>
+            </Row>
+          </>
+        );
+      },
+    };
+    //Card Rows List End
+  }
+  Edit(model) {
+    this.setState({
+      Model: model,
+      cardRowList: model.CardRows,
+    });
+    this.cardRowListRef.current.setSource(model.CardRows);
+  }
+  ClearModel() {
+    this.setState({ Model: {} });
+  }
+  ClearCardRows() {
+    this.setState({ cardRowList: [] });
+  }
+  render() {
+    const onAddClick = this.props.config.onAddClick;
+    const onUpdateClick = this.props.config.onUpdateClick;
+    const onCancelClick = this.props.config.onCancelClick;
+    const addDisabled = this.props.config.addDisabled;
+    const editDisabled = this.props.config.editDisabled;
+    let isCardRowsForm = this.state.isCardRowsForm;
+    if (this.props.show) {
+      return (
+        <div>
+          <Row>
+            <Col md={9}></Col>
+            <Col md={3}>
+              <Button
+                disabled={addDisabled}
+                onClick={onAddClick}
+                style={{
+                  margin: "0 4px 0 0",
+                  paddingLeft: 0,
+                  width: "60px",
+                  height: "30px",
+                }}
+              >
+                Add
+              </Button>
+              <Button
+                disabled={editDisabled}
+                onClick={onUpdateClick}
+                style={{
+                  margin: "0 4px 0 0",
+                  paddingLeft: 0,
+                  width: "65px",
+                  height: "30px",
+                }}
+              >
+                Update
+              </Button>
+              <Button
+                onClick={onCancelClick}
+                style={{
+                  margin: "0 4px 0 0",
+                  paddingLeft: 0,
+                  width: "65px",
+                  height: "30px",
+                }}
+              >
+                Cancel
+              </Button>
+            </Col>
+          </Row>
+          <Row>
+            <Col md={6}>
+              <TextContainer
+                label="component ID"
+                {...this.useInput({ fieldName: "ComponentID" })}
+              />
+              <NumericContainer
+                label="Seq No"
+                {...this.useInput({ fieldName: "SeqNo" })}
+              />
+              <TextContainer
+                label="Query"
+                {...this.useInput({ fieldName: "Query" })}
+              />
+              <CheckboxContainer
+                label="Card Action"
+                {...this.useInput({ fieldName: "CardAction" })}
+              />
+            </Col>
+            <Col md={6}>
+              <TextContainer
+                label="Parent Tab ID"
+                {...this.useInput({ fieldName: "ParentTabID" })}
+              />
+              <TextContainer
+                label="Type"
+                {...this.useInput({ fieldName: "Type" })}
+              />
+              <NumericContainer
+                label="Card Action Report ID"
+                {...this.useInput({ fieldName: "CardActionReportID" })}
+              />
+            </Col>
+          </Row>
+          <fieldset className="border p-2">
+            <legend className="w-auto" style={{ width: "inherit" }}>
+              Card Row
+            </legend>
+            <div>
+              <CardList
+                ref={this.cardRowListRef}
+                config={this.cardRowListLoading}
+                show={isCardRowsForm}
+              />
+              <CardRow
+                ref={this.cardRowAdd}
+                config={this.cardRowAddLoading}
+                show={isCardRowsForm}
+              />
+            </div>
+          </fieldset>
+        </div>
+      );
+    } else {
+      return null;
     }
+  }
 }
 export default ComponentView;

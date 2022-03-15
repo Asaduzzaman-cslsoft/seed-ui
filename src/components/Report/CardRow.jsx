@@ -4,7 +4,7 @@ import NumericContainer from "../FormInputs/NumericContainer";
 import CheckboxContainer from "../FormInputs/CheckboxContainer";
 import ReportField from "./ReportField";
 import PageBase from "../Base/PageBase";
-import { ListItemText } from "@material-ui/core";
+//import { ListItemText } from "@material-ui/core";
 import CardList from "../Base/CardList";
 import { ShowMessageBox } from "../../util/Util";
 
@@ -103,22 +103,28 @@ class CardRow extends PageBase {
           <>
             <Row style={{ width: "100%" }}>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.FieldID} />
+              {item.FieldID}
+                {/* <ListItemText primary={item.FieldID} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.LabelName} />
+              {item.LabelName}
+                {/* <ListItemText primary={item.LabelName} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.ColumnName} />
+              {item.ColumnName}
+                {/* <ListItemText primary={item.ColumnName} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.ValueType} />
+              {item.ValueType}
+                {/* <ListItemText primary={item.ValueType} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.MaxNumberOfLines} />
+              {item.MaxNumberOfLines}
+                {/* <ListItemText primary={item.MaxNumberOfLines} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.Position} />
+              {item.Position}
+                {/* <ListItemText primary={item.Position} /> */}
               </Col>
 
             </Row>

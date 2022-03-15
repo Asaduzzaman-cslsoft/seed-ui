@@ -9,7 +9,7 @@ import ComponentView from "./ComponentView";
 import PageBase from "../Base/PageBase";
 import { Button } from 'primereact/button';
 import CardList from "../Base/CardList";
-import { ListItemText } from "@material-ui/core";
+//import { ListItemText } from "@material-ui/core";
 import { ShowMessageBox } from "../../util/Util";
 class ReportView extends PageBase {
   constructor(props) {
@@ -109,19 +109,24 @@ class ReportView extends PageBase {
           <>
               <Row style={{width:"100%"}}>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.ViewID} />
+              {item.ViewID}
+                {/* <ListItemText primary={item.ViewID} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.TabID} />
+              {item.TabID}
+                {/* <ListItemText primary={item.TabID} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.TabCaption} />
+              {item.TabCaption}
+                {/* <ListItemText primary={item.TabCaption} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.SeqNo} />
+              {item.SeqNo}
+                {/* <ListItemText primary={item.SeqNo} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.Visible} />
+              {item.Visible}
+                {/* <ListItemText primary={item.Visible} /> */}
               </Col>
             </Row>
           </>
@@ -212,13 +217,16 @@ class ReportView extends PageBase {
           <>
                <Row style={{width:"100%"}}>
               <Col md={4} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.FieldID} />
+              {item.FieldID}
+                {/* <ListItemText primary={item.FieldID} /> */}
               </Col>
               <Col md={4} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.ComponentID} />
+              {item.ComponentID}
+                {/* <ListItemText primary={item.ComponentID} /> */}
               </Col>
               <Col md={4} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.DefaultSorting} />
+              {item.DefaultSorting}
+                {/* <ListItemText primary={item.DefaultSorting} /> */}
               </Col>              
             </Row>
           </>
@@ -317,22 +325,28 @@ class ReportView extends PageBase {
           <>
                <Row style={{width:"100%"}}>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.ComponentID} />
+              {item.ComponentID}
+                {/* <ListItemText primary={item.ComponentID} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.ParentTabID} />
+              {item.ParentTabID}
+                {/* <ListItemText primary={item.ParentTabID} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.SeqNo} />
+              {item.SeqNo}
+                {/* <ListItemText primary={item.SeqNo} /> */}
               </Col> 
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.Query} />
+              {item.Query}
+                {/* <ListItemText primary={item.Query} /> */}
               </Col> 
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.CardAction} />
+              {item.CardAction}
+                {/* <ListItemText primary={item.CardAction} /> */}
               </Col> 
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.CardActionReportID} />
+              {item.CardActionReportID}
+                {/* <ListItemText primary={item.CardActionReportID} /> */}
               </Col>              
             </Row>
           </>

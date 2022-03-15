@@ -8,7 +8,7 @@ import CheckboxContainer from "components/FormInputs/CheckboxContainer";
 import ReportParameter from "components/Report/ReportParameter";
 import ReportView from "components/Report/ReportView";
 import { AppConst, Services, ShowMessageBox } from "../../../util/Util";
-import { ListItemText } from "@material-ui/core";
+//import { ListItemText } from "@material-ui/core";
 import CardList from "components/Base/CardList";
 import MultiSelectContainer from "components/FormInputs/MultiSelectContainer";
 import { Button } from "primereact/button";
@@ -42,6 +42,7 @@ class DynamicReport extends PageBase {
       selectedUserForPermission: [],
       //viewTabList: [],
     };
+    
     //event listner
     this.SaveMasterData = this.SaveMasterData.bind(this);
     this.CancelMasterClick = this.CancelMasterClick.bind(this);
@@ -90,8 +91,8 @@ class DynamicReport extends PageBase {
             this.parametersCard.current.setSource(pSource);
             var rvSource = jData.Views;
             this.setState({ reportViewList: rvSource });
-            this.reportViewCard.current.setSource(rvSource);           
-            this.setState({selectedUserForPermission:jData.UsersPermission})
+            this.reportViewCard.current.setSource(rvSource);
+            this.setState({ selectedUserForPermission: jData.UsersPermission });
           })
           .then(() => this.render())
           .catch(() => {
@@ -102,21 +103,24 @@ class DynamicReport extends PageBase {
         this.setState({ isDisplayAddMenuForm: true, reportMenuId: "" });
       },
       onDeleteClick: () => {
-        let selectedId = this.menuListCard.current.state.selectedId;       
-        if (selectedId) {
-          alert(selectedId)
+        let selectedId = this.menuListCard.current.state.selectedId;
+        if (selectedId) {         
           //ShowMessageBox({ text: selectedId });
           $http
-          .get(
-            `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Get/${selectedId}`
-          ).then((res) => {
-            console.log(res.Result)
-            $http.delete(
-              `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Delete`,res.Result
-            ).then(()=>{
-              ShowMessageBox({text:"Deleted"})
-            })
-          })
+            .get(
+              `${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Get/${selectedId}`
+            )
+            .then((res) => {
+             let model=res.Result;
+             console.log(model)
+             model.ModelState = ModelState.Deleted;
+              $http.delete(`${AppConst.BaseUrl}${Services.Seed}/DynamicReport/Delete`, { data: model })
+              
+                .then(() => {
+                  ShowMessageBox({ text: "Deleted" });
+                  this.LaodIninialData();
+                });
+            });
         }
       },
       onRender: (item) => {
@@ -124,22 +128,28 @@ class DynamicReport extends PageBase {
           <>
             <Row style={{ width: "100%" }}>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.ReportID} />
+              {item.ReportID}
+                {/* <ListItemText primary={item.ReportID} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.ReportName} />
+              {item.ReportName}
+                {/* <ListItemText primary={item.ReportName} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.ReportTitle} />
+              {item.ReportTitle}
+                {/* <ListItemText primary={item.ReportTitle} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.IconUrl} />
+              {item.IconUrl}
+                {/* <ListItemText primary={item.IconUrl} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.SeqNo} />
+              {item.SeqNo}
+                {/* <ListItemText primary={item.SeqNo} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.NumberOfViews} />
+              {item.NumberOfViews}
+                {/* <ListItemText primary={item.NumberOfViews} /> */}
               </Col>
             </Row>
           </>
@@ -182,38 +192,43 @@ class DynamicReport extends PageBase {
         this.setState({ isReportParameterForm: true });
       },
       onDeleteClick: () => {
-        let selectedId = this.parametersCard.current.state.selectedId;       
+        let selectedId = this.parametersCard.current.state.selectedId;
         if (selectedId) {
           let allItems = this.parametersCard.current.state.source;
-          var result = allItems.filter(obj => {
+          var result = allItems.filter((obj) => {
             return obj.ParameterID !== selectedId;
-          })
-          this.setState({ parameterList: result })
-          this.parametersCard.current.setSource(result)
-         
+          });
+          this.setState({ parameterList: result });
+          this.parametersCard.current.setSource(result);
         }
       },
       onRender: (item) => {
         return (
-          <>
+          <>           
             <Row style={{ width: "100%" }}>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.Name} />
+                {item.ParameterID}
+                {/* <ListItemText primary={item.ParameterID} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.EntryType} />
+                {item.Name}
+                {/* <ListItemText primary={item.Name} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.LookupQuery} />
+                {item.EntryType}
+                {/* <ListItemText primary={item.EntryType} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.Mandatory} />
+                {item.LookupQuery}
+                {/* <ListItemText primary={item.LookupQuery} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.ValueType} />
+                {item.Mandatory}
+                {/* <ListItemText primary={item.Mandatory} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.MultiSelect} />
+                {item.ValueType}
+                {/* <ListItemText primary={item.ValueType} /> */}
               </Col>
             </Row>
           </>
@@ -287,15 +302,14 @@ class DynamicReport extends PageBase {
         this.setState({ isReportViewForm: true });
       },
       onDeleteClick: () => {
-        let selectedId = this.reportViewCard.current.state.selectedId;       
+        let selectedId = this.reportViewCard.current.state.selectedId;
         if (selectedId) {
           let allItems = this.reportViewCard.current.state.source;
-          var result = allItems.filter(obj => {
+          var result = allItems.filter((obj) => {
             return obj.ViewID !== selectedId;
-          })
-          this.setState({ reportViewList: result })
-          this.reportViewCard.current.setSource(result)
-         
+          });
+          this.setState({ reportViewList: result });
+          this.reportViewCard.current.setSource(result);
         }
       },
       onRender: (item) => {
@@ -303,22 +317,28 @@ class DynamicReport extends PageBase {
           <>
             <Row style={{ width: "100%" }}>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.ViewID} />
+              {item.ViewID}
+                {/* <ListItemText primary={item.ViewID} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.SeqNo} />
+              {item.SeqNo}
+                {/* <ListItemText primary={item.SeqNo} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.Type} />
+              {item.Type}
+                {/* <ListItemText primary={item.Type} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.Title} />
+              {item.Title}
+                {/* <ListItemText primary={item.Title} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.NumberOfTabs} />
+              {item.NumberOfTabs}
+                {/* <ListItemText primary={item.NumberOfTabs} /> */}
               </Col>
               <Col md={2} style={{ textAlign: "center" }}>
-                <ListItemText primary={item.NumberOfComponents} />
+              {item.NumberOfComponents}
+                {/* <ListItemText primary={item.NumberOfComponents} /> */}
               </Col>
             </Row>
           </>
@@ -352,7 +372,7 @@ class DynamicReport extends PageBase {
         let rpList = this.state.reportViewList;
         let viewTab = this.reportViewAddRef.current.state.viewTabList;
         let sortField = this.reportViewAddRef.current.state.sortFieldList;
-        let components = this.reportViewAddRef.current.state.componentViewList;       
+        let components = this.reportViewAddRef.current.state.componentViewList;
         var foundIndex = rpList.findIndex((x) => x.ViewID === model.ViewID);
         rpList[foundIndex] = model;
         model.Tabs = viewTab;
@@ -368,7 +388,7 @@ class DynamicReport extends PageBase {
         this.reportViewAddRef.current.ClearModel();
       },
     };
-  }
+  }  
   CancelMasterClick() {
     this.ClearModel();
     this.setState({ isDisplayAddMenuForm: false });
@@ -385,7 +405,6 @@ class DynamicReport extends PageBase {
     let Parameters = this.parametersCard.current.state.source;
     //Parameters is ok
 
-
     // let Tabs = this.reportViewAddRef.current.state.viewTabList;
     //Tabs ok
     //let SortFields = this.reportViewAddRef.current.state.sortFieldList;
@@ -401,9 +420,8 @@ class DynamicReport extends PageBase {
     report.Views = Views;
     model.Report = report;
 
-    console.log(model)
+    //console.log(model);
     // console.log(this.reportViewAddRef.current.componentViewListRef)
-
 
     if (model.ReportID) {
       model.ModelState = ModelState.Modified;
@@ -433,7 +451,7 @@ class DynamicReport extends PageBase {
   }
   OnUserSelect(selectedList, selectedItem) {
     setTimeout(() => {
-      var result = selectedList.map(function (a) {
+      var result = selectedList.map(function(a) {
         return a.UserId;
       });
       this.setState({ selectedUserForPermission: result });
@@ -441,7 +459,7 @@ class DynamicReport extends PageBase {
   }
   OnUserRemove(selectedList, selectedItem) {
     setTimeout(() => {
-      var result = selectedList.map(function (a) {
+      var result = selectedList.map(function(a) {
         return a.UserId;
       });
       this.setState({ selectedUserForPermission: result });
@@ -551,7 +569,7 @@ class DynamicReport extends PageBase {
                   label="Select User"
                   onSelect={this.OnUserSelect}
                   onRemove={this.OnUserRemove}
-                  selectedValues={this.state.selectedUserForPermission}
+                  selectedUsersList={this.state.selectedUserForPermission}
                   url={`${AppConst.BaseUrl}${Services.Security}/User/GetAll`}
                   mapper={{ valueMember: "UserId", textMember: "Name" }}
                   {...this.useInput({
