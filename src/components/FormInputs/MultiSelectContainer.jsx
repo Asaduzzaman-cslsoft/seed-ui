@@ -9,9 +9,7 @@ import Multiselect from "multiselect-react-dropdown";
 class MultiSelectContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      // options: [{name: 'Option 1️⃣', id: 1},{name: 'Option 2️⃣', id: 2}],
-    };
+    this.state = {};
     this.islocal = false;
     if (props.source) this.islocal = true;
   }
