@@ -121,19 +121,18 @@ class ImageUploadContainer extends React.Component {
             {message}
           </div>
         )}
-    
+    <div className="card mt-3" height={200}>
           <div className="card-header">List of Files</div>
-          <div className="col-md-5">
-          <AliceCarousel autoPlay autoPlayInterval={2000} height="100" width="100">
+         
+          <AliceCarousel autoPlay autoPlayInterval={2000}>
             {imageInfos &&
               imageInfos.map((img) => (
-                <img src={img} className="slider-img" height={100} width={100} alt="" />
+                <img src={img} className="slider-img" height={200} width="100%" alt="" />
               ))}
           </AliceCarousel>
-          </div>
-          <div className="col-md-7"></div>
+                
         </div>
-   
+        </div>
     );
   }
 }
