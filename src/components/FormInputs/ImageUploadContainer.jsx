@@ -1,6 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
+//import PropTypes from "prop-types";
 import UploadService from '../../Services/FileUploadService ';
 
 class ImageUploadContainer extends React.Component {
@@ -38,11 +37,15 @@ class ImageUploadContainer extends React.Component {
             this.setState({
               message: response.data.message,
             });
-            return UploadService.getFiles();
+            return response.data.Result
+            //return UploadService.getFiles();
           })
-          .then((files) => {
+          .then((fileName) => {          
+            let listofImage=this.state.imageInfos;
+            let file= "http://localhost:1500/seed/files/"+fileName;
+            listofImage.push(file);
             this.setState({
-              imageInfos: files.data,
+              imageInfos: listofImage,
             });
           })
           .catch((err) => {
@@ -53,13 +56,13 @@ class ImageUploadContainer extends React.Component {
             });
           });
       }
-      componentDidMount() {
-        UploadService.getFiles().then((response) => {
-          this.setState({
-            imageInfos: response.data,
-          });
-        });
-      }
+      // componentDidMount() {
+      //   UploadService.getFiles().then((response) => {
+      //     this.setState({
+      //       imageInfos: response.data,
+      //     });
+      //   });
+      // }
       render() {
         const {
           currentFile,
@@ -102,7 +105,7 @@ class ImageUploadContainer extends React.Component {
             )}
             {previewImage && (
               <div>
-                <img className="preview" src={previewImage} alt="" />
+                <img className="preview" src={previewImage} height={100} width={100} alt="" />
               </div>
             )}
             {message && (
@@ -114,9 +117,9 @@ class ImageUploadContainer extends React.Component {
               <div className="card-header">List of Files</div>
               <ul className="list-group list-group-flush">
                 {imageInfos &&
-                  imageInfos.map((img, index) => (
+                  imageInfos.map((img, index) => (                   
                     <li className="list-group-item" key={index}>
-                      <a href={img.url}>{img.name}</a>
+                      <img src={img} height={100} width={100} alt=""/>                      
                     </li>
                   ))}
               </ul>
@@ -127,9 +130,9 @@ class ImageUploadContainer extends React.Component {
     
 }
 
-ImageUploadContainer.propTypes = {
-    label: PropTypes.string.isRequired,
-    model: PropTypes.string.isRequired,
-};
+// ImageUploadContainer.propTypes = {
+//     label: PropTypes.string.isRequired,
+//     model: PropTypes.string.isRequired,
+// };
 
 export default ImageUploadContainer;
