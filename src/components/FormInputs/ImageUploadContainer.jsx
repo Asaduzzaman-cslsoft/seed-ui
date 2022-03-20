@@ -3,6 +3,7 @@ import React from "react";
 import UploadService from "../../Services/FileUploadService ";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
+import { AppConst, Services, ShowConfirmBox } from "../../util/Util";
 
 class ImageUploadContainer extends React.Component {
   constructor(props) {
@@ -44,8 +45,13 @@ class ImageUploadContainer extends React.Component {
       })
       .then((fileName) => {
         let listofImage = this.state.imageInfos;
-        let file = "http://localhost:1500/seed/files/" + fileName;
-        listofImage.push(file);
+        let file = AppConst.BaseUrl + Services.Seed + "/files/" + fileName;
+        const listItem = {
+          Id: listofImage.length + 1,
+          source: file,
+          name: fileName,
+        };
+        listofImage.push(listItem);
         this.setState({
           imageInfos: listofImage,
         });
@@ -58,6 +64,34 @@ class ImageUploadContainer extends React.Component {
         });
       });
   }
+  DeleteConfirm(name) {
+    if (window.confirm("Are you sure you want to permanently delete this image?")) {
+      let listofImage = this.state.imageInfos;
+      console.log(listofImage);
+      let resList = listofImage.filter((obj) => {
+        return obj.name !== name;
+      });
+      this.setState({
+        imageInfos: resList,
+      });
+    }
+    UploadService.deleteFile(name);
+  }
+
+  // ShowDelete(name) {
+  //   ShowConfirmBox({
+  //     title: "Delete Confirmation",
+  //     text: "Are you sure you want to permanently delete this image?",
+  //     onOkClick:function(){
+  //       Promise.resolve(
+  //      this.DeleteConfirm(name))
+  //     },
+
+  //   },async () => {
+  //     alert("geee")
+  //   })
+
+  // }
   // componentDidMount() {
   //   UploadService.getFiles().then((response) => {
   //     this.setState({
@@ -121,18 +155,33 @@ class ImageUploadContainer extends React.Component {
             {message}
           </div>
         )}
-    <div className="card mt-3" height={200}>
+        <div className="card mt-3" height={200}>
           <div className="card-header">List of Files</div>
-         
-          <AliceCarousel autoPlay autoPlayInterval={2000}>
+
+          <AliceCarousel
+            autoPlay={true}
+            fadeOutAnimation={true}
+            mouseDragEnabled={true}
+            playButtonEnabled={true}
+            disableAutoPlayOnAction={true}
+            //onClick={this.ShowDelete}
+            autoPlayInterval={2000}
+          >
             {imageInfos &&
-              imageInfos.map((img) => (
-                <img src={img} className="slider-img" height={200} width="100%" alt="" />
+              imageInfos.map((img, index) => (
+                <img
+                  key={img.Id}
+                  src={img.source}
+                  className="slider-img"
+                  height={200}
+                  width="100%"
+                  alt=""
+                  onClick={() => this.DeleteConfirm(img.name)}
+                />
               ))}
           </AliceCarousel>
-                
         </div>
-        </div>
+      </div>
     );
   }
 }

@@ -11,6 +11,10 @@ class FileUploadService {
         onUploadProgress,
       })     
   }
+  deleteFile(name){
+    console.log("name is "+name)
+    return name;
+  }
   getFiles() {
     return http.get("/files");
   }
