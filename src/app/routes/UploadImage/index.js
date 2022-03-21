@@ -8,20 +8,27 @@ class UploadImage extends PageBase {
     constructor(props) {
         super(props);
         this.state = {
-            ...this.state,
+            ...this.state,        
         }
+        this.ButtonClickHandle=this.ButtonClickHandle.bind(this);
+        this.ImageUploadRef=React.createRef();
     }
-    render(){
-        return(
+    ButtonClickHandle(){
+        console.log(this.ImageUploadRef.current.state.imageInfos)
+    }
+    render() {
+        return (
             <>
-            <div className="page-wrapper">
-            <Row>
-              <Col md={6}>
-              <ImageUploadContainer/>
-              </Col>
-              <Col md={6}></Col>              
-               </Row>
-            </div>
+                <div className="page-wrapper">
+                    <Row>
+                        <Col md={6}>
+                            <ImageUploadContainer ref={this.ImageUploadRef}/>
+                        </Col>
+                        <Col md={6}>
+                            <button onClick={this.ButtonClickHandle}>Click Me</button>
+                        </Col>
+                    </Row>
+                </div>
             </>
         )
     }

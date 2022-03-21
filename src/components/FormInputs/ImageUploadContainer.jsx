@@ -2,7 +2,7 @@ import React from "react";
 //import PropTypes from "prop-types";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
-import { AppConst, Services, ShowConfirmBox } from "../../util/Util";
+import { AppConst, Services } from "../../util/Util";
 import { $http } from "../../util/HttpRequest";
 
 class ImageUploadContainer extends React.Component {
@@ -124,12 +124,14 @@ class ImageUploadContainer extends React.Component {
       message,
       imageInfos,
     } = this.state;
+    // const props = { ...this.props };
+    // let value = props.value || "";    
     return (
       <div>
-        <div className="row">
+        <div className="row">         
           <div className="col-8">
             <label className="btn btn-default p-0">
-              <input type="file" accept="image/*" onChange={this.selectFile} />
+              <input type="file" accept="image/*" onChange={this.selectFile} />              
             </label>
           </div>
           <div className="col-4">
