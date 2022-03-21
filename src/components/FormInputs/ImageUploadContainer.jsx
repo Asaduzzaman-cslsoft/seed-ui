@@ -1,9 +1,9 @@
 import React from "react";
 //import PropTypes from "prop-types";
-import UploadService from "../../Services/FileUploadService ";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
 import { AppConst, Services, ShowConfirmBox } from "../../util/Util";
+import { $http } from "../../util/HttpRequest";
 
 class ImageUploadContainer extends React.Component {
   constructor(props) {
@@ -31,16 +31,19 @@ class ImageUploadContainer extends React.Component {
     this.setState({
       progress: 0,
     });
-    UploadService.upload(this.state.currentFile, (event) => {
-      this.setState({
-        progress: Math.round((100 * event.loaded) / event.total),
-      });
-    })
+    let url = AppConst.BaseUrl + Services.Seed + "/FileUpload/Create";
+    let formData = new FormData();
+    formData.append("file", this.state.currentFile);
+    $http.post(url, formData)
       .then((response) => {
+        // this.setState({
+        //   progress: Math.round((100 * response.loaded) / response.total),
+        // });
         this.setState({
-          message: response.data.message,
+          message: response.message,
         });
-        return response.data.Result;
+
+        return response.Result;
         //return UploadService.getFiles();
       })
       .then((fileName) => {
@@ -66,32 +69,41 @@ class ImageUploadContainer extends React.Component {
   }
   DeleteConfirm(name) {
     if (window.confirm("Are you sure you want to permanently delete this image?")) {
-      let listofImage = this.state.imageInfos;
-      console.log(listofImage);
-      let resList = listofImage.filter((obj) => {
-        return obj.name !== name;
-      });
-      this.setState({
-        imageInfos: resList,
-      });
-    }
-    UploadService.deleteFile(name);
+      let deleteUrl = AppConst.BaseUrl + Services.Seed + "/FileUpload/Delete/";
+      $http.delete(deleteUrl, {params:{fileName:name}}).then(() => {    
+        let listofImage = this.state.imageInfos;      
+        let resList = listofImage.filter((obj) => {
+          return obj.name !== name;
+        });
+        this.setState({
+          imageInfos: resList,
+        });      
+      })
+     
+    //UploadService.deleteFile(name);
   }
+}
 
-  // ShowDelete(name) {
-  //   ShowConfirmBox({
-  //     title: "Delete Confirmation",
-  //     text: "Are you sure you want to permanently delete this image?",
-  //     onOkClick:function(){
-  //       Promise.resolve(
-  //      this.DeleteConfirm(name))
-  //     },
+  DeleteConfirmff(name) {
+    ShowConfirmBox({
+      title: "Delete Confirmation",
+      text: "Are you sure you want to permanently delete this image?",
+      onOkClick: function () {
+        let deleteUrl = AppConst.BaseUrl + Services.Seed + "/FileUpload/Delete/";
+        $http.delete(deleteUrl, {params:{fileName:name}}).then(() => {          
+          // let listofImage = this.state.imageInfos;
+          // console.log(listofImage);
+          // let resList = listofImage.filter((obj) => {
+          //   return obj.name !== name;
+          // });
+          // this.setState({
+          //   imageInfos: resList,
+          // });
+        })
+      },
 
-  //   },async () => {
-  //     alert("geee")
-  //   })
-
-  // }
+    })
+  }
   // componentDidMount() {
   //   UploadService.getFiles().then((response) => {
   //     this.setState({
