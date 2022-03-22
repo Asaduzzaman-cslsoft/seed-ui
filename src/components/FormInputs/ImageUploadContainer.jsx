@@ -2,7 +2,6 @@ import React from "react";
 //import PropTypes from "prop-types";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
-import { AppConst, Services } from "../../util/Util";
 import { $http } from "../../util/HttpRequest";
 
 class ImageUploadContainer extends React.Component {
@@ -31,7 +30,7 @@ class ImageUploadContainer extends React.Component {
     this.setState({
       progress: 0,
     });
-    let url = AppConst.BaseUrl + Services.Seed + "/FileUpload/Create";
+    let url = this.props.config.uploadUrl;
     let formData = new FormData();
     formData.append("file", this.state.currentFile);
     $http.post(url, formData)
@@ -48,7 +47,7 @@ class ImageUploadContainer extends React.Component {
       })
       .then((fileName) => {
         let listofImage = this.state.imageInfos;
-        let file = AppConst.BaseUrl + Services.Seed + "/files/" + fileName;
+        let file = this.props.config.imageLocation+fileName;      
         const listItem = {
           Id: listofImage.length + 1,
           source: file,
@@ -69,7 +68,7 @@ class ImageUploadContainer extends React.Component {
   }
   DeleteConfirm(name) {
     if (window.confirm("Are you sure you want to permanently delete this image?")) {
-      let deleteUrl = AppConst.BaseUrl + Services.Seed + "/FileUpload/Delete/";
+      let deleteUrl = this.props.config.deleteUrl;     
       $http.delete(deleteUrl, { params: { fileName: name } }).then(() => {
         let listofImage = this.state.imageInfos;
         let resList = listofImage.filter((obj) => {
