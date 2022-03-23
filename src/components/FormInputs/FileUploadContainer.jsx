@@ -1,12 +1,13 @@
 import React from "react";
 // import { AppConst, Services } from "../../util/Util";
-// import { $http } from "../../util/HttpRequest";
+import { $http } from "../../util/HttpRequest";
 
 class FileUploadContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentFile: undefined,
+      uploadedFiles:[]
     };
     this.selectFile = this.selectFile.bind(this);
     this.upload = this.upload.bind(this);
@@ -17,16 +18,40 @@ class FileUploadContainer extends React.Component {
       currentFile: file,
     });
   }
-  upload(){
-    var file = this.state.currentFile;
-    console.log(file)
-    console.log(this.props.config.uploadUrl)
+  upload() {
+    let url = this.props.config.uploadUrl;
+    let formData = new FormData();
+    let files = this.state.currentFile;
+    if (files.length > 0) {
+      for (var x = 0; x < files.length; x++) {       
+        formData.append('files', files.item(x));
+      }
+    }    
+    $http.post(url, formData)
+      .then((response) => {
+        this.setState({
+          message: response.message,
+        });
+
+        return response.Result;
+      })
+      .then((fileNameList) => {              
+        this.setState({
+          uploadedFiles: fileNameList,
+        });
+      })
+      .catch((err) => {
+        this.setState({         
+          message: "Could not upload the image!",
+          currentFile: undefined,
+        });
+      });
   }
 
   render() {
     let isMultiple = this.props.config.multiple;
     const {
-      currentFile     
+      currentFile
     } = this.state;
     return (
       <div>
@@ -41,14 +66,14 @@ class FileUploadContainer extends React.Component {
                 />
               ) : (
                 <input
-                  type="file"                 
+                  type="file"
                   onChange={this.selectFile}
                 />
               )}
             </label>
           </div>
           <div className="col-4">
-          <button
+            <button
               className="btn btn-success btn-sm"
               disabled={!currentFile}
               onClick={this.upload}

@@ -14,20 +14,23 @@ class UploadImage extends PageBase {
         }
         this.ButtonClickHandle=this.ButtonClickHandle.bind(this);
         this.ImageUploadRef=React.createRef();
+        this.FileUploadRef=React.createRef();
         this.FileUploadConfig={
             multiple:true,
-            uploadUrl:"/abc",
+            uploadUrl: AppConst.BaseUrl + Services.Seed + "/FileUpload/CreateFiles",
+            fileLocation:AppConst.BaseUrl + Services.Seed + "/files/",
+            deleteUrl:AppConst.BaseUrl + Services.Seed + "/FileUpload/Delete?fileName=" 
         };
-        this.ImageUploadConfig={
-            multiple:true,
+        this.ImageUploadConfig={            
             uploadUrl: AppConst.BaseUrl + Services.Seed + "/FileUpload/Create",
-            imageLocation:AppConst.BaseUrl + Services.Seed + "/files/",
+            fileLocation:AppConst.BaseUrl + Services.Seed + "/files/",
             deleteUrl:AppConst.BaseUrl + Services.Seed + "/FileUpload/Delete?fileName="                    
         }
     }
    
     ButtonClickHandle(){
         console.log(this.ImageUploadRef.current.state.imageInfos)
+        console.log(this.FileUploadRef.current.state.uploadedFiles)
     }
     render() {
         return (
@@ -38,7 +41,7 @@ class UploadImage extends PageBase {
                             <ImageUploadContainer config={this.ImageUploadConfig} ref={this.ImageUploadRef}/>
                         </Col>
                         <Col md={6}>
-                            <FileUploadContainer config={this.FileUploadConfig}/>
+                            <FileUploadContainer ref={this.FileUploadRef} config={this.FileUploadConfig}/>
                             <button onClick={this.ButtonClickHandle}>Click Me</button>
                         </Col>
                     </Row>

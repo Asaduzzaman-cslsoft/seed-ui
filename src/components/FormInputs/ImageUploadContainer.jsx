@@ -47,7 +47,7 @@ class ImageUploadContainer extends React.Component {
       })
       .then((fileName) => {
         let listofImage = this.state.imageInfos;
-        let file = this.props.config.imageLocation+fileName;      
+        let file = this.props.config.fileLocation+fileName;      
         const listItem = {
           Id: listofImage.length + 1,
           source: file,
