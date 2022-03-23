@@ -22,7 +22,7 @@ class UploadImage extends PageBase {
             multiple:true,
             uploadUrl: AppConst.BaseUrl + Services.Seed + "/FileUpload/Create",
             imageLocation:AppConst.BaseUrl + Services.Seed + "/files/",
-            deleteUrl:AppConst.BaseUrl + Services.Seed + "/FileUpload/Delete/",            
+            deleteUrl:AppConst.BaseUrl + Services.Seed + "/FileUpload/Delete?fileName="                    
         }
     }
    

@@ -67,9 +67,9 @@ class ImageUploadContainer extends React.Component {
       });
   }
   DeleteConfirm(name) {
-    if (window.confirm("Are you sure you want to permanently delete this image?")) {
-      let deleteUrl = this.props.config.deleteUrl;     
-      $http.delete(deleteUrl, { params: { fileName: name } }).then(() => {
+    if (window.confirm("Are you sure you want to permanently delete this image?")) {      
+      let deleteUrl = this.props.config.deleteUrl+name;     
+      $http.get(deleteUrl).then(() => {
         let listofImage = this.state.imageInfos;
         let resList = listofImage.filter((obj) => {
           return obj.name !== name;
