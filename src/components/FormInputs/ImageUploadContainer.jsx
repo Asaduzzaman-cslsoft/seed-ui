@@ -10,20 +10,39 @@ class ImageUploadContainer extends React.Component {
     this.state = {
       currentFile: undefined,
       previewImage: undefined,
-      progress: 0,
-      message: "",
       imageInfos: [],
+      disabled: true,
+      selectedImage: undefined,
     };
     this.selectFile = this.selectFile.bind(this);
-    this.upload = this.upload.bind(this); 
+    this.upload = this.upload.bind(this);
+    this.selectImage = this.selectImage.bind(this);
+    this.disabledTrue = this.disabledTrue.bind(this);
+    this.DeleteConfirm = this.DeleteConfirm.bind(this);
   }
   selectFile(event) {
     var file = event.target.files[0];
+    let listofImage = this.state.imageInfos;
+    const listItem = {
+      Id: listofImage.length + 1,
+      source: URL.createObjectURL(file),
+    };
+    listofImage.push(listItem);
     this.setState({
       currentFile: file,
-      previewImage: URL.createObjectURL(file),
-      progress: 0,
-      message: "",
+      imageInfos: listofImage,
+    });
+  }
+  selectImage(id) {
+    this.setState({
+      disabled: false,
+      selectedImage: id,
+    });
+  }
+  disabledTrue() {
+    this.setState({
+      disabled: true,
+      selectedImage: undefined,
     });
   }
   upload(event) {
@@ -33,7 +52,8 @@ class ImageUploadContainer extends React.Component {
     let url = this.props.config.uploadUrl;
     let formData = new FormData();
     formData.append("file", this.state.currentFile);
-    $http.post(url, formData)
+    $http
+      .post(url, formData)
       .then((response) => {
         this.setState({
           progress: Math.round((100 * event.loaded) / event.total),
@@ -47,7 +67,7 @@ class ImageUploadContainer extends React.Component {
       })
       .then((fileName) => {
         let listofImage = this.state.imageInfos;
-        let file = this.props.config.fileLocation+fileName;      
+        let file = this.props.config.fileLocation + fileName;
         const listItem = {
           Id: listofImage.length + 1,
           source: file,
@@ -66,48 +86,42 @@ class ImageUploadContainer extends React.Component {
         });
       });
   }
-  DeleteConfirm(name) {
-    if (window.confirm("Are you sure you want to permanently delete this image?")) {      
-      let deleteUrl = this.props.config.deleteUrl+name;     
-      $http.get(deleteUrl).then(() => {
-        let listofImage = this.state.imageInfos;
-        let resList = listofImage.filter((obj) => {
-          return obj.name !== name;
-        });
-        this.setState({
-          imageInfos: resList,
-        });
-      })
+  // DeleteConfirm(name) {
+  //   if (
+  //     window.confirm("Are you sure you want to permanently delete this image?")
+  //   ) {
+  //     let deleteUrl = this.props.config.deleteUrl + name;
+  //     $http.get(deleteUrl).then(() => {
+  //       let listofImage = this.state.imageInfos;
+  //       let resList = listofImage.filter((obj) => {
+  //         return obj.name !== name;
+  //       });
+  //       this.setState({
+  //         imageInfos: resList,
+  //       });
+  //     });
 
-      //UploadService.deleteFile(name);
-    }
-  }
+  //     //UploadService.deleteFile(name);
+  //   }
+  // }
   // DeleteConfirmdsfjds() {
   //   let listofImage = this.state.imageInfos;
   //   console.log(listofImage)
   // }
 
-  // DeleteConfirm(name) {
-  //   ShowConfirmBox({
-  //     title: "Delete Confirmation",
-  //     text: "Are you sure you want to permanently delete this image?",
-  //     onOkClick: function () {
-  //       let deleteUrl = AppConst.BaseUrl + Services.Seed + "/FileUpload/Delete/";
-  //       $http.delete(deleteUrl, { params: { fileName: name } }).then(() => {
-  //         this.DeleteConfirm(name);
-  //         //  let listofImage = this.state;
-  //         // console.log(listofImage);
-  //         // let resList = listofImage.filter((obj) => {
-  //         //   return obj.name !== name;
-  //         // });
-  //         // this.setState({
-  //         //   imageInfos: resList,
-  //         // });
-  //       })
-  //     },
+  DeleteConfirm() {
+    let id = this.state.selectedImage;
+    let listofImage = this.state.imageInfos;
+    let resList = listofImage.filter((obj) => {
+      return obj.Id !== id;
+    });
+    this.setState({
+      imageInfos: resList,
+      disabled: true,
+      selectedImage: undefined,
+    });
+  }
 
-  //   })
-  // }
   // componentDidMount() {
   //   UploadService.getFiles().then((response) => {
   //     this.setState({
@@ -116,6 +130,29 @@ class ImageUploadContainer extends React.Component {
   //   });
   // }
   render() {
+    const mystyle = {
+      opacity: 0,
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+    };
+    const btnAddStyle = {
+      background: "green",
+      width: "150px",
+      height: "30px",
+      opacity: 1,
+      lineheight: "90px",
+      textAlign: "center",
+    };
+    const btnDeleteStyle = {
+      width: "150px",
+      height: "30px",
+    };
+    const divTextAlign = {
+      textAlign: "right",
+    };
     const {
       currentFile,
       previewImage,
@@ -123,67 +160,27 @@ class ImageUploadContainer extends React.Component {
       message,
       imageInfos,
     } = this.state;
-    // const props = { ...this.props };
-    // let value = props.value || "";    
-    return (
-      <div>
-        <div className="row">         
-          <div className="col-8">
-            <label className="btn btn-default p-0">
-              <input type="file" accept="image/*" onChange={this.selectFile} />              
-            </label>
-          </div>
-          <div className="col-4">
-            <button
-              className="btn btn-success btn-sm"
-              disabled={!currentFile}
-              onClick={this.upload}
-            >
-              Upload
-            </button>
-          </div>
-        </div>
-        {currentFile && (
-          <div className="progress my-3">
-            <div
-              className="progress-bar progress-bar-info progress-bar-striped"
-              role="progressbar"
-              aria-valuenow={progress}
-              aria-valuemin="0"
-              aria-valuemax="100"
-              style={{ width: progress + "%" }}
-            >
-              {progress}%
-            </div>
-          </div>
-        )}
-        {previewImage && (
-          <div>
-            <img
-              className="preview"
-              src={previewImage}
-              height={100}
-              width={100}
-              alt=""
-            />
-          </div>
-        )}
-        {message && (
-          <div className="alert alert-secondary mt-3" role="alert">
-            {message}
-          </div>
-        )}
-        <div className="card mt-3" height={200}>
-          <div className="card-header">List of Files</div>
 
+    return (
+      <>
+        <div className="card mt-3" height={200}>
           <AliceCarousel
-            autoPlay={true}
+            // autoPlay={true}
             fadeOutAnimation={true}
             mouseDragEnabled={true}
             playButtonEnabled={true}
             disableAutoPlayOnAction={true}
             //onClick={this.ShowDelete}
-            autoPlayInterval={2000}
+            //autoPlayInterval={2000}
+            ref={(el) => (this.Carousel = el)}
+            onSlideChange={this.onSlideChange}
+            onSlideChanged={this.onSlideChanged}
+            renderPrevButton={() => (
+              <p className="p-4 absolute right-0 top-0">Prev</p>
+            )}
+            renderNextButton={() => (
+              <p className="p-4 absolute right-0 top-0">Next</p>
+            )}
           >
             {imageInfos &&
               imageInfos.map((img, index) => (
@@ -194,12 +191,28 @@ class ImageUploadContainer extends React.Component {
                   height={200}
                   width="100%"
                   alt=""
-                  onClick={() => this.DeleteConfirm(img.name)}
+                  onClick={() => this.selectImage(img.Id)}
                 />
               ))}
           </AliceCarousel>
+          <div className="row">
+            <div className="col-md-6" style={divTextAlign}>
+              <button style={btnAddStyle}>Add New Image</button>
+              <input style={mystyle} type="file" onChange={this.selectFile} />
+            </div>
+            <div className="col-md-6">
+              <button
+                disabled={this.state.disabled}
+                style={btnDeleteStyle}
+                className="btn btn-danger"
+                onClick={this.DeleteConfirm}
+              >
+                Delete Current Slide
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 }
