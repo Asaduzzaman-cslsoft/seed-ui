@@ -13,8 +13,6 @@ class ImageUploadContainer extends React.Component {
       disabled: true
     };
     this.selectFile = this.selectFile.bind(this);
-    //this.upload = this.upload.bind(this);
-    //this.disabledTrue = this.disabledTrue.bind(this);
     this.DeleteConfirm = this.DeleteConfirm.bind(this);
   }
   selectFile(event) {
@@ -23,60 +21,14 @@ class ImageUploadContainer extends React.Component {
     const listItem = {
       Id: listofImage.length + 1,
       source: URL.createObjectURL(file),
+      file:file
     };
     listofImage.push(listItem);
     this.setState({
       currentFile: file,
       imageInfos: listofImage,
     });
-  }
-  // disabledTrue() {
-  //   this.setState({
-  //     disabled: true,
-  //     selectedImage: undefined,
-  //   });
-  // }
-  // upload(event) {
-  //   this.setState({
-  //     progress: 0,
-  //   });
-  //   let url = this.props.config.uploadUrl;
-  //   let formData = new FormData();
-  //   formData.append("file", this.state.currentFile);
-  //   $http
-  //     .post(url, formData)
-  //     .then((response) => {
-  //       this.setState({
-  //         progress: Math.round((100 * event.loaded) / event.total),
-  //       });
-  //       this.setState({
-  //         message: response.message,
-  //       });
-
-  //       return response.Result;
-  //       //return UploadService.getFiles();
-  //     })
-  //     .then((fileName) => {
-  //       let listofImage = this.state.imageInfos;
-  //       let file = this.props.config.fileLocation + fileName;
-  //       const listItem = {
-  //         Id: listofImage.length + 1,
-  //         source: file,
-  //         name: fileName,
-  //       };
-  //       listofImage.push(listItem);
-  //       this.setState({
-  //         imageInfos: listofImage,
-  //       });
-  //     })
-  //     .catch((err) => {
-  //       this.setState({
-  //         progress: 0,
-  //         message: "Could not upload the image!",
-  //         currentFile: undefined,
-  //       });
-  //     });
-  // }
+  }  
 
   DeleteConfirm() {
     var activeIndex=this.Carousel.state.activeIndex;
@@ -93,13 +45,6 @@ class ImageUploadContainer extends React.Component {
     });
   }
 
-  // componentDidMount() {
-  //   UploadService.getFiles().then((response) => {
-  //     this.setState({
-  //       imageInfos: response.data,
-  //     });
-  //   });
-  // }
   render() {
     const mystyle = {
       opacity: 0,

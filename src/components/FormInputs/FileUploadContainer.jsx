@@ -1,62 +1,40 @@
 import React from "react";
-// import { AppConst, Services } from "../../util/Util";
-import { $http } from "../../util/HttpRequest";
-
 class FileUploadContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       currentFile: undefined,
-      uploadedFiles:[]
+      uploadedFiles: []
     };
     this.selectFile = this.selectFile.bind(this);
-    this.upload = this.upload.bind(this);
+    this.deleteFile = this.deleteFile.bind(this);
   }
   selectFile(event) {
+    var allFiles = this.state.uploadedFiles;
     var file = event.target.files;
+    for (let i = 0; i < file.length; i++) {
+      allFiles.push(file[i]);
+    }
     this.setState({
-      currentFile: file,
+      uploadedFiles: allFiles,
+    });   
+  }
+  deleteFile(index){    
+    var allFiles = this.state.uploadedFiles;
+    allFiles.splice(index,1);
+    this.setState({
+      uploadedFiles: allFiles,
     });
-  }
-  upload() {
-    let url = this.props.config.uploadUrl;
-    let formData = new FormData();
-    let files = this.state.currentFile;
-    if (files.length > 0) {
-      for (var x = 0; x < files.length; x++) {       
-        formData.append('files', files.item(x));
-      }
-    }    
-    $http.post(url, formData)
-      .then((response) => {
-        this.setState({
-          message: response.message,
-        });
-
-        return response.Result;
-      })
-      .then((fileNameList) => {              
-        this.setState({
-          uploadedFiles: fileNameList,
-        });
-      })
-      .catch((err) => {
-        this.setState({         
-          message: "Could not upload the image!",
-          currentFile: undefined,
-        });
-      });
-  }
-
+  }  
   render() {
-    let isMultiple = this.props.config.multiple;
+    let isMultiple = this.props.multiple;
     const {
-      currentFile
+      uploadedFiles
     } = this.state;
     return (
       <div>
         <div className="row">
-          <div className="col-8">
+          <div className="col-12">
             <label className="btn btn-default p-0">
               {isMultiple ? (
                 <input
@@ -72,16 +50,31 @@ class FileUploadContainer extends React.Component {
               )}
             </label>
           </div>
-          <div className="col-4">
-            <button
-              className="btn btn-success btn-sm"
-              disabled={!currentFile}
-              onClick={this.upload}
-            >
-              Upload
-            </button>
-          </div>
         </div>
+        {uploadedFiles.length !==0 &&
+        <div className="row">          
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>File Name</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  uploadedFiles.map((item, index) => (
+                    <tr key={index}>
+                      <td>{item.name}</td>
+                      <td>
+                        <i className="pi pi-trash" onClick={() => this.deleteFile(index)}></i>
+                      </td>                      
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>         
+        </div>
+  }
       </div>
     );
   }
