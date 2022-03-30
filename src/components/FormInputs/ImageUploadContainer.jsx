@@ -2,22 +2,19 @@ import React from "react";
 //import PropTypes from "prop-types";
 import AliceCarousel from "react-alice-carousel";
 import "react-alice-carousel/lib/alice-carousel.css";
-import { $http } from "../../util/HttpRequest";
+//import { $http } from "../../util/HttpRequest";
 
 class ImageUploadContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentFile: undefined,
-      previewImage: undefined,
+      currentFile: undefined,     
       imageInfos: [],
-      disabled: true,
-      selectedImage: undefined,
+      disabled: true
     };
     this.selectFile = this.selectFile.bind(this);
-    this.upload = this.upload.bind(this);
-    this.selectImage = this.selectImage.bind(this);
-    this.disabledTrue = this.disabledTrue.bind(this);
+    //this.upload = this.upload.bind(this);
+    //this.disabledTrue = this.disabledTrue.bind(this);
     this.DeleteConfirm = this.DeleteConfirm.bind(this);
   }
   selectFile(event) {
@@ -33,87 +30,61 @@ class ImageUploadContainer extends React.Component {
       imageInfos: listofImage,
     });
   }
-  selectImage(id) {
-    this.setState({
-      disabled: false,
-      selectedImage: id,
-    });
-  }
-  disabledTrue() {
-    this.setState({
-      disabled: true,
-      selectedImage: undefined,
-    });
-  }
-  upload(event) {
-    this.setState({
-      progress: 0,
-    });
-    let url = this.props.config.uploadUrl;
-    let formData = new FormData();
-    formData.append("file", this.state.currentFile);
-    $http
-      .post(url, formData)
-      .then((response) => {
-        this.setState({
-          progress: Math.round((100 * event.loaded) / event.total),
-        });
-        this.setState({
-          message: response.message,
-        });
-
-        return response.Result;
-        //return UploadService.getFiles();
-      })
-      .then((fileName) => {
-        let listofImage = this.state.imageInfos;
-        let file = this.props.config.fileLocation + fileName;
-        const listItem = {
-          Id: listofImage.length + 1,
-          source: file,
-          name: fileName,
-        };
-        listofImage.push(listItem);
-        this.setState({
-          imageInfos: listofImage,
-        });
-      })
-      .catch((err) => {
-        this.setState({
-          progress: 0,
-          message: "Could not upload the image!",
-          currentFile: undefined,
-        });
-      });
-  }
-  // DeleteConfirm(name) {
-  //   if (
-  //     window.confirm("Are you sure you want to permanently delete this image?")
-  //   ) {
-  //     let deleteUrl = this.props.config.deleteUrl + name;
-  //     $http.get(deleteUrl).then(() => {
-  //       let listofImage = this.state.imageInfos;
-  //       let resList = listofImage.filter((obj) => {
-  //         return obj.name !== name;
+  // disabledTrue() {
+  //   this.setState({
+  //     disabled: true,
+  //     selectedImage: undefined,
+  //   });
+  // }
+  // upload(event) {
+  //   this.setState({
+  //     progress: 0,
+  //   });
+  //   let url = this.props.config.uploadUrl;
+  //   let formData = new FormData();
+  //   formData.append("file", this.state.currentFile);
+  //   $http
+  //     .post(url, formData)
+  //     .then((response) => {
+  //       this.setState({
+  //         progress: Math.round((100 * event.loaded) / event.total),
   //       });
   //       this.setState({
-  //         imageInfos: resList,
+  //         message: response.message,
+  //       });
+
+  //       return response.Result;
+  //       //return UploadService.getFiles();
+  //     })
+  //     .then((fileName) => {
+  //       let listofImage = this.state.imageInfos;
+  //       let file = this.props.config.fileLocation + fileName;
+  //       const listItem = {
+  //         Id: listofImage.length + 1,
+  //         source: file,
+  //         name: fileName,
+  //       };
+  //       listofImage.push(listItem);
+  //       this.setState({
+  //         imageInfos: listofImage,
+  //       });
+  //     })
+  //     .catch((err) => {
+  //       this.setState({
+  //         progress: 0,
+  //         message: "Could not upload the image!",
+  //         currentFile: undefined,
   //       });
   //     });
-
-  //     //UploadService.deleteFile(name);
-  //   }
-  // }
-  // DeleteConfirmdsfjds() {
-  //   let listofImage = this.state.imageInfos;
-  //   console.log(listofImage)
   // }
 
   DeleteConfirm() {
-    let id = this.state.selectedImage;
+    var activeIndex=this.Carousel.state.activeIndex;
     let listofImage = this.state.imageInfos;
+    var activeSlide=listofImage[activeIndex];    
+    
     let resList = listofImage.filter((obj) => {
-      return obj.Id !== id;
+      return obj.Id !== activeSlide.Id;
     });
     this.setState({
       imageInfos: resList,
@@ -154,27 +125,19 @@ class ImageUploadContainer extends React.Component {
       textAlign: "right",
     };
     const {
-      currentFile,
-      previewImage,
-      progress,
-      message,
       imageInfos,
     } = this.state;
-
+    const imageCount = imageInfos.length
     return (
       <>
         <div className="card mt-3" height={200}>
-          <AliceCarousel
-            // autoPlay={true}
+          <AliceCarousel            
             fadeOutAnimation={true}
             mouseDragEnabled={true}
             playButtonEnabled={true}
             disableAutoPlayOnAction={true}
-            //onClick={this.ShowDelete}
-            //autoPlayInterval={2000}
+            
             ref={(el) => (this.Carousel = el)}
-            onSlideChange={this.onSlideChange}
-            onSlideChanged={this.onSlideChanged}
             renderPrevButton={() => (
               <p className="p-4 absolute right-0 top-0">Prev</p>
             )}
@@ -202,7 +165,7 @@ class ImageUploadContainer extends React.Component {
             </div>
             <div className="col-md-6">
               <button
-                disabled={this.state.disabled}
+                disabled={imageCount===0}
                 style={btnDeleteStyle}
                 className="btn btn-danger"
                 onClick={this.DeleteConfirm}

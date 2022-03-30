@@ -20,12 +20,7 @@ class UploadImage extends PageBase {
             uploadUrl: AppConst.BaseUrl + Services.Seed + "/FileUpload/CreateFiles",
             fileLocation:AppConst.BaseUrl + Services.Seed + "/files/",
             deleteUrl:AppConst.BaseUrl + Services.Seed + "/FileUpload/Delete?fileName=" 
-        };
-        this.ImageUploadConfig={            
-            uploadUrl: AppConst.BaseUrl + Services.Seed + "/FileUpload/Create",
-            fileLocation:AppConst.BaseUrl + Services.Seed + "/files/",
-            deleteUrl:AppConst.BaseUrl + Services.Seed + "/FileUpload/Delete?fileName="                    
-        }
+        };        
     }
    
     ButtonClickHandle(){
@@ -38,7 +33,7 @@ class UploadImage extends PageBase {
                 <div className="page-wrapper">
                     <Row>
                         <Col md={6}>
-                            <ImageUploadContainer config={this.ImageUploadConfig} ref={this.ImageUploadRef}/>
+                            <ImageUploadContainer ref={this.ImageUploadRef}/>
                         </Col>
                         <Col md={6}>
                             <FileUploadContainer ref={this.FileUploadRef} config={this.FileUploadConfig}/>
